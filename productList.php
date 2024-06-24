@@ -1,10 +1,6 @@
-
-
 <?php
 include 'adminNav.php';
 ?>
-
-
     <div class="mx-5">
         <div class="title d-flex justify-content-between ">
             <p class="fs-3 text">Product Grid</p>
@@ -30,7 +26,7 @@ include 'adminNav.php';
                         echo '                <h5 class="card-title">' . $row["title"] . '</h5>';
                         echo '                <p class="card-text">' . $row["label"] . '</p>';
                         echo '                <p class="card-text">₹' . $row["price"] . '</p>';
-                        echo '                <a href="#" class="btn btn-primary">Edit</a>';
+                        echo '                <a href="productEdit.php" class="btn btn-primary">Edit</a>';
                         echo '                <a href="#" class="btn btn-primary">Delete</a>';
                         echo '            </div>';
                         echo '        </div>';
