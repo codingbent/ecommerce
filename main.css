@@ -1,0 +1,39 @@
+*{
+  margin: 0%;
+}
+.four .card:hover{
+  border: 1px solid green;
+  box-shadow: 0px 0px 5px grey;
+}
+.four .card .btn1{
+  display: none;
+}
+.four .card:hover + .btn1{
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: black;
+}
+
+
+
+.add_product {
+  position: relative;
+  padding: 10%;
+  padding-top:5%;
+  background-color: #f7f7f7;
+}
+@media screen and (min-width:1024px) {
+  .add_product{
+      padding-left:25%;
+  }
+}
+.product_form{
+  background-color:white;
+  padding:5%;
+}
+.fixed-top{
+  position: relative;
+}
