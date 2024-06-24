@@ -4,22 +4,21 @@
 .four .card:hover{
   border: 1px solid green;
   box-shadow: 0px 0px 5px grey;
-}
-.four .card .btn1{
-  display: none;
-}
-.four .card:hover + .btn1{
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  background-color: black;
+  width: fit-content;
 }
 
+@media (min-width: 992px) {
+  .row-cols-lg-5>* {
+      flex: 0 0 auto;
+      width: 25%;
+  }
+}
+/* 
+#totalProduct{
+  width: 45%;
+} */
 
-
-.add_product {
+.add_product,.edit_product {
   position: relative;
   padding: 10%;
   padding-top:5%;
