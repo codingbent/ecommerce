@@ -1,9 +1,51 @@
 <?php
-
+session_start();
 include '../connection.php';
 
-?>
+// Count total orders
+$sqlOrders = "SELECT COUNT(*) AS total_orders FROM ORDER_ITEM";
+$resultOrders = $con->query($sqlOrders);
+$totalOrders = 0;
 
+if ($resultOrders && $resultOrders->num_rows > 0) {
+    $rowOrders = $resultOrders->fetch_assoc();
+    $totalOrders = $rowOrders['total_orders'];
+}
+
+// Count total products
+$sqlProducts = "SELECT COUNT(*) AS total_products FROM product"; // Assuming 'products' is your products table name
+$resultProducts = $con->query($sqlProducts);
+$totalProducts = 0;
+
+if ($resultProducts && $resultProducts->num_rows > 0) {
+    $rowProducts = $resultProducts->fetch_assoc();
+    $totalProducts = $rowProducts['total_products'];
+}
+
+// Count total users
+$sqlUsers = "SELECT COUNT(*) AS total_users FROM customer"; // Assuming 'customer' is your users/customers table name
+$resultUsers = $con->query($sqlUsers);
+$totalUsers = 0;
+
+if ($resultUsers && $resultUsers->num_rows > 0) {
+    $rowUsers = $resultUsers->fetch_assoc();
+    $totalUsers = $rowUsers['total_users'];
+}
+
+// Calculate total sales
+$sqlTotalSales = "SELECT SUM(order_item.quantity * order_item.price) AS total_sales
+FROM sales
+JOIN order_item ON sales.order_id = order_item.order_id;
+"; // Assuming 'sales' is your sales table name
+$resultTotalSales = $con->query($sqlTotalSales);
+$totalSales = 0;
+
+if ($resultTotalSales && $resultTotalSales->num_rows > 0) {
+    $rowTotalSales = $resultTotalSales->fetch_assoc();
+    $totalSales = $rowTotalSales['total_sales'];
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,18 +67,21 @@ include 'adminNav.php';
     <div class="col">
      <div class="p-3">
       <p>Total Sales</p>
-      <p>rhb</p>
+      <p><?php echo $totalSales;?></p>
      </div>
     </div>
     <div class="col">
       <div class="p-3">
-        <p>Total Sales</p>
-        <p>rhb</p></div>
+        <p>Total Order</p>
+        <p>
+        <?php echo $totalOrders; ?>
+        </p>
+      </div>
     </div>
     <div class="col">
      <div class="p-3">
-      <p>Total Sales</p>
-      <p>rhb</p>
+      <p>Total Products</p>
+      <p><?php echo $totalProducts;?></p>
     </div>
     </div>
   </div>
