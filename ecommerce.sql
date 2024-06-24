@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 24, 2024 at 02:00 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Jun 24, 2024 at 04:25 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -44,15 +44,54 @@ INSERT INTO `admin` (`admin_id`, `name`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `user_id` int(11) NOT NULL,
+  `firstname` varchar(10) NOT NULL,
+  `lastname` varchar(20) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `pass` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dashboard`
+--
+
+CREATE TABLE `dashboard` (
+  `sales` int(11) NOT NULL,
+  `orders` int(11) NOT NULL,
+  `product` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_item`
+--
+
+CREATE TABLE `order_item` (
+  `order_item_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
   `p_id` int(11) NOT NULL,
   `title` varchar(20) NOT NULL,
-  `label` varchar(20) NOT NULL,
+  `label` varchar(200) DEFAULT NULL,
   `price` int(5) NOT NULL,
-  `image` blob NOT NULL
+  `image` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -60,31 +99,20 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`) VALUES
-(1, 'Camera', 'High-resolution came', 2000, 0x63616d6572612e6a7067),
-(15, 'iphone 15', 'Latest iPhone 15: cu', 80000, 0x6970686f6e652e6a7067);
+(2, 'Camera', 'High-resolution camera with zoom, autofocus, and image stabilization, capturing vivid photos and videos with crisp detail and vibrant colors.', 2000, 0x63616d6572612e6a7067),
+(3, 'Iphone', 'The iPhone, by Apple, is a sleek and powerful smartphone with iOS, advanced hardware, App Store, and strong focus on security and privacy.', 80000, 0x6970686f6e652e6a7067);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `sales_order`
 --
 
-CREATE TABLE `user` (
-  `firstname` varchar(10) NOT NULL,
-  `lastname` varchar(20) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `pass` varchar(20) NOT NULL,
-  `user_id` int(2) NOT NULL
+CREATE TABLE `sales_order` (
+  `order_id` int(11) NOT NULL,
+  `order_date` datetime NOT NULL,
+  `customer_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`firstname`, `lastname`, `email`, `pass`, `user_id`) VALUES
-('Abhed', 'agarwal', 'abhed.agl@gmail.com', 'password', 1),
-('Abhed', 'agarwal', 'abhed.agl@gmail.com', 'Password@12345', 2),
-('Nitesh', 'kumar', 'nitesh.kr@rmsi.com', '1234567', 3);
 
 --
 -- Indexes for dumped tables
@@ -98,16 +126,31 @@ ALTER TABLE `admin`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indexes for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`order_item_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`p_id`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `sales_order`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`user_id`);
+ALTER TABLE `sales_order`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -120,16 +163,45 @@ ALTER TABLE `admin`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `sales_order`
 --
-ALTER TABLE `user`
-  MODIFY `user_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+ALTER TABLE `sales_order`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `sales_order` (`order_id`),
+  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
+
+--
+-- Constraints for table `sales_order`
+--
+ALTER TABLE `sales_order`
+  ADD CONSTRAINT `sales_order_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
