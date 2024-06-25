@@ -1,5 +1,5 @@
 <?php 
-include '../connection.php';
+include 'connection.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $product=$_POST['product'];
@@ -21,8 +21,9 @@ $con->close();
 
 
     <?php
-    include 'adminNav.php';
+    include 'nav.php';
     ?>
+    <link rel="stylesheet" href="../main.css">
         <div class="add_product">
             <p class="fs-4 text">Create product</p>
             <form class="product_form"action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -46,8 +47,6 @@ $con->close();
             </form>
         </div>
     
-
-
         <?php
     include 'footer.php';
     ?>
