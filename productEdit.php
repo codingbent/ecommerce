@@ -1,6 +1,6 @@
 <?php 
-include '../connection.php';
-    include 'adminNav.php';
+include 'connection.php';
+    include 'nav.php';
 ?>
 <div class="edit_product">
             <p class="fs-4 text">Edit Product</p>
