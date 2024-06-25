@@ -1,22 +1,23 @@
 <?php
-session_start(); 
-
+session_start();
 include 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
- 
     $email = $_POST['email'];
     $password = $_POST['password'];
+    // Perform proper validation and sanitization
+    // Use prepared statements or parameterized queries to prevent SQL injection
     $sql = "SELECT * FROM customer WHERE email = '$email' AND pass = '$password'";
     $result = mysqli_query($con, $sql);
     $row_result = mysqli_fetch_assoc($result);
-     if (!empty($row_result)) {
-        
+  
+    if (!empty($row_result)) {
         $_SESSION['email'] = $row_result['email'];
-        $_SESSION['name']= $row_result['firstname'];
-        $_SESSION['lname']= $row_result['lastname'];
-        $_SESSION['password']= $row_result['pass'];
-        header("Location: index.php");
+        $_SESSION['name'] = $row_result['firstname'];
+        $_SESSION['lname'] = $row_result['lastname'];
+        $_SESSION['password'] = $row_result['pass'];
+        $_SESSION['is_admin'] = false;
+        header("Location: index.php"); 
         exit();
     } else {
         echo "<script>alert('Invalid email or password')</script>";
@@ -24,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 mysqli_close($con);
 ?>
-
 
 
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ mysqli_close($con);
         <button type="submit" class="btn btn-success my-2">Log In</button>
         <br>
         <p>New user?<a type="button" class="justify-content-end" href="registration.php">Sign Up</a></p>
-        <p><a type="button" class="justify-content-end" href="admin/alogin.php">Admin login</a></p>
+        <p><a type="button" class="justify-content-end" href="adminLogin.php">Admin login</a></p>
       </form>
 </body>
 <style>
