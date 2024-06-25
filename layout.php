@@ -1,9 +1,14 @@
 <?php
-session_start();
+// session_start();
 include '../connection.php';
 
+// Check if the connection was successful
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}
+
 // Count total orders
-$sqlOrders = "SELECT COUNT(*) AS total_orders FROM ORDER_ITEM";
+$sqlOrders = "SELECT COUNT(*) AS total_orders FROM order_item";
 $resultOrders = $con->query($sqlOrders);
 $totalOrders = 0;
 
@@ -13,7 +18,7 @@ if ($resultOrders && $resultOrders->num_rows > 0) {
 }
 
 // Count total products
-$sqlProducts = "SELECT COUNT(*) AS total_products FROM product"; // Assuming 'products' is your products table name
+$sqlProducts = "SELECT COUNT(*) AS total_products FROM product"; 
 $resultProducts = $con->query($sqlProducts);
 $totalProducts = 0;
 
@@ -23,7 +28,7 @@ if ($resultProducts && $resultProducts->num_rows > 0) {
 }
 
 // Count total users
-$sqlUsers = "SELECT COUNT(*) AS total_users FROM customer"; // Assuming 'customer' is your users/customers table name
+$sqlUsers = "SELECT COUNT(*) AS total_users FROM customer"; 
 $resultUsers = $con->query($sqlUsers);
 $totalUsers = 0;
 
@@ -33,18 +38,24 @@ if ($resultUsers && $resultUsers->num_rows > 0) {
 }
 
 // Calculate total sales
-$sqlTotalSales = "SELECT SUM(order_item.quantity * order_item.price) AS total_sales
-FROM sales
-JOIN order_item ON sales.order_id = order_item.order_id;
-"; // Assuming 'sales' is your sales table name
+$sqlTotalSales = "SELECT SUM(order_item.quantity * product.price) AS total_sales
+FROM sales_order
+JOIN order_item ON sales_order.order_id = order_item.order_id
+JOIN product ON order_item.product_id = product.p_id";
+$totalSales=0;
+// Execute the SQL query
 $resultTotalSales = $con->query($sqlTotalSales);
-$totalSales = 0;
 
-if ($resultTotalSales && $resultTotalSales->num_rows > 0) {
+// Check if the query was successful
+if ($resultTotalSales) {
+    // Fetch the total sales value from the result
     $rowTotalSales = $resultTotalSales->fetch_assoc();
     $totalSales = $rowTotalSales['total_sales'];
+} else {
+    // Print an error message if the query failed
+    echo "Error in SQL query: " . $con->error;
 }
-
+echo $totalSales;
 ?>
 <!DOCTYPE html>
 <html lang="en">
