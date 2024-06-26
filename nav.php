@@ -2,7 +2,7 @@
 session_start();
 include 'connection.php';
 
-// Count the total rows in the cart
+
 $sqlCountRows = "SELECT COUNT(*) AS total_rows FROM cart";
 $resultCountRows = $con->query($sqlCountRows);
 if ($resultCountRows) {
@@ -55,7 +55,7 @@ if ($resultCountRows) {
                               . htmlspecialchars(@$_SESSION['name']) . 
                               '</button>
                               <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="user.php">My Profile</a></li>
+                                <li><a class="dropdown-item" href="userdashboard.php">My Profile</a></li>
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><a class="dropdown-item" href="logout.php" onclick="session_destroy();">Log Out</a></li>
                               </ul>
@@ -65,7 +65,7 @@ if ($resultCountRows) {
                           <a type="button" class="btn position-relative" href="cart.php">
                             <i class="fa fa-shopping-cart"style="font-size:36px;"></i>
                             <span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">
-                                <?php echo $totalRows ;?>
+                                <?php echo @$totalRows ;?>
                                 <span class="visually-hidden">New Alerts</span>
                               </span>
                           </a>
@@ -133,16 +133,23 @@ if ($resultCountRows) {
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
             </ul>
-            <?php if(!empty($_SESSION['is_admin'])){?>
+            <!-- <button class="btn btn-lg" type="button">Docs</button> -->
+            <?php if(@$_SESSION['is_admin']==="1" || @$_SESSION['is_admin']==="2"){?>
             <button class="btn btn-lg dropdown-toggle" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Products</button>
             <ul class="dropdown-menu" id="product">
               <li><a class="dropdown-item" href="addProduct.php">Add Product</a></li>
               <li><a class="dropdown-item" href="productList.php">Product list</a></li>
               <li><a class="dropdown-item" href="#">Categories</a></li>
             </ul>
-            <button class="btn btn-lg" type="button">Docs</button>
+            
             <?php }?>
-
+            <?php if(@$_SESSION['is_admin']==="2"){?>
+              <button class="btn btn-lg dropdown-toggle" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Role</button>
+              <ul class="dropdown-menu" id="product">
+                <li><a class="dropdown-item" href="user.php">All User</a></li>
+              </ul>
+             
+            <?php }?>
         </div>
             
     </div>

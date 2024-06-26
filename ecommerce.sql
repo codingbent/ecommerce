@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2024 at 07:20 AM
+-- Generation Time: Jun 26, 2024 at 12:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -65,15 +65,18 @@ CREATE TABLE `customer` (
   `firstname` varchar(10) NOT NULL,
   `lastname` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `pass` varchar(30) NOT NULL
+  `pass` varchar(30) NOT NULL,
+  `role` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`user_id`, `firstname`, `lastname`, `email`, `pass`) VALUES
-(1, 'abhed', 'agarwal', 'abhed@gmail.com', '1234567890');
+INSERT INTO `customer` (`user_id`, `firstname`, `lastname`, `email`, `pass`, `role`) VALUES
+(1, 'abhed', 'agarwal', 'abhed@gmail.com', '1234567890', 2),
+(2, 'Sandeep', 'Sharma', 'sandeep@gmail.com', '12345', 1),
+(3, 'Nitesh', 'kumar', 'nitesh@gmail.com', 'asdfghjkl', 0);
 
 -- --------------------------------------------------------
 
@@ -201,7 +204,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_item`

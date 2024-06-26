@@ -1,6 +1,6 @@
 <?php 
 include 'connection.php';
-    include 'nav.php';
+include 'adminNav.php';
 ?>
 <div class="edit_product">
             <p class="fs-4 text">Edit Product</p>
@@ -25,5 +25,5 @@ include 'connection.php';
             </form>
         </div>
         <?php
-        include '../footer.php'
+        include 'footer.php'
         ?>

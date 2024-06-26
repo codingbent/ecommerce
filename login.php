@@ -10,13 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM customer WHERE email = '$email' AND pass = '$password'";
     $result = mysqli_query($con, $sql);
     $row_result = mysqli_fetch_assoc($result);
-  
+   
+    
     if (!empty($row_result)) {
         $_SESSION['email'] = $row_result['email'];
         $_SESSION['name'] = $row_result['firstname'];
         $_SESSION['lname'] = $row_result['lastname'];
         $_SESSION['password'] = $row_result['pass'];
-        $_SESSION['is_admin'] = false;
+        $_SESSION['is_admin'] = $row_result['role'];
         header("Location: index.php"); 
         exit();
     } else {
@@ -54,7 +55,6 @@ mysqli_close($con);
         <button type="submit" class="btn btn-success my-2">Log In</button>
         <br>
         <p>New user?<a type="button" class="justify-content-end" href="registration.php">Sign Up</a></p>
-        <p><a type="button" class="justify-content-end" href="adminLogin.php">Admin login</a></p>
       </form>
 </body>
 <style>

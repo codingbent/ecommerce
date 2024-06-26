@@ -52,9 +52,6 @@ include 'connection.php';
         </div>
     </div>
 </section>
-<?php
- include 'admin/footer.php'
- ?>
 
 </body>
 <script>

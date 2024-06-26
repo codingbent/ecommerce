@@ -1,12 +1,10 @@
 <?php
 session_start();
-include 'connection.php'; 
+include 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    // Perform proper validation and sanitization
-    // Use prepared statements or parameterized queries to prevent SQL injection
     $sql = "SELECT * FROM admin WHERE email = '$email' AND password = '$password'";
     $result = mysqli_query($con, $sql);
     $row_result = mysqli_fetch_assoc($result);
@@ -15,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['name'] = $row_result['name'];
         $_SESSION['password'] = $row_result['password'];
         $_SESSION['is_admin'] = true;
-        header("Location: index.php"); // Redirect after successful login
+        header("Location: index.php"); 
         exit();
     } else {
         echo "<script>alert('Invalid email or password')</script>";
