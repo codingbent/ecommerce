@@ -1,8 +1,8 @@
 <?php
-// session_start();
+
 include '../connection.php';
 
-// Check if the connection was successful
+
 if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }

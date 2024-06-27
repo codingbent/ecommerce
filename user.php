@@ -30,11 +30,11 @@ if ($resultCountRows->num_rows > 0) { ?>
             while ($row_result = mysqli_fetch_assoc($resultCountRows)) { ?>
                 <tr>
                     <th scope="row"><?php echo $row_number++; ?></th>
-                    <td><?php echo htmlspecialchars($row_result['firstname']); ?></td>
-                    <td><?php echo htmlspecialchars($row_result['lastname']); ?></td>
-                    <td><?php echo htmlspecialchars($row_result['email']); ?></td>
+                    <td><?php echo ($row_result['firstname']); ?></td>
+                    <td><?php echo ($row_result['lastname']); ?></td>
+                    <td><?php echo ($row_result['email']); ?></td>
                     <td>
-                <select>
+                <select class="roleSelect_" data-attr="<?php echo $row_result['user_id']?>">
                     <option value="2" <?php if ($row_result['role'] == 2) echo 'selected'; ?>>Super Admin</option>
                     <option value="1" <?php if ($row_result['role'] == 1) echo 'selected'; ?>>Admin</option>
                     <option value="0" <?php if ($row_result['role'] == 0) echo 'selected'; ?>>User</option>
@@ -42,7 +42,7 @@ if ($resultCountRows->num_rows > 0) { ?>
             </td>
             <td>
                 <?php ?>
-                <a href="edit_user.php?id=<?php echo htmlspecialchars($row_result['user_id']); ?>" class="btn btn-primary">Edit</a>
+                <a href="edit_user.php?id=<?php echo ($row_result['user_id']); ?>" class="btn btn-success">Edit</a>
             </td>
         </tr>
             <?php } ?>
@@ -55,3 +55,23 @@ if ($resultCountRows->num_rows > 0) { ?>
 
 include 'footer.php';
 ?>
+
+<script>
+   $( document ).ready(function() {
+    $(".roleSelect_").change(function(){
+        var val_role = this.value;
+        var id = $(this).attr('data-attr');
+       
+        $.ajax({
+            type: "POST",
+            url: "ajax.php",
+            data: {val_role : val_role,user_id:id},
+            dataType: "json",
+            success: function(data){
+                alert(data);
+            }
+        });
+        
+    });
+    });
+</script>
