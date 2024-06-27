@@ -15,13 +15,9 @@ include 'connection.php';
     <div class="container text-center">
         <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
             <?php
-            // Fetch product details from database
             $query = "SELECT p_id, title, label, image, price FROM product";
             $result = $con->query($query);
-
-            // Check if there are products in the database
             if ($result->num_rows > 0) {
-                // Output data of each row
                 while($row = $result->fetch_assoc()) {
                     echo '<div class="col m-1">';
                     echo '    <div class="p-3">';
@@ -36,7 +32,7 @@ include 'connection.php';
                     echo '                <input type="text" id="productQuantity_' . $row["p_id"] . '" class="w-50 text-center" value="0">';
                     echo '                <button class="btn btn-success" onclick="incrementQuantity(' . $row["p_id"] . ')">+</button>';
                     echo '                </div>';
-                    echo '                <button class="btn btn-success w-75 mt-2" type="button">Add to Cart</button>';
+                    echo '                <button class="btn btn-success w-75 mt-2" onclick="addToCart(' . $row["p_id"] . ')" type="button">Add to Cart</button>';
                     echo '            </div>';
                     echo '        </div>';
                     echo '    </div>';
@@ -71,26 +67,26 @@ include 'connection.php';
         }
     }
 
-    // function addToCart(productId) {
-    //     var quantityInput = document.getElementById('productQuantity_' + productId);
-    //     var quantity = parseInt(quantityInput.value);
-    //     if (quantity > 0) {
-    //         var xhr = new XMLHttpRequest();
-    //         xhr.open('POST', 'addToCart.php', true);
-    //         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    //         xhr.onload = function() {
-    //             if (xhr.status == 200) {
-    //                 alert('Product added to cart successfully!');
-    //             } else {
-    //                 alert('Error adding product to cart.');
-    //             }
-    //         };
-    //         xhr.send('productId=' + productId + '&quantity=' + quantity);
-    //     } else {
-    //         alert('Please select a quantity greater than 0.');
-    //     }
-    // }
+    function addToCart(productId) {
+        var quantityInput = document.getElementById('productQuantity_' + productId);
+        var quantity = parseInt(quantityInput.value);
+        if (quantity > 0) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'addToCart.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    alert(quantity+' Product added to cart successfully!');
+                } else {
+                    alert('Error adding product to cart.');
+                }
+            };
+            xhr.send('productId=' + productId + '&quantity=' + quantity);
+        } else {
+            alert('Please select a quantity greater than 0.');
+        }
+    }
 
-    // onclick="addToCart(' . $row["p_id"] . ')
+
 </script>
 </html>
