@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
     
     if (!empty($row_result)) {
+        $_SESSION['user_id']=$row_result['user_id'];
         $_SESSION['email'] = $row_result['email'];
         $_SESSION['name'] = $row_result['firstname'];
         $_SESSION['lname'] = $row_result['lastname'];

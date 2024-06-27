@@ -11,9 +11,9 @@ include 'connection.php';
         mysqli_stmt_bind_param($stmt, 'ii', $role_id, $userId);
 
         if (mysqli_stmt_execute($stmt)) {
-            echo "<script>alert('Role updated successfully.');</script>";
+            echo "1";
         } else {
-            echo "Error updating role: " . mysqli_stmt_error($stmt);
+            echo "2";
         }
     }
 ?>

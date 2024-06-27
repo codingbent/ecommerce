@@ -75,7 +75,7 @@ if ($resultCountRows) {
               </nav> 
         </div>
         <div class="nav navbottom-nav px-5 d-flex">
-            <button class="btn btn-success btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 All Departments
               </button>
             <ul class="dropdown-menu">
@@ -94,22 +94,6 @@ if ($resultCountRows) {
               <li><a class="dropdown-item" href="#">Separated link</a></li>
             </ul>
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Stroes</button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Mega Menu</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Action</a></li>
               <li><a class="dropdown-item" href="#">Another action</a></li>

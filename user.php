@@ -21,7 +21,6 @@ if ($resultCountRows->num_rows > 0) { ?>
                 <th scope="col">Last</th>
                 <th scope="col">Email</th>
                 <th scope="col">Post</th>
-                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -39,10 +38,6 @@ if ($resultCountRows->num_rows > 0) { ?>
                     <option value="1" <?php if ($row_result['role'] == 1) echo 'selected'; ?>>Admin</option>
                     <option value="0" <?php if ($row_result['role'] == 0) echo 'selected'; ?>>User</option>
                 </select>
-            </td>
-            <td>
-                <?php ?>
-                <a href="edit_user.php?id=<?php echo ($row_result['user_id']); ?>" class="btn btn-success">Edit</a>
             </td>
         </tr>
             <?php } ?>
@@ -68,7 +63,13 @@ include 'footer.php';
             data: {val_role : val_role,user_id:id},
             dataType: "json",
             success: function(data){
-                alert(data);
+                if(data==1){
+                    alert("update sucssesfull");
+                    return;
+                }else{
+                    alert("Somthing went wrong please contact to admin");
+                    return;
+                }
             }
         });
         
