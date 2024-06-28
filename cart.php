@@ -1,8 +1,8 @@
 <?php
 include 'connection.php';
 include 'nav.php';
-
-
+?>
+<?php
 $a=1;
 $query = "SELECT p_id, title, label, image, price FROM product";
             $result = $con->query($query);
