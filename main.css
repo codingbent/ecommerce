@@ -14,10 +14,6 @@
       width: 25%;
   }
 }
-/* 
-#totalProduct{
-  width: 45%;
-} */
 
 .add_product,.edit_product {
   position: relative;
@@ -41,7 +37,6 @@ table .table {
   padding: 2%;
   background-color: red;
 }
-button .fav{
-  background-color: black;
-  display: none;
+.card:hover .fav {
+  display: block !important;
 }
