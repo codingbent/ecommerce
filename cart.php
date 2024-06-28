@@ -5,7 +5,6 @@ include 'nav.php';
 <?php
 $a=1;
 
-            // $row["p_id"]=;
 $sql="SELECT * FROM cart";
 $result1=$con->query($sql);
 echo ' <p class="fs-4 text p-2 bg-body-secondary">
@@ -23,8 +22,8 @@ echo ' <p class="fs-4 text p-2 bg-body-secondary">
 if($result1->num_rows>0){
   while($row1=$result1->fetch_assoc()){
     $query = "SELECT p.title, p.price
-FROM product p
-JOIN cart c ON p.p_id = c.product_id;";
+              FROM product p
+              JOIN cart c ON p.p_id = c.product_id;";
             $result = $con->query($query);
             $row=$result->fetch_assoc();
             echo $row["title"];
