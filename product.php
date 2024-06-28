@@ -76,7 +76,7 @@ include 'connection.php';
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 if (xhr.status == 200) {
-                    alert(quantity+' Product added to cart successfully!');
+                    alert(quantity+' '+productId+' Product added to cart successfully!');
                 } else {
                     alert('Error adding product to cart.');
                 }
