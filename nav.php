@@ -1,15 +1,26 @@
 <?php
 session_start();
 include 'connection.php';
+// $email=$_SESSION['email'];
+// $sql="SELECT user_id FROM customer where email =$_SESSION['email']";
+// $result5=mysqli_query($con,$sql);
+// echo $result5;
+// die();
 
-
-$sqlCountRows = "SELECT COUNT(*) AS total_rows FROM cart";
-$resultCountRows = $con->query($sqlCountRows);
-if ($resultCountRows) {
-    $rowTotalRows = $resultCountRows->fetch_assoc();
-    $totalRows = $rowTotalRows['total_rows'];
-} else {
-    $totalRows = 0;
+if(empty(@$_SESSION['email']))
+{
+  $totalRows=0;
+}
+else if(isset($_SESSION['user_id'])){
+  $user=$_SESSION['user_id'];
+  $sqlCountRows = "SELECT COUNT(*) AS total_rows FROM cart c, customer u where c.user_id=$user";
+  $resultCountRows = $con->query($sqlCountRows);
+  if ($resultCountRows) {
+      $rowTotalRows = $resultCountRows->fetch_assoc();
+      $totalRows = $rowTotalRows['total_rows'];
+  } else {
+      $totalRows = 0;
+  }
 }
 ?>
 
@@ -46,13 +57,12 @@ if ($resultCountRows) {
                           </a>
                           <?php
                           if (empty(@$_SESSION['email'])) {
-                              // User is not logged in
                               echo '<a href="login.php">Login</a>/<a href="registration.php">Registration</a>';
                           } else {
                               echo '
                              <div class="btn-group">
                               <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">'
-                              . htmlspecialchars(@$_SESSION['name']) . 
+                              .(@$_SESSION['name']) . 
                               '</button>
                               <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="userdashboard.php">My Profile</a></li>

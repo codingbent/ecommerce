@@ -72,7 +72,10 @@ include 'footer.php';
                 }
             }
         });
-        
+        <?php
+        $sql1="UPDATE `customer` SET `role` = 'var_role' WHERE `customer`.`user_id` = 2";
+        $result2=$con->query($sql1);
+        ?>
     });
     });
 </script>

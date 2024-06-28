@@ -1,5 +1,6 @@
 *{
   margin: 0%;
+  background-color: aliceblue;
 }
 .four .card:hover{
   border: 1px solid green;
@@ -36,7 +37,11 @@
 .fixed-top{
   position: relative;
 }
-table.table {
+table .table {
   padding: 2%;
   background-color: red;
+}
+button .fav{
+  background-color: black;
+  display: none;
 }

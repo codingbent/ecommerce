@@ -1,4 +1,5 @@
 <?php
+// session_start(); // Make sure the session is started
 include 'connection.php';
 ?>
 
@@ -19,11 +20,12 @@ include 'connection.php';
             $result = $con->query($query);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
-                    echo '<div class="col m-1">';
+                    echo '<div class="col m-1 fav-div">';
                     echo '    <div class="p-3">';
                     echo '        <div class="card m-1">';
                     echo '            <img src="' . $row["image"] . '" class="card-img-top" alt="...">';
                     echo '            <div class="card-body">';
+                    echo '                <button class="btn btn-success fav">favorite</button>';
                     echo '                <h5 class="card-title">' . $row["title"] . '</h5>';
                     echo '                <p class="card-text">' . $row["label"] . '</p>';
                     echo '                <p class="card-text">₹' . $row["price"] . '</p>';
@@ -68,25 +70,29 @@ include 'connection.php';
     }
 
     function addToCart(productId) {
-        var quantityInput = document.getElementById('productQuantity_' + productId);
-        var quantity = parseInt(quantityInput.value);
-        if (quantity > 0) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'addToCart.php', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    alert(quantity+' '+productId+' Product added to cart successfully!');
-                } else {
-                    alert('Error adding product to cart.');
-                }
-            };
-            xhr.send('productId=' + productId + '&quantity=' + quantity);
+        var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
+        
+        if (!isLoggedIn) {
+            alert("Please log in");
         } else {
-            alert('Please select a quantity greater than 0.');
+            var quantityInput = document.getElementById('productQuantity_' + productId);
+            var quantity = parseInt(quantityInput.value);
+            if (quantity > 0) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'addToCart.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
+                        alert(quantity + ' ' + productId + ' Product added to cart successfully!');
+                    } else {
+                        alert('Error adding product to cart.');
+                    }
+                };
+                xhr.send('productId=' + productId + '&quantity=' + quantity);
+            } else {
+                alert('Please select a quantity greater than 0.');
+            }
         }
     }
-
-
 </script>
 </html>
