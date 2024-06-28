@@ -21,21 +21,18 @@ echo ' <p class="fs-4 text p-2 bg-body-secondary">
     
 if($result1->num_rows>0){
   while($row1=$result1->fetch_assoc()){
+    $product_id=$row1["product_id"];
     $query = "SELECT p.title, p.price
               FROM product p
-              JOIN cart c ON p.p_id = c.product_id;";
+              JOIN cart c ON p.p_id = $product_id;";
             $result = $con->query($query);
             $row=$result->fetch_assoc();
-            echo $row["title"];
-            die();
-    // $row1["title"]=$row["title"];
-    // $row1["price"]=$row["price"];
     echo '<tr>';
     echo '<th scope="row">'. $a++ .'</th>';
     echo '<td>'. $row["title"] .'</td>';
     echo '<td>'. $row["price"] .'</td>';
     echo '<td>'. $row1["quantity"] .'</td>';
-    echo '<td>'. $row["price"]*$row1["quantity"] .'</td>';
+    echo '<td>₹'. $row["price"]*$row1["quantity"] .'</td>';
     echo '</tr>';
   }
 }

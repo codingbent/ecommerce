@@ -36,3 +36,7 @@
 .fixed-top{
   position: relative;
 }
+table.table {
+  padding: 2%;
+  background-color: red;
+}
