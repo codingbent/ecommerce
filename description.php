@@ -1,20 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php
+<?php
+include 'connection.php';
+$id = $_GET['id'];
+$sql="SELECT * FROM PRODUCT WHERE p_id=$id";
+$result=mysqli_query($con,$sql);
+
+$sql1="SELECT quantity from cart where product_id=$id";
+$result1=mysqli_query($con,$sql1);
+
+if($result->num_rows>0){
+    $row=$result->fetch_assoc();
+}
+if($result1->num_rows>0){
+    $row1=$result1->fetch_assoc();
+}
+?>
+<?php
     include 'nav.php'
-    ?>
+?>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb ms-5 mt-3">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item"><a href="#">Library</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Data</li>
+    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page"></li>
   </ol>
 </nav>
 <section class="mt-5">
@@ -24,14 +31,14 @@
                 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="https://sites.psu.edu/sakshamarorapassionblog/files/2018/04/pack9-1qxsq0v.jpg" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                            <img src="<?php echo $row['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                        </div>
+                        <!-- <div class="carousel-item">
+                            <img src="<?php echo $row['image2']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://sites.psu.edu/sakshamarorapassionblog/files/2018/04/pack9-1qxsq0v.jpg" style="width: 25rem; margin: 10px" class="d-block" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://sites.psu.edu/sakshamarorapassionblog/files/2018/04/pack9-1qxsq0v.jpg" style="width: 25rem; margin: 10px" class="d-block" alt="...">
-                        </div>
+                            <img src="<?php echo $row['image3']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                        </div> -->
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -45,31 +52,34 @@
             </div>
             <div class="col-md-5 col-xl-6">
                 <div class="ps-lg-10 mt-6 mt-md-0">
-                    <h1 class="mb-1">Lorem ipsum</h1>
+                    <h1 class="mb-1"><?php echo $row['title'] ?></h1>
                     <div class="fs-4">
-                        <span class="fw-bold text-dark">$32</span>
-                        <span class="text-decoration-line-through text-muted">$35</span>
-                        <span><small class="fs-6 ms-2 text-danger">26% Off</small></span>
+                        <span class="fw-bold text-dark"><?php echo '₹' .$row['price'] . ''?></span>
+                        <!-- <span class="text-decoration-line-through text-muted"><?php echo $row['original_price'] ?></span>
+                        <span><small class="fs-6 ms-2 text-danger"><?php echo $row['discount'] ?></small></span> -->
                     </div>
                     <hr class="my-6">
-                    <div class="mb-5">
+                    <!-- <div class="mb-5">
                         <button type="button" class="btn btn-outline-secondary">250g</button>
                         <button type="button" class="btn btn-outline-secondary">500g</button>
                         <button type="button" class="btn btn-outline-secondary">1kg</button>
-                    </div>
+                    </div> -->
                     <div>
-                        <div class="input-group input-spinner">
-                            <input type="button" value="-" class="button-minus btn btn-sm" data-field="quantity">
-                            <input type="number" step="1" max="10" value="1" name="quantity" class="quantity-field form-control-sm form-input">
-                            <input type="button" value="+" class="button-plus btn btn-sm" data-field="quantity">
-                        </div>
+                        <?php
+                        echo '<div class="input-group input-spinner">';
+                        echo '    <button class="btn btn-success" onclick="decrementQuantity(' . $row['p_id'] . ')">-</button>';
+                        echo '    <input type="text" id="productQuantity_' . $row['p_id'] . '" class="w-50 text-center mx-1" value=' . $row1['quantity'] .'>';
+                        echo '    <button class="btn btn-success" onclick="incrementQuantity(' . $row['p_id'] . ')">+</button>';
+                        echo '</div>';
+                        ?>
                     </div>
                     <div class="mt-3 row justify-content-start g-2 align-items-center">
                         <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
-                            <button type="button" class="btn btn-success">
-                                <i class="feather-icon icon-shopping-bag me-2"></i>
-                                Add To Cart
-                            </button>
+                        <?php echo'<button type="button" onclick="addToCart(' . $row['p_id'] . ')" class="btn btn-success">';
+                              echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
+                              echo '  Add To Cart';
+                            echo '</button>';
+                            ?>
                         </div>
                     </div>
                     <!-- <div class="col-md-4 col-4">
@@ -167,4 +177,50 @@
     </div>
 </section>
 </body>
+<?php
+include 'footer.php';
+?>
+<script>
+function incrementQuantity(productId) {
+        var quantityInput = document.getElementById('productQuantity_' + productId);
+        var quantity = parseInt(quantityInput.value);
+        quantity++;
+        quantityInput.value = quantity;
+    }
+
+    function decrementQuantity(productId) {
+        var quantityInput = document.getElementById('productQuantity_' + productId);
+        var quantity = parseInt(quantityInput.value);
+        if (quantity > 0) {
+            quantity--;
+            quantityInput.value = quantity;
+        }
+    }
+
+    function addToCart(productId) {
+        var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
+        
+        if (!isLoggedIn) {
+            alert("Please log in");
+        } else {
+            var quantityInput = document.getElementById('productQuantity_' + productId);
+            var quantity = parseInt(quantityInput.value);
+            if (quantity > 0) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'addToCart.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
+                        alert(quantity + ' ' + productId + ' Product added to cart successfully!');
+                    } else {
+                        alert('Error adding product to cart.');
+                    }
+                };
+                xhr.send('productId=' + productId + '&quantity=' + quantity);
+            } else {
+                alert('Please select a quantity greater than 0.');
+            }
+        }
+    }
+</script>
 </html>

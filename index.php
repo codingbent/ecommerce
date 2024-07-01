@@ -25,15 +25,15 @@
   <section class="three my-5">
     <div class="row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-around rounded-4">      
         <div class="card text-bg-dark rounded-4">
-          <img src="https://i.pinimg.com/originals/00/1e/b6/001eb6b05fd2e3d4950a3e3eb146edd5.jpg" class="card-img" alt="...">
+          <img src="fresh veg&fruits.jpg" class="card-img" alt="..." style="height:230px">
           <div class="card-img-overlay mx-3">
             <h5 class="card-title">Fruits and Vegetables</h5>
             <p class="card-text">Get Upto 30% Off</p>
             <button type="button" class="btn btn-dark">Shop Now</button>
           </div>
         </div>
-        <div class="card text-bg-dark">
-          <img src="https://static.vecteezy.com/system/resources/thumbnails/033/107/942/small_2x/a-basket-of-freshly-baked-bread-web-banner-with-copy-space-generative-ai-photo.jpg" class="card-img" alt="...">
+        <div class="card text-bg-dark rounded-4">
+          <img src="a-basket-baked-bread.jpg" class="card-img" alt="...">
           <div class="card-img-overlay mx-3">
             <h5 class="card-title">Freshly Baked buns</h5>
             <p class="card-text">Get Upto 30% Off</p>

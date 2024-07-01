@@ -1,20 +1,24 @@
 *{
   margin: 0%;
-  background-color: aliceblue;
 }
-.four .card:hover{
-  border: 1px solid green;
-  box-shadow: 0px 0px 5px grey;
-  width: fit-content;
-}
-
-@media (min-width: 992px) {
+@media (min-width: 1024px) {
   .row-cols-lg-5>* {
       flex: 0 0 auto;
-      width: 25%;
+      width: 26%!important;
   }
 }
-
+@media (min-width: 1440px) {
+  .row-cols-lg-5>* {
+      flex: 0 0 auto;
+      width: 23%!important;
+  }
+}
+@media (max-width: 1024px) {
+  .row-cols-lg-5>* {
+      flex: 0 0 auto;
+      width: 31%!important;
+    }
+}
 .add_product,.edit_product {
   position: relative;
   padding: 10%;
@@ -23,7 +27,7 @@
 }
 @media screen and (min-width:1024px) {
   .add_product{
-      padding-left:25%;
+    padding-left:25%;
   }
 }
 .product_form{
@@ -37,6 +41,19 @@ table .table {
   padding: 2%;
   background-color: red;
 }
-.card:hover .fav {
-  display: block !important;
+.four .card{
+  position: relative;
+}
+.four .card:hover{
+  /* border: 1px solid green; */
+  box-shadow: 0px 0px 5px grey;
+  /* width: fit-content; */
+}
+.four a{
+  text-decoration: none;
+  color: black;
+}
+.four a:hover{
+  color: black;
+  text-decoration: none;
 }

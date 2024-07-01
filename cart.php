@@ -5,7 +5,7 @@ include 'nav.php';
 <?php
 $a=1;
 
-$sql="SELECT * FROM cart";
+$sql="SELECT * FROM cart where user_id=$user";
 $result1=$con->query($sql);
 echo ' <p class="fs-4 text p-2 bg-body-secondary">
         Shopping Cart
@@ -37,6 +37,6 @@ if($result1->num_rows>0){
   }
 }
 ?>
-<?php
+<?php 
 include 'footer.php';
 ?>

@@ -13,7 +13,7 @@ if(empty(@$_SESSION['email']))
 }
 else if(isset($_SESSION['user_id'])){
   $user=$_SESSION['user_id'];
-  $sqlCountRows = "SELECT COUNT(*) AS total_rows FROM cart c, customer u where c.user_id=$user";
+  $sqlCountRows = "SELECT SUM(quantity) AS total_rows FROM cart where user_id=$user";
   $resultCountRows = $con->query($sqlCountRows);
   if ($resultCountRows) {
       $rowTotalRows = $resultCountRows->fetch_assoc();
@@ -48,17 +48,18 @@ else if(isset($_SESSION['user_id'])){
                       <button class="btn btn-outline-success" type="submit">Location</button>
                     </form>
                     <div class="icons">
-                        <a type="button" class="btn position-relative">
+                        
+                          <?php
+                          if (empty(@$_SESSION['email'])) {
+                              echo '<a href="login.php">Login</a>/<a href="registration.php">Registration</a>';
+                          } else {
+                            echo '<a type="button" class="btn position-relative">
                             <i class="fa fa-heart"style="font-size:36px;"></i>
                             <span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">
                                 5
                                 <span class="visually-hidden">New Alerts</span>
                               </span>
-                          </a>
-                          <?php
-                          if (empty(@$_SESSION['email'])) {
-                              echo '<a href="login.php">Login</a>/<a href="registration.php">Registration</a>';
-                          } else {
+                          </a>';
                               echo '
                              <div class="btn-group">
                               <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">'
@@ -70,15 +71,16 @@ else if(isset($_SESSION['user_id'])){
                                 <li><a class="dropdown-item" href="logout.php" onclick="session_destroy();">Log Out</a></li>
                               </ul>
                             </div>';
+                            echo'<a type="button" class="btn position-relative" href="cart.php?id=' . $user . '">'; 
+                              echo '<i class="fa fa-shopping-cart"style="font-size:36px;"></i>';
+                              echo '<span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">';
+                              echo $totalRows ;
+                              echo '<span class="visually-hidden">New Alerts</span>';
+                              echo '</span>';
+                            echo '</a>';
                           }
                           ?>
-                          <a type="button" class="btn position-relative" href="cart.php">
-                            <i class="fa fa-shopping-cart"style="font-size:36px;"></i>
-                            <span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">
-                                <?php echo @$totalRows ;?>
-                                <span class="visually-hidden">New Alerts</span>
-                              </span>
-                          </a>
+                          
                     </div>
                 </div>
                 </div>
