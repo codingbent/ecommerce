@@ -71,7 +71,7 @@ else if(isset($_SESSION['user_id'])){
                                 <li><a class="dropdown-item" href="logout.php" onclick="session_destroy();">Log Out</a></li>
                               </ul>
                             </div>';
-                            echo'<a type="button" class="btn position-relative" href="cart.php?id=' . $user . '">'; 
+                            echo'<a type="button" class="btn position-relative" href="cart.php">'; 
                               echo '<i class="fa fa-shopping-cart"style="font-size:36px;"></i>';
                               echo '<span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">';
                               echo $totalRows ;

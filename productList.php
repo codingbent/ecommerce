@@ -33,7 +33,7 @@ function remove(title){
                         echo '<div class="col m-1">';
                         echo '    <div class="p-3">';
                         echo '        <div class="card m-1" ">';
-                        echo '            <img src="images/' . $row["image"] . '" class="card-img-top" alt="...">';
+                        echo '            <img src="' . $row["image"] . '" class="card-img-top" alt="...">';
                         echo '            <div class="card-body">';
                         echo '                <h5 class="card-title">' . $row["title"] . '</h5>';
                         echo '                <p class="card-text">' . $row["label"] . '</p>';
