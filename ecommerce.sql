@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2024 at 12:31 PM
+-- Generation Time: Jul 01, 2024 at 02:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,26 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
---
-
-CREATE TABLE `admin` (
-  `admin_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`admin_id`, `name`, `email`, `password`) VALUES
-(1, 'abhed agarwal', 'abhed.agl06@gmail.com', 'qwertyuiop');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `cart`
 --
 
@@ -51,8 +31,20 @@ CREATE TABLE `cart` (
   `cart_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
+(15, 3, 2, 1),
+(17, 3, 2, 2),
+(19, 2, 1, 2),
+(20, 2, 2, 2),
+(21, 1, 1, 3),
+(25, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -75,7 +67,7 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`user_id`, `firstname`, `lastname`, `email`, `pass`, `role`) VALUES
 (1, 'abhed', 'agarwal', 'abhed@gmail.com', '1234567890', 2),
-(2, 'Sandeep', 'Sharma', 'sandeep@gmail.com', '12345', 1),
+(2, 'Sandeep', 'Sharma', 'sandeep@gmail.com', '12345', 0),
 (3, 'Nitesh', 'kumar', 'nitesh@gmail.com', 'asdfghjkl', 0);
 
 -- --------------------------------------------------------
@@ -88,6 +80,18 @@ CREATE TABLE `dashboard` (
   `sales` int(11) NOT NULL,
   `orders` int(11) NOT NULL,
   `product` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `favorite`
+--
+
+CREATE TABLE `favorite` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -124,7 +128,7 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`) VALUES
 (1, 'Iphone', 'The iPhone, by Apple, is a sleek and powerful smartphone with iOS, advanced hardware, App Store, and strong focus on security and privacy.', 80000, 0x6970686f6e652e6a7067),
 (2, 'Camera', 'High-resolution camera with zoom, autofocus, and image stabilization, capturing vivid photos and videos with crisp detail and vibrant colors.', 2000, 0x63616d6572612e6a7067),
-(5, 'laptop', 'laptop', 100000, 0x6970686f6e652e6a7067);
+(6, 'Laptop', 'A Mac is a high-performance computer by Apple, known for its sleek design, reliability, and seamless integration with other Apple products.', 100000, 0x6d61632e6a7067);
 
 -- --------------------------------------------------------
 
@@ -143,13 +147,6 @@ CREATE TABLE `sales_order` (
 --
 
 --
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`admin_id`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
@@ -162,6 +159,14 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indexes for table `favorite`
+--
+ALTER TABLE `favorite`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `order_item`
@@ -189,22 +194,22 @@ ALTER TABLE `sales_order`
 --
 
 --
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `favorite`
+--
+ALTER TABLE `favorite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `order_item`
@@ -216,7 +221,7 @@ ALTER TABLE `order_item`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `sales_order`
@@ -234,6 +239,13 @@ ALTER TABLE `sales_order`
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`),
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
+
+--
+-- Constraints for table `favorite`
+--
+ALTER TABLE `favorite`
+  ADD CONSTRAINT `favorite_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`),
+  ADD CONSTRAINT `favorite_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
 
 --
 -- Constraints for table `order_item`

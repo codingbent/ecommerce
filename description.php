@@ -4,15 +4,19 @@ $id = $_GET['id'];
 $sql="SELECT * FROM PRODUCT WHERE p_id=$id";
 $result=mysqli_query($con,$sql);
 
-$sql1="SELECT quantity from cart where product_id=$id";
+$sql1="SELECT * from cart where product_id=$id";
 $result1=mysqli_query($con,$sql1);
 
 if($result->num_rows>0){
-    $row=$result->fetch_assoc();
+    $productDetails=$result->fetch_assoc();
 }
-if($result1->num_rows>0){
-    $row1=$result1->fetch_assoc();
+if($result1->num_rows>=0){
+    $totalProduct=$result1->fetch_assoc();
+}else{
+    $$totalProduct=0;
 }
+
+
 ?>
 <?php
     include 'nav.php'
@@ -31,13 +35,13 @@ if($result1->num_rows>0){
                 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="<?php echo $row['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                            <img src="<?php echo $productDetails['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div>
                         <!-- <div class="carousel-item">
-                            <img src="<?php echo $row['image2']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                            <img src="<?php echo $productDetails['image2']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="<?php echo $row['image3']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                            <img src="<?php echo $productDetails['image3']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div> -->
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -52,11 +56,11 @@ if($result1->num_rows>0){
             </div>
             <div class="col-md-5 col-xl-6">
                 <div class="ps-lg-10 mt-6 mt-md-0">
-                    <h1 class="mb-1"><?php echo $row['title'] ?></h1>
+                    <h1 class="mb-1"><?php echo $productDetails['title'] ?></h1>
                     <div class="fs-4">
-                        <span class="fw-bold text-dark"><?php echo '₹' .$row['price'] . ''?></span>
-                        <!-- <span class="text-decoration-line-through text-muted"><?php echo $row['original_price'] ?></span>
-                        <span><small class="fs-6 ms-2 text-danger"><?php echo $row['discount'] ?></small></span> -->
+                        <span class="fw-bold text-dark"><?php echo '₹' .$productDetails['price'] . ''?></span>
+                        <!-- <span class="text-decoration-line-through text-muted"><?php echo $productDetails['original_price'] ?></span>
+                        <span><small class="fs-6 ms-2 text-danger"><?php echo $productDetails['discount'] ?></small></span> -->
                     </div>
                     <hr class="my-6">
                     <!-- <div class="mb-5">
@@ -67,15 +71,19 @@ if($result1->num_rows>0){
                     <div>
                         <?php
                         echo '<div class="input-group input-spinner">';
-                        echo '    <button class="btn btn-success" onclick="decrementQuantity(' . $row['p_id'] . ')">-</button>';
-                        echo '    <input type="text" id="productQuantity_' . $row['p_id'] . '" class="w-50 text-center mx-1" value=' . $row1['quantity'] .'>';
-                        echo '    <button class="btn btn-success" onclick="incrementQuantity(' . $row['p_id'] . ')">+</button>';
+                        echo '    <button class="btn btn-success" onclick="decrementQuantity(' . $productDetails['p_id'] . ')">-</button>';
+                        if(@$totalProduct['quantity']!=0){
+                        echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-50 text-center mx-1" value=' . $totalProduct['quantity'] . '>';}
+                        else{
+                            echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-50 text-center mx-1" value=0>';
+                        }
+                        echo '    <button class="btn btn-success" onclick="incrementQuantity(' . $productDetails['p_id'] . ')">+</button>';
                         echo '</div>';
                         ?>
                     </div>
                     <div class="mt-3 row justify-content-start g-2 align-items-center">
                         <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
-                        <?php echo'<button type="button" onclick="addToCart(' . $row['p_id'] . ')" class="btn btn-success">';
+                        <?php echo'<button type="button" onclick="addToCart(' . $productDetails['p_id'] . ')" class="btn btn-success">';
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
                               echo '  Add To Cart';
                             echo '</button>';
