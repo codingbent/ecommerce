@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2024 at 02:09 PM
+-- Generation Time: Jul 02, 2024 at 09:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,8 +43,7 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
 (17, 3, 2, 2),
 (19, 2, 1, 2),
 (20, 2, 2, 2),
-(21, 1, 1, 3),
-(25, 1, 2, 1);
+(34, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -68,7 +67,7 @@ CREATE TABLE `customer` (
 INSERT INTO `customer` (`user_id`, `firstname`, `lastname`, `email`, `pass`, `role`) VALUES
 (1, 'abhed', 'agarwal', 'abhed@gmail.com', '1234567890', 2),
 (2, 'Sandeep', 'Sharma', 'sandeep@gmail.com', '12345', 0),
-(3, 'Nitesh', 'kumar', 'nitesh@gmail.com', 'asdfghjkl', 0);
+(3, 'Nitesh', 'kumar', 'nitesh@gmail.com', 'asdfghjkl', 1);
 
 -- --------------------------------------------------------
 
@@ -118,17 +117,19 @@ CREATE TABLE `product` (
   `title` varchar(20) NOT NULL,
   `label` varchar(200) DEFAULT NULL,
   `price` int(5) NOT NULL,
-  `image` blob DEFAULT NULL
+  `image` blob DEFAULT NULL,
+  `image2` blob DEFAULT NULL,
+  `iamge3` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`) VALUES
-(1, 'Iphone', 'The iPhone, by Apple, is a sleek and powerful smartphone with iOS, advanced hardware, App Store, and strong focus on security and privacy.', 80000, 0x6970686f6e652e6a7067),
-(2, 'Camera', 'High-resolution camera with zoom, autofocus, and image stabilization, capturing vivid photos and videos with crisp detail and vibrant colors.', 2000, 0x63616d6572612e6a7067),
-(6, 'Laptop', 'A Mac is a high-performance computer by Apple, known for its sleek design, reliability, and seamless integration with other Apple products.', 100000, 0x6d61632e6a7067);
+INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `iamge3`) VALUES
+(1, 'Iphone', 'The iPhone, by Apple, is a sleek and powerful smartphone with iOS, advanced hardware, App Store, and strong focus on security and privacy.', 80000, 0x6970686f6e652e6a7067, '', ''),
+(2, 'Camera', 'High-resolution camera with zoom, autofocus, and image stabilization, capturing vivid photos and videos with crisp detail and vibrant colors.', 2000, 0x63616d6572612e6a7067, '', ''),
+(6, 'Laptop', 'A Mac is a high-performance computer by Apple, known for its sleek design, reliability, and seamless integration with other Apple products.', 100000, 0x6d61632e6a7067, '', '');
 
 -- --------------------------------------------------------
 
@@ -197,7 +198,7 @@ ALTER TABLE `sales_order`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `customer`
