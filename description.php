@@ -15,7 +15,8 @@ if($result1->num_rows>=0){
 }else{
     $$totalProduct=0;
 }
-
+echo $productDetails['image2'];
+die();  
 
 ?>
 <?php
@@ -37,12 +38,15 @@ if($result1->num_rows>=0){
                         <div class="carousel-item active">
                             <img src="<?php echo $productDetails['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div>
-                        <!-- <div class="carousel-item">
-                            <img src="<?php echo $productDetails['image2']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
-                        </div>
+                        <?php  if(empty($productDetails['image2'])){
+                        // echo '<div class="carousel-item">';
+                        // echo '    <img src="$productDetails['image2']" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
+                        // echo '</div>';
+                        }
+                        // ?>
                         <div class="carousel-item">
                             <img src="<?php echo $productDetails['image3']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
-                        </div> -->
+                        </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

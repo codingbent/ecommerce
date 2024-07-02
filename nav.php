@@ -74,7 +74,9 @@ else if(isset($_SESSION['user_id'])){
                             echo'<a type="button" class="btn position-relative" href="cart.php">'; 
                               echo '<i class="fa fa-shopping-cart"style="font-size:36px;"></i>';
                               echo '<span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">';
-                              echo $totalRows ;
+                              if($totalRows == 0) {
+                              echo '0'; }
+                              else { echo $totalRows;}
                               echo '<span class="visually-hidden">New Alerts</span>';
                               echo '</span>';
                             echo '</a>';
