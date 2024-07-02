@@ -5,8 +5,6 @@ include 'connection.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    // Perform proper validation and sanitization
-    // Use prepared statements or parameterized queries to prevent SQL injection
     $sql = "SELECT * FROM customer WHERE email = '$email' AND pass = '$password'";
     $result = mysqli_query($con, $sql);
     $row_result = mysqli_fetch_assoc($result);

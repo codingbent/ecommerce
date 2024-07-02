@@ -26,18 +26,19 @@ include 'connection.php';
                     echo '                <button class="btn btn-success" onclick="incrementQuantity(' . $row["p_id"] . ')">+</button>';
                     echo '                </div>';
                     echo '                <button class="btn btn-success w-60 mt-2" onclick="addToCart(' . $row["p_id"] . ')" type="button">Add to Cart</button>';
-                    echo '<button class="btn border border-success fav ms-2 mt-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    echo '<button class="btn border border-success fav ms-2 mt-2" onclick="addtoFav(' . $row["p_id"] . ')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
 </svg></button>';   
                     echo '            </div>';
                     echo '        </div>';
                     echo '    </div>';
                     echo '</div>';
+                    }
+                } else {
+                    echo '<p>No products found</p>';
                 }
-            } else {
-                echo '<p>No products found</p>';
-            }
-
+                
+                echo '</table>';
             // Close the connection
             $con->close();
             ?>
@@ -77,7 +78,8 @@ include 'connection.php';
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.onload = function() {
                     if (xhr.status == 200) {
-                        alert(quantity + ' ' + productId + ' Product added to cart successfully!');
+                        // alert(quantity + ' ' + productId + ' Product added to cart successfully!');
+                        location.reload();
                     } else {
                         alert('Error adding product to cart.');
                     }
@@ -88,6 +90,26 @@ include 'connection.php';
             }
         }
     }
+    function addtoFav(productId){
+        var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
+        
+        if (!isLoggedIn) {
+            alert("Please log in");
+        } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'addtoFav.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
+                        // alert(quantity + ' ' + productId + ' Product added to cart successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error adding product to cart.');
+                    }
+                };
+                xhr.send('productId=' + productId);
+            }
+        }
     function product(id){
         
     console.log(id);

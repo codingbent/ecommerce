@@ -31,7 +31,7 @@ if($result1->num_rows > 0){
     echo '<th scope="row">'. $a++ .'</th>';
     echo '<td><img src="'. $row["image"] . '"style="width:50%;height:50%;"><br><button class="btn btn-success decrement" onclick="decrementQuantity(' . $product_id . ')">-</button><input type="text" id="productQuantity_' . $product_id . '" class="w-50 text-center mx-1" value="' . $row1['quantity'] .'"><button class="btn btn-success" onclick="incrementQuantity(' . $product_id . ')">+</button></td>';
     echo '<td><h3>'. $row["title"] . '</h3><h5>₹' . $row["price"] . '</h5><h5>Total: ₹' . $row["price"] * $row1["quantity"] . '</td>';
-    echo '<td><button class="btn btn-success" onclick="remove(' . $row1['cart_id'] . ')">Remove</button';
+    echo '<td><button class="btn btn-success" onclick="removeProduct(' . $row1['cart_id'] . ')">Remove</button';
     // echo '<td>'. $row["price"] .'</td>';
     // echo '<td>'. $row1["quantity"] .'</td>';
     // echo '<td>₹'. $row["price"] * $row1["quantity"] .'</td>';
@@ -47,6 +47,7 @@ echo '</table>';
         var quantity = parseInt(quantityInput.value);
         quantity++;
         quantityInput.value = quantity;
+        location.reload();
         updateCart(productId);
     }
 
@@ -57,6 +58,7 @@ echo '</table>';
             quantity--;
             quantityInput.value = quantity;
         }
+        location.reload();
         updateCart(productId);
     }
 
@@ -90,18 +92,13 @@ echo '</table>';
         
     console.log(id);
 }
-function remove(cartId){
-if(confirm("DO you want to detele this product")){
-    removeProduct(cartId)
-}
-}
 function removeProduct(cartId){ 
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'removeProduct.php', true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.onload = function() {
                     if (xhr.status == 200) {
-                        alert(' Product removed from cart successfully!');
+                        // alert(' Product removed from cart successfully!');
                         location.reload();
                     } else {
                         // alert('Error adding product to cart.');

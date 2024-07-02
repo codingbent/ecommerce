@@ -10,18 +10,28 @@ include 'connection.php';
 if(empty(@$_SESSION['email']))
 {
   $totalRows=0;
+  $totalFav=0;
 }
 else if(isset($_SESSION['user_id'])){
   $user=$_SESSION['user_id'];
   $sqlCountRows = "SELECT SUM(quantity) AS total_rows FROM cart where user_id=$user";
   $resultCountRows = $con->query($sqlCountRows);
   if ($resultCountRows) {
-      $rowTotalRows = $resultCountRows->fetch_assoc();
+    $rowTotalRows = $resultCountRows->fetch_assoc();
       $totalRows = $rowTotalRows['total_rows'];
   } else {
-      $totalRows = 0;
+    $totalRows = 0;
+  }
+  $sqlFav="SELECT COUNT(*) AS total_fav FROM favorite where user_id=$user";
+  $resultFav = $con->query($sqlFav);
+  if ($resultFav) {
+    $rowTotalFav = $resultFav->fetch_assoc();
+    $totalFav = $rowTotalFav['total_fav'];
+  } else {
+    $totalFav = 0;
   }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -32,13 +42,13 @@ else if(isset($_SESSION['user_id'])){
     <title>Document</title>
     <link rel="stylesheet" href="main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 <div class="container px-3 ">                           
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
-                  <a class="navbar-brand fs-3 fw-bold" href="index.php">Fresh Cart</a>
+                  <a class="navbar-brand fs-3 fw-bold" href="index.php">Shopify</a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -53,10 +63,10 @@ else if(isset($_SESSION['user_id'])){
                           if (empty(@$_SESSION['email'])) {
                               echo '<a href="login.php">Login</a>/<a href="registration.php">Registration</a>';
                           } else {
-                            echo '<a type="button" class="btn position-relative">
+                            echo '<a type="button" class="btn position-relative" href="favorite.php">
                             <i class="fa fa-heart"style="font-size:36px;"></i>
                             <span class="position-absolute translate-middle badge rounded-pill bg-success" style="top: 10px;left: 50px;">
-                                5
+                                ' . $totalFav .'
                                 <span class="visually-hidden">New Alerts</span>
                               </span>
                           </a>';
@@ -66,7 +76,7 @@ else if(isset($_SESSION['user_id'])){
                               .(@$_SESSION['name']) . 
                               '</button>
                               <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="userdashboard.php">My Profile</a></li>
+                                <li><a class="dropdown-item" href="userDashboard.php?id=' . @$_SESSION['user_id'] .'">My Profile</a></li>
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><a class="dropdown-item" href="logout.php" onclick="session_destroy();">Log Out</a></li>
                               </ul>
