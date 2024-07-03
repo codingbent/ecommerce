@@ -24,13 +24,12 @@ if($result1->num_rows > 0){
               JOIN favorite f ON p.p_id = $product_id;";
     $result = $con->query($query);
     $row = $result->fetch_assoc();
-    echo '<tr>';
-    echo '<a href="description.php?id=' . $row['p_id'] .'">';
+    echo '<tr onclick="location.href=\'description.php?id=' . $row['p_id'] . '\'">';
     echo '<td scope="row" style="width:5%">'. $a++ .'</td>';
     echo '<td><img src="'. $row["image"] . '"style="width:30%;"></td>';
     echo '<td><h3>' . $row["title"] . '</h3><h5>₹' . $row["price"] . '</h5></td>';
     echo '<td><button class="btn btn-success" onclick="removeFav(' . $row1['product_id'] . ')">Remove</button></td>';
-    echo '</a></tr>';
+    echo '</tr>';
   }
 }
 

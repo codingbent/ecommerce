@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2024 at 09:31 AM
+-- Generation Time: Jul 02, 2024 at 02:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `address`
+--
+
+CREATE TABLE `address` (
+  `address_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `house_no` int(5) NOT NULL,
+  `line1` varchar(40) NOT NULL,
+  `line2` varchar(30) DEFAULT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `country` varchar(20) NOT NULL,
+  `pincode` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cart`
 --
 
@@ -39,11 +57,34 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(15, 3, 2, 1),
-(17, 3, 2, 2),
 (19, 2, 1, 2),
 (20, 2, 2, 2),
-(34, 1, 2, 1);
+(38, 1, 1, 3),
+(40, 3, 1, 2),
+(41, 3, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `category_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `category_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`category_id`, `product_id`, `category_name`) VALUES
+(1, NULL, 'Smartphones'),
+(2, NULL, 'Laptops'),
+(3, NULL, 'Tablets'),
+(4, NULL, 'Cameras'),
+(5, NULL, 'Televisions');
 
 -- --------------------------------------------------------
 
@@ -93,6 +134,13 @@ CREATE TABLE `favorite` (
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `favorite`
+--
+
+INSERT INTO `favorite` (`id`, `user_id`, `product_id`) VALUES
+(10, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -119,14 +167,14 @@ CREATE TABLE `product` (
   `price` int(5) NOT NULL,
   `image` blob DEFAULT NULL,
   `image2` blob DEFAULT NULL,
-  `iamge3` blob DEFAULT NULL
+  `image3` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `iamge3`) VALUES
+INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `image3`) VALUES
 (1, 'Iphone', 'The iPhone, by Apple, is a sleek and powerful smartphone with iOS, advanced hardware, App Store, and strong focus on security and privacy.', 80000, 0x6970686f6e652e6a7067, '', ''),
 (2, 'Camera', 'High-resolution camera with zoom, autofocus, and image stabilization, capturing vivid photos and videos with crisp detail and vibrant colors.', 2000, 0x63616d6572612e6a7067, '', ''),
 (6, 'Laptop', 'A Mac is a high-performance computer by Apple, known for its sleek design, reliability, and seamless integration with other Apple products.', 100000, 0x6d61632e6a7067, '', '');
@@ -148,11 +196,25 @@ CREATE TABLE `sales_order` (
 --
 
 --
+-- Indexes for table `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`address_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`cart_id`),
   ADD KEY `customer_id` (`user_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`category_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
@@ -195,10 +257,22 @@ ALTER TABLE `sales_order`
 --
 
 --
+-- AUTO_INCREMENT for table `address`
+--
+ALTER TABLE `address`
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -210,7 +284,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_item`
@@ -235,11 +309,23 @@ ALTER TABLE `sales_order`
 --
 
 --
+-- Constraints for table `address`
+--
+ALTER TABLE `address`
+  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`);
+
+--
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`),
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
+
+--
+-- Constraints for table `category`
+--
+ALTER TABLE `category`
+  ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
 
 --
 -- Constraints for table `favorite`
