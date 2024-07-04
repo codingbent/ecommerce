@@ -16,7 +16,6 @@ if (isset($_GET['id'])) {
         exit;
     }
 
-
     $sql1="SELECT * FROM CATEGORY";
     $result1=mysqli_query($con,$sql1);
 
@@ -43,19 +42,19 @@ if (isset($_GET['id'])) {
             <textarea class="form-control" required name="label" id="exampleFormControlTextarea1" rows="3"><?php echo$row['label']; ?></textarea>
         </div>
         <div class="mb-3">
-            <label for="formFile" class="form-label">Images</label>
-            <input class="form-control" name="image1" type="file" id="formFile">
-            <img src="<?php echo $row['image']; ?>" alt="" name="image1" style="max-width: 200px;">
+            <label for="formFile" disable class="form-label">Images</label>
+            <input class="form-control imageinput" name="image1" type="file" id="formFile">
+            <img src="<?php echo $row['image']; ?>" alt="" class="image1" style="max-width: 150px;height: 150px;">
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Images</label>
-            <input class="form-control" name="image2" type="file" id="formFile">
-            <img src="<?php echo $row['image2']; ?>" alt="" style="max-width: 200px;">
+            <input class="form-control imageinput" class="image2" name="image2" type="file" id="formFile">
+            <img src="<?php echo $row['image2']; ?>" alt="" class="image2" style="max-width: 150px;height: 150px;">
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Images</label>
-            <input class="form-control" name="image3" type="file" id="formFile">
-            <img src="<?php if($row['image3']!=NULL){ echo $row['image3'];} ?>" alt="" style="max-width: 200px;">
+            <input class="form-control imageinput" name="image3" type="file" id="formFile">
+            <img src="<?php if($row['image3']!=NULL){ echo $row['image3'];} else {echo NULL;} ?>" alt="" class="image3" style="max-width: 150px;height: 150px;">
         </div>
         <div class="mb-3">
                     <label class="form-label" for="inlineFormSelectPref">Category<sup>*</sup></label>
@@ -68,7 +67,6 @@ if (isset($_GET['id'])) {
                             if($row['c_id']==$row1['category_id']){
                                 echo $row['c_id'];
                                 echo $row1['category_id'];
-                                // die();
                             echo '<option selected value=' .$row1['category_id'] .'>' .$row1['category_name'] . '</option>';
                             }
                             else{
@@ -93,34 +91,31 @@ if (isset($_GET['id'])) {
     $labelnew = $_POST['label'];
     $cost = $_POST['cost'];
     $category = $_POST['category'];
+    // $img1 = $_FILES['image1'];
+    // $img2 = $_FILES['image2'];
 
-    $img1 = $_FILES['image1'];
-    $img2 = $_FILES['image2'];
 
+    // $target_dir = "/";
 
-    $target_dir = "/";
+    // if (!empty($img1)) {
+    //     $target_file1 = $target_dir . basename($img1);
+    //     move_uploaded_file($_FILES['image1']['tmp_name'], $target_file1);
+    // } else {
+    //     $target_file1 = $row['image'];
+    // }
 
-    if (!empty($img1)) {
-        $target_file1 = $target_dir . basename($img1);
-        move_uploaded_file($_FILES['image1']['tmp_name'], $target_file1);
-    } else {
-        $target_file1 = $row['image'];
-    }
-
-    if (!empty($img2)) {
-        $target_file2 = $target_dir . basename($img2);
-        move_uploaded_file($_FILES['image2']['tmp_name'], $target_file2);
-    } else {
-        $target_file2 = $row['image2'];
-    }
+    // if (!empty($img2)) {
+    //     $target_file2 = $target_dir . basename($img2);
+    //     move_uploaded_file($_FILES['image2']['tmp_name'], $target_file2);
+    // } else {
+    //     $target_file2 = $row['image2'];
+    // }
 
     $updatesql = "UPDATE PRODUCT SET 
                                 TITLE='$titlenew',
                                 LABEL='$labelnew',
                                 price='$cost',
-                                c_id='$category',
-                                image='$target_file1',
-                                image2='$target_file2'
+                                c_id='$category'
                                 WHERE P_ID=$product_id";
 
     if(mysqli_query($con, $updatesql)){
@@ -132,21 +127,7 @@ if (isset($_GET['id'])) {
 }
 
 ?>
-<script>
-        // $(document).ready(function () {
-        //     $('input[type="file"]').change(function (e) {
-        //         const geekss = e.target.files[0].name;
-        //     });
-        // });
-        function reload{
-            window.location.reload();
-        }
-    </script>
-<script>
-//     function editProduct(productId) {
-//     window.location = 'updateProduct.php?id=' + productId;
-// }
-</script>
+
 <?php
 include 'footer.php';
 ?>

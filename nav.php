@@ -31,7 +31,9 @@ else if(isset($_SESSION['user_id'])){
     $totalFav = 0;
   }
 }
-
+$sqlcat="SELECT * FROM product";
+$resultcat=$con->query($sqlcat);
+$rowcat=$resultcat->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -53,12 +55,20 @@ else if(isset($_SESSION['user_id'])){
                     <span class="navbar-toggler-icon"></span>
                   </button>
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <form class="d-flex mx-auto ">
-                      <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-outline-success" type="submit">Location</button>
-                    </form>
+                    <form class="d-flex mx-auto "  onsubmit="return false;">
+                    <input class="form-control text" id="search_text" type="search" placeholder="Search" aria-label="Search" list="product">
+                        <datalist id="product">
+                        <?php
+            if ($resultcat->num_rows > 0) {
+                while ($rowcat = $resultcat->fetch_assoc()) {
+                    echo '<option value="' . $rowcat['title'] . '" data-id="' . $rowcat['c_id'] . '"></option>';
+                }
+            }
+            ?>
+          </datalist>
+          <button class="btn btn-outline-success" onclick="search()">Search</button>
+        </form>
                     <div class="icons">
-                        
                           <?php
                           if (empty(@$_SESSION['email'])) {
                               echo '<a href="login.php">Login</a>/<a href="registration.php">Registration</a>';
@@ -98,7 +108,7 @@ else if(isset($_SESSION['user_id'])){
                 </div>
               </nav> 
         </div>
-        <div class="nav navbottom-nav px-5 d-flex">
+        <div class="nav navbottom-nav px-5 d-flex pb-1">
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 All Departments
               </button>
@@ -147,7 +157,7 @@ else if(isset($_SESSION['user_id'])){
             <ul class="dropdown-menu" id="product">
               <li><a class="dropdown-item" href="addProduct.php">Add Product</a></li>
               <li><a class="dropdown-item" href="productList.php">Product list</a></li>
-              <li><a class="dropdown-item" href="#">Categories</a></li>
+              <li><a class="dropdown-item" href="category.php">Categories</a></li>
             </ul>
             
             <?php }?>
@@ -162,4 +172,14 @@ else if(isset($_SESSION['user_id'])){
             
     </div>
 </body>
-</html>
+<script>
+function search() {
+    var text = document.getElementById("search_text").value;
+    var selectedOption = document.querySelector('#product option[value="' + text + '"]');
+    if (selectedOption) {
+        var id = selectedOption.getAttribute('data-id');
+        location.href = "productDisplay.php?id=" + id;
+    }
+}
+</script>
+  </html
