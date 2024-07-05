@@ -5,6 +5,9 @@ include 'connection.php';
 $sql1 = "SELECT * FROM CATEGORY";
 $result1 = mysqli_query($con, $sql1);
 
+$sql2 = "SELECT * FROM Brand";
+$result2 = mysqli_query($con, $sql2);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $product = $_POST['product'];
     $description = $_POST['description'];
@@ -98,6 +101,19 @@ $con->close();
                 if ($result1->num_rows > 0) {
                     while ($row1 = $result1->fetch_assoc()) {
                         echo '<option  value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="inlineFormSelectPref">Brand<sup>*</sup></label>
+            <select name="category" required  class="form-select" id="inlineFormSelectPref">
+                <option selected>Choose...</option>
+                <?php 
+                if ($result2->num_rows > 0) {
+                    while ($row2 = $result2->fetch_assoc()) {
+                        echo '<option  value="' . $row2['barnd_id'] . '">' . $row2['brand_name'] . '</option>';
                     }
                 }
                 ?>

@@ -2,17 +2,6 @@
 include 'connection.php';
 include 'nav.php';
 ?>
-<script>
-function remove(title){
-    if(confirm("Do you want to remove the product "+title+"?")){
-        <?php 
-        // $sql="SELECT p_id from product where title=". title ."";
-        // $result=$con->query($sql);
-        ?>
-        alert('product removed');
-    }
-}
-</script>
 <div class="mx-5">
     <div class="title d-flex justify-content-between">
         <p class="fs-3 text">Product Grid</p>
@@ -41,7 +30,7 @@ function remove(title){
                     echo '                <p class="card-text">' . $row["label"] . '</p>';
                     echo '                <p class="card-text">₹' . $row["price"] . '</p>';
                     echo '                <a href="productEdit.php?id=' . $row['p_id'] . '" class="btn btn-primary">Edit</a>';
-                    echo '                <a onclick="removeProduct(\'' . $row["title"] . '\', ' . $row["p_id"] . ')" class="btn btn-danger">Delete</a>';
+                    echo '                <button onclick="remove(\'' . $row["title"] . '\', ' . $row["p_id"] . ')" class="btn btn-danger">Delete</button>';
                     echo '            </div>';
                     echo '        </div>';
                     echo '    </div>';
@@ -50,13 +39,21 @@ function remove(title){
             } else {
                 echo '<p>No products found</p>';
             }
-
+            
             // Close the connection
             $con->close();
             ?>
         </div>
     </div>
 </div>
+<script>
+function remove(title,id){
+    alert(id);
+    if(confirm("Do you want to remove the product "+title+"?")){
+        location.href="removeProduct.php?delete_id="+id;
+    }
+}
+</script>
 <?php
 include 'footer.php';
 ?>

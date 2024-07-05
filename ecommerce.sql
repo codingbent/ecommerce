@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2024 at 02:12 PM
+-- Generation Time: Jul 05, 2024 at 11:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,11 +57,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(19, 2, 1, 2),
-(20, 2, 2, 2),
-(38, 1, 1, 3),
-(40, 3, 1, 2),
-(41, 3, 1, 1);
+(52, 1, 31, 1),
+(56, 1, 33, 1);
 
 -- --------------------------------------------------------
 
@@ -139,7 +136,7 @@ CREATE TABLE `favorite` (
 --
 
 INSERT INTO `favorite` (`id`, `user_id`, `product_id`) VALUES
-(10, 1, 1);
+(11, 1, 31);
 
 -- --------------------------------------------------------
 
@@ -165,19 +162,20 @@ CREATE TABLE `product` (
   `title` varchar(20) NOT NULL,
   `label` varchar(200) DEFAULT NULL,
   `price` int(5) NOT NULL,
-  `image` blob DEFAULT NULL,
-  `image2` blob DEFAULT NULL,
-  `image3` blob DEFAULT NULL
+  `image` varchar(250) NOT NULL,
+  `image2` varchar(250) DEFAULT NULL,
+  `image3` blob DEFAULT NULL,
+  `c_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `image3`) VALUES
-(1, 'Iphone', 'The iPhone, by Apple, is a sleek and powerful smartphone with iOS, advanced hardware, App Store, and strong focus on security and privacy.', 80000, 0x6970686f6e652e6a7067, '', ''),
-(2, 'Camera', 'High-resolution camera with zoom, autofocus, and image stabilization, capturing vivid photos and videos with crisp detail and vibrant colors.', 2000, 0x63616d6572612e6a7067, '', ''),
-(6, 'Laptop', 'A Mac is a high-performance computer by Apple, known for its sleek design, reliability, and seamless integration with other Apple products.', 100000, 0x6d61632e6a7067, '', '');
+INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `image3`, `c_id`) VALUES
+(31, 'Laptop', 'Sleek design, powerful performance, Retina display, macOS, long battery life, seamless integration with Apple ecosystem, and advanced security features.', 100000, 'images/mac.jpg', '', NULL, 2),
+(32, 'iphone 15', 'Sleek design, advanced camera, powerful performance, 5G capable, OLED display, iOS ecosystem, and enhanced battery life.', 80000, 'images/iphone15_1.jpg', 'images/iphone15_2.jpg', NULL, 1),
+(33, 'Camera', 'A camera captures images and videos, featuring a lens, sensor, and various settings for focus, exposure, and image quality.', 3000, 'images/nikon camera.webp', NULL, NULL, 4);
 
 -- --------------------------------------------------------
 
@@ -243,7 +241,8 @@ ALTER TABLE `order_item`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`p_id`);
+  ADD PRIMARY KEY (`p_id`),
+  ADD KEY `fk_category` (`c_id`);
 
 --
 -- Indexes for table `sales_order`
@@ -266,7 +265,7 @@ ALTER TABLE `address`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -284,7 +283,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `order_item`
@@ -296,7 +295,7 @@ ALTER TABLE `order_item`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `sales_order`
@@ -340,6 +339,12 @@ ALTER TABLE `favorite`
 ALTER TABLE `order_item`
   ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `sales_order` (`order_id`),
   ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `fk_category` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
 
 --
 -- Constraints for table `sales_order`

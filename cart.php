@@ -6,19 +6,21 @@ include 'nav.php';
 $a=1;
 $sql="SELECT * FROM cart where user_id=$user";
 $result1=$con->query($sql);
+// $row_ = $result1->fetch_assoc();
+// $row_ = $result1->fetch_all(MYSQLI_ASSOC);
+// echo "<pre>";
+// print_r($row_);die();
+$row6 = $result1->num_rows;
+if($row6 > 0){
 echo ' <p class="fs-4 text p-2 bg-body-secondary">
         Shopping Cart
     </p>';
 echo '<table class="table">';
 echo '<th scope="col" style="width:5%">S.no</th>';
-ECHO '<th scope="col" style="width:20%">Image</th>';
+echo '<th scope="col" style="width:20%">Image</th>';
 echo '<th scope="col" style="width:20%">Item</th>';
 echo '<th scope="col" style="width:5%">Action</th>';
-// echo '<th scope="col">Price</th>';
-// echo '<th scope="col">Quantity</th>';
-// echo '<th scope="col">Total</th>';
 echo '</tr>';
-
 if($result1->num_rows > 0){
   while($row1 = $result1->fetch_assoc()){
     $product_id = $row1["product_id"];
@@ -27,19 +29,20 @@ if($result1->num_rows > 0){
               JOIN cart c ON p.p_id = $product_id;";
     $result = $con->query($query);
     $row = $result->fetch_assoc();
+    // print_r($row);
     echo '<tr>';
     echo '<th scope="row">'. $a++ .'</th>';
     echo '<td><img src="'. $row["image"] . '"style="width:50%;height:50%;"><br><button class="btn btn-success decrement" onclick="decrementQuantity(' . $product_id . ')">-</button><input type="text" id="productQuantity_' . $product_id . '" class="w-50 text-center mx-1" value="' . $row1['quantity'] .'"><button class="btn btn-success" onclick="incrementQuantity(' . $product_id . ')">+</button></td>';
     echo '<td><h3>'. $row["title"] . '</h3><h5>₹' . $row["price"] . '</h5><h5>Total: ₹' . $row["price"] * $row1["quantity"] . '</td>';
     echo '<td><button class="btn btn-success" onclick="removeProduct(' . $row1['cart_id'] . ')">Remove</button';
-    // echo '<td>'. $row["price"] .'</td>';
-    // echo '<td>'. $row1["quantity"] .'</td>';
-    // echo '<td>₹'. $row["price"] * $row1["quantity"] .'</td>';
     echo '</tr>';
   }
 }
-
 echo '</table>';
+}
+else{
+    echo '<p>continue Shopping</p>';
+}
 ?>
 <script>
     function incrementQuantity(productId) {
@@ -93,18 +96,7 @@ echo '</table>';
     console.log(id);
 }
 function removeProduct(cartId){ 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'removeProduct.php', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                    if (xhr.status == 200) {
-                        // alert(' Product removed from cart successfully!');
-                        location.reload();
-                    } else {
-                        // alert('Error adding product to cart.');
-                    }
-                };
-                xhr.send('cartId=' + cartId);
+    location.href="removeproductCart.php?cartId="+cartId;
 }
 </script>
 <?php 

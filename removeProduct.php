@@ -2,11 +2,12 @@
 session_start();
 include 'connection.php';
 
-if (isset($_POST['cartId'])) {
-    $cartId = $_POST['cartId'];
-    $sqlDeleteCart = "DELETE FROM cart WHERE `cart_id` = $cartId";
-   
-    if ($con->query($sqlDeleteCart) === TRUE) {
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    $sqlDeleteFav="DELETE FROM favorite where product_id=$delete_id";
+    $sqlDeleteProduct = "DELETE FROM product WHERE p_id = $delete_id";
+    
+    if ($con->query($sqlDeleteFav)=== TRUE  && $con->query($sqlDeleteProduct) === TRUE) {
         echo "Product Deleted from cart successfully";
 
     } else {

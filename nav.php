@@ -61,7 +61,7 @@ $rowcat=$resultcat->fetch_assoc();
                         <?php
             if ($resultcat->num_rows > 0) {
                 while ($rowcat = $resultcat->fetch_assoc()) {
-                    echo '<option value="' . $rowcat['title'] . '" data-id="' . $rowcat['c_id'] . '"></option>';
+                    echo '<option value="' . $rowcat['title'] . '" data-id="' . $rowcat['p_id'] . '"></option>';
                 }
             }
             ?>
@@ -169,7 +169,7 @@ $rowcat=$resultcat->fetch_assoc();
              
             <?php }?>
         </div>
-            
+    
     </div>
 </body>
 <script>
@@ -178,8 +178,8 @@ function search() {
     var selectedOption = document.querySelector('#product option[value="' + text + '"]');
     if (selectedOption) {
         var id = selectedOption.getAttribute('data-id');
-        location.href = "productDisplay.php?id=" + id;
+        location.href = "productDisplay.php?display_id=" + id;
     }
 }
 </script>
-  </html
+  </html>
