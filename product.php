@@ -4,6 +4,11 @@ include 'connection.php';
 // $sql="SELECT P_ID FROM PRODUCT"
 // $_SESSION['p_id']=$p_id;
 ?>
+<style>
+    .four .card.m-1 {
+    height: 500px;
+}
+</style>
 <section class="four">
     <div class="container text-center">
         <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
@@ -14,7 +19,8 @@ include 'connection.php';
                 while($row = $result->fetch_assoc()) {
                     echo '<div class="col m-1 fav-div">';
                     echo '    <div class="p-3">';
-                    echo '        <a href="description.php?id=' . $row['p_id'] .'"><div class="card m-1">';
+                    echo '        <a id="content" href="description.php?id=' . $row['p_id'] .'">
+                                    <div class="card m-1">';
                     echo '            <img src="' . $row["image"] . '" class="card-img-top" alt="...">';
                     echo '            <div class="card-body">';
                     echo '                <h5 class="card-title">' . $row["title"] . '</h5>';

@@ -11,7 +11,6 @@ if (isset($_GET['display_id'])){
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        // print_r($row);
     } else {
         echo "No product found with the given ID.";
         exit;

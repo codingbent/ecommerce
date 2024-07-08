@@ -1,50 +1,59 @@
 <?php 
 include 'connection.php';
 include 'nav.php';
+
+$sql="SELECT * FROM BRAND";
+$result=$con->query($sql);
+
+    $sqlproduct = "SELECT * FROM product";
+    $resultproduct = $con->query($sqlproduct);
+
+    $sqlcategory="SELECT * FROM category";
+    $resultcategory=$con->query($sqlcategory);
 ?>
+
 <p class="fs-2 text ms-5">
-    Categories
+    Fliter
 </p>
-
-
+<form>
 <div class="row">
     <aside class="col-sm-4">
-    <p class="fs-3 text">Filter 1</p>
-
-
     <div class="card">
         <article class="card-group-item">
             <header class="card-header">
                 <h6 class="title">Brands </h6>
             </header>
-            <div class="filter-content">
-                <div class="card-body">
-                <form>
-                    <label class="form-check">
-                    <input class="form-check-input" type="checkbox" value="">
-                    <span class="form-check-label">
-                        Mersedes Benz
-                    </span>
-                    </label> <!-- form-check.// -->
-                    <label class="form-check">
-                    <input class="form-check-input" type="checkbox" value="">
-                    <span class="form-check-label">
-                        Nissan Altima
-                    </span>
-                    </label>  <!-- form-check.// -->
-                    <label class="form-check">
-                    <input class="form-check-input" type="checkbox" value="">
-                    <span class="form-check-label">
-                        Another Brand
-                    </span>
-                    </label>  <!-- form-check.// -->
-                </form>
-
-                </div> <!-- card-body.// -->
-            </div>
-        </article> <!-- card-group-item.// -->
+            <?php
+                if($result->num_rows > 0) {
+                    $c = 0;
+                    while($row = $result->fetch_assoc()) {
+                        if($c < 5) {
+                            echo '<div class="filter-content">';
+                            echo '<div class="card-body">';
+                            echo '<label class="form-check">';
+                            echo '<input class="form-check-input" type="checkbox" value="' . $row['brand_id'] . '">' . $row['brand_name'] . '';
+                            echo '<span class="form-check-label">';
+                            echo '</span>';
+                            echo '</div>';
+                            echo '</div>';
+                        } else {
+                            echo '<div class="filter-content hidden">';
+                            echo '<div class="card-body">';
+                            echo '<label class="form-check">';
+                            echo '<input class="form-check-input" type="checkbox" value="' . $row['brand_id'] . '">' . $row['brand_name'] . '';
+                            echo '<span class="form-check-label">';
+                            echo '</span>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                        $c++;
+                    }
+                    echo '<p><a href="" id="show-more-link" class="link-underline-primary">Show more</a></p>';
+                }
+                ?>
+        </article>
         
-        <article class="card-group-item">
+        <!-- <article class="card-group-item">
             <header class="card-header">
                 <h6 class="title">Choose type </h6>
             </header>
@@ -68,24 +77,30 @@ include 'nav.php';
                     Some other option
                 </span>
                 </label>
-                </div> <!-- card-body.// -->
+                </div>
             </div>
-        </article> <!-- card-group-item.// -->
-    </div> <!-- card.// -->
-    <p class="fs-3 text">Filter 2</p>
+        </article> 
+    </div>-->
     <div class="card">
-        <article class="card-group-item">
-            <header class="card-header"><h6 class="title">Similar category </h6></header>
+       <article class="card-group-item">
+            <header class="card-header"><h6 class="title">Category</h6></header>
             <div class="filter-content">
                 <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item">Cras justo odio <span class="float-right badge badge-light round">142</span> </a>
-                <a href="#" class="list-group-item">Dapibus ac facilisis  <span class="float-right badge badge-light round">3</span>  </a>
-                <a href="#" class="list-group-item">Morbi leo risus <span class="float-right badge badge-light round">32</span>  </a>
-                <a href="#" class="list-group-item">Another item <span class="float-right badge badge-light round">12</span>  </a>
-                </div>  <!-- list-group .// -->
+                    <div class="m-2">
+                    <?php
+                    if($resultcategory->num_rows>0){
+                        while($rowcategory=$resultcategory->fetch_assoc())
+                        {
+                            echo '<input class="form-check-input me-2" type="checkbox" name="category[]" value="' . $rowcategory['category_id'] . '" id="' . $rowcategory['category_name'] . '">';
+                            echo '<label for="' . $rowcategory['category_name'] . '">' . $rowcategory['category_name'] . '</label><br>';                            
+                        }
+                    }
+                    ?>
+                </div>
+                </div>
             </div>
-        </article> <!-- card-group-item.// -->
-        <article class="card-group-item">
+        </article>
+        <!-- <article class="card-group-item">
             <header class="card-header"><h6 class="title">Color check</h6></header>
             <div class="filter-content">
                 <div class="card-body">
@@ -101,35 +116,34 @@ include 'nav.php';
                     <input class="" type="checkbox" name="myradio" value="">
                     <span class="form-check-label">Blue</span>
                     </label>
-                </div> <!-- card-body.// -->
+                </div>
             </div>
-        </article> <!-- card-group-item.// -->
-    </div> <!-- card.// -->
-    <p class="fs-3 text">Filter  3</p>
-
-
-
+        </article> -->
+    </div>
     <div class="card">
         <article class="card-group-item">
             <header class="card-header">
-                <h6 class="title">Range input </h6>
+                <h6 class="title">Price Range</h6>
             </header>
             <div class="filter-content">
                 <div class="card-body">
                 <div class="form-row">
                 <div class="form-group col-md-6">
                 <label>Min</label>
-                <input type="number" class="form-control" id="inputEmail4" placeholder="$0">
+                <input type="number" class="form-control" id="inputmin" placeholder="₹0" max="99999" min="0">
                 </div>
                 <div class="form-group col-md-6 text-right">
                 <label>Max</label>
-                <input type="number" class="form-control" placeholder="$1,0000">
+                <input type="number" class="form-control" id="inputmax" placeholder="₹10,00,000" maxlength="7" minlength="1">
                 </div>
                 </div>
-                </div> <!-- card-body.// -->
+                </div>
             </div>
-        </article> <!-- card-group-item.// -->
-        <article class="card-group-item">
+        </article>
+        <button class="btn btn-primary border border-dark m-2" onclick="done()" type="submit">Apply</button>
+        <button class="btn btn-primary border border-dark m-2" type="reset">Reset</button>
+        </form>
+        <!-- <article class="card-group-item">
             <header class="card-header">
                 <h6 class="title">Selection </h6>
             </header>
@@ -139,32 +153,84 @@ include 'nav.php';
                         <span class="float-right badge badge-light round">52</span>
                         <input type="checkbox" class="custom-control-input" id="Check1">
                         <label class="custom-control-label" for="Check1">Samsung</label>
-                    </div> <!-- form-check.// -->
+                    </div> 
 
                     <div class="custom-control custom-checkbox">
                         <span class="float-right badge badge-light round">132</span>
                         <input type="checkbox" class="custom-control-input" id="Check2">
                         <label class="custom-control-label" for="Check2">Black berry</label>
-                    </div> <!-- form-check.// -->
+                    </div>
 
                     <div class="custom-control custom-checkbox">
                         <span class="float-right badge badge-light round">17</span>
                         <input type="checkbox" class="custom-control-input" id="Check3">
                         <label class="custom-control-label" for="Check3">Samsung</label>
-                    </div> <!-- form-check.// -->
+                    </div>
 
                     <div class="custom-control custom-checkbox">
                         <span class="float-right badge badge-light round">7</span>
                         <input type="checkbox" class="custom-control-input" id="Check4">
                         <label class="custom-control-label" for="Check4">Other Brand</label>
-                    </div> <!-- form-check.// -->
-                </div> <!-- card-body.// -->
+                    </div>
+                </div>
             </div>
-        </article> <!-- card-group-item.// -->
-    </div> <!-- card.// -->
-    </aside> <!-- col.// -->
-</div> <!-- row.// -->
-
+        </article>  -->
+    </div> 
+    </aside>
+    <main class="col-sm-8">
+    <?php 
+    if ($resultproduct->num_rows > 0) {
+        while($rowproduct = $resultproduct->fetch_assoc()){
+            echo '<div class="card d-flex mb-2">';
+            echo '<img src="' . $rowproduct['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 150px;">';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title">' . $rowproduct['title'] . '</h5>';
+            echo '<p class="card-text">' . $rowproduct['label'] . '</p>';
+            echo '</div>';
+            echo '</div>';
+        }
+    }
+?>
+    </main>
+</div>
 <?php
     include 'footer.php';
 ?>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const showMoreLink = document.getElementById("show-more-link");
+    const hiddenItems = document.querySelectorAll('.hidden');
+    let currentIndex = 0;
+    const batchSize = 5;
+
+    function showNextBatch() {
+        for (let i = currentIndex; i < currentIndex + batchSize && i < hiddenItems.length; i++) {
+            hiddenItems[i].classList.remove('hidden');
+        }
+        currentIndex += batchSize;
+        if (currentIndex >= hiddenItems.length) {
+            showMoreLink.style.display = 'none';
+        }
+    }
+
+    showMoreLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        showNextBatch();
+    });
+});
+
+function done(){
+    prevent.default()
+    var btn=document.getElementsByClassName('submit');
+    btn.addEventListener("click", function() {
+    var min=document.getElementByIdName('inputmin').value;
+    var max=document.getElementByIdName('inputmax').value;
+    console.log(min,max);
+    })
+}
+</script>
+<style>
+.hidden {
+    display: none;
+}
+</style>

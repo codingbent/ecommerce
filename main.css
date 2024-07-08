@@ -73,3 +73,7 @@ table .table {
 .image {
   height: 250px;
 }
+
+.four .card.m-1 {
+  height: 500px;
+}

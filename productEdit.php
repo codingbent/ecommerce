@@ -19,10 +19,8 @@ if (isset($_GET['id'])) {
     $sql1 = "SELECT * FROM CATEGORY";
     $result1 = mysqli_query($con, $sql1);
 
-
-    
-$sql2 = "SELECT * FROM Brand";
-$result2 = mysqli_query($con, $sql2);
+    $sql2 = "SELECT * FROM Brand";
+    $result2 = mysqli_query($con, $sql2);
 
     $stmt->close();
 } else {
@@ -42,7 +40,7 @@ if(isset($_POST['submit'])){
     if(isset($_FILES['image1']) && $_FILES['image1']['error'] === UPLOAD_ERR_OK){
         $img1 = $_FILES['image1']['tmp_name'];
         $img1_name = $_FILES['image1']['name'];
-        $target_file1 = "C:/xampp/htdocs/e-commerce/images/" . basename($img1_name);
+        $target_file1 = "images/" . basename($img1_name);
         move_uploaded_file($img1, $target_file1);
     } else {
         $target_file1 = $row['image']; 
@@ -52,7 +50,7 @@ if(isset($_POST['submit'])){
     if(isset($_FILES['image2']) && $_FILES['image2']['error'] === UPLOAD_ERR_OK){
         $img2 = $_FILES['image2']['tmp_name'];
         $img2_name = $_FILES['image2']['name'];
-        $target_file2 = "C:/xampp/htdocs/e-commerce/images/" . basename($img2_name);
+        $target_file2 = "images/" . basename($img2_name);
         move_uploaded_file($img2, $target_file2);
     } else {
         $target_file2 = $row['image2']; 
@@ -61,7 +59,7 @@ if(isset($_POST['submit'])){
     if(isset($_FILES['image3']) && $_FILES['image3']['error'] === UPLOAD_ERR_OK){
         $img3 = $_FILES['image3']['tmp_name'];
         $img3_name = $_FILES['image3']['name'];
-        $target_file3 = "C:/xampp/htdocs/e-commerce/images/" . basename($img3_name);
+        $target_file3 = "images/" . basename($img3_name);
         move_uploaded_file($img3, $target_file3);
     } else {
         $target_file3 = $row['image3']; 
@@ -72,14 +70,14 @@ if(isset($_POST['submit'])){
                     LABEL = ?,
                     price = ?,
                     c_id = ?,
-                    brand_id= ?,
+                    brand_id = ?,
                     image = ?,
                     image2 = ?,
-                    image3=?
+                    image3 = ?
                     WHERE P_ID = ?";
     
     $stmt = $con->prepare($updatesql);
-    $stmt->bind_param("ssdiiiiii", $titlenew, $labelnew, $cost, $category,$brand, $target_file1, $target_file2, $target_file3, $product_id);
+    $stmt->bind_param("ssdissssi", $titlenew, $labelnew, $cost, $category, $brand, $target_file1, $target_file2, $target_file3, $product_id);
 
     if($stmt->execute()){
         echo '<script>alert("Product Updated");</script>';
@@ -91,6 +89,7 @@ if(isset($_POST['submit'])){
 }
 
 ?>
+
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb ms-5">
     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
@@ -98,31 +97,31 @@ if(isset($_POST['submit'])){
     <li class="breadcrumb-item active" aria-current="page">Edit</li>
   </ol>
 </nav>
+
 <div class="edit_product">
     <p class="fs-4 text">Edit Product</p>
     <form class="product_form" method="post" action="" enctype="multipart/form-data">
         <div class="mb-3">
-            <label for="formGroupExampleInput" class="form-label">Product title</label>
+            <label for="formGroupExampleInput" class="form-label">Product title <sup>*</sup></label>
             <input type="text" required name="title" class="form-control" id="formGroupExampleInput" placeholder="Enter product title" value="<?php echo $row['title']; ?>">
         </div>
         <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Label</label>
+            <label for="exampleFormControlTextarea1" class="form-label">Label <sup>*</sup></label>
             <textarea class="form-control" required name="label" id="exampleFormControlTextarea1" rows="3"><?php echo $row['label']; ?></textarea>
         </div>
         <div class="mb-3">
-            <label for="formFile" class="form-label">Image 1</label>
+            <label for="formFile" class="form-label">Image 1 <sup>*</sup></label>
             <input class="form-control imageinput" name="image1" type="file" id="formFile">
-            <!-- <img src="C:/xampp/htdocs/e-commerce/images/<?php echo $row['image']; ?>" alt="" class="image1"> -->
-            <img src="C:/xampp/htdocs/e-commerce/images/<?php echo $row['image']; ?>" alt="" class="image1">
+            <img src="<?php echo $row['image']; ?>" alt="" class="image1" style="width:15rem;">
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Image 2</label>
-            <input class="form-control imageinput" name="image2" type="file" id="formFile">
+            <input class="form-control imageinput" name="image2" type="file" id="formFile"">
             <img src="<?php echo $row['image2']; ?>" alt="" class="image2" style="max-width: 150px;height: 150px;">
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Image 3</label>
-            <input class="form-control imageinput" name="image3" type="file" id="formFile">
+            <input class="form-control imageinput" name="image3" type="file" id="formFile"">
             <img src="<?php echo $row['image3']; ?>" alt="" class="image3" style="max-width: 150px;height: 150px;">
         </div>
         <div class="mb-3">
@@ -147,7 +146,7 @@ if(isset($_POST['submit'])){
             <select required name="brand" class="form-select" id="inlineFormSelectPref">
                 <option value="">Choose...</option>
                 <?php 
-                if($result1->num_rows > 0){
+                if($result2->num_rows > 0){
                     while($row2 = $result2->fetch_assoc()){
                         if($row['brand_id'] == $row2['brand_id']){
                             echo '<option selected value="' . $row2['brand_id'] . '">' . $row2['brand_name'] . '</option>';
@@ -160,9 +159,10 @@ if(isset($_POST['submit'])){
             </select>
         </div>
         <div class="mb-3">
-            <label for="formGroupExampleInput" class="form-label">Cost</label>
+            <label for="formGroupExampleInput" class="form-label">Cost <sup>*</sup></label>
             <input type="number" required name="cost" class="form-control" id="formGroupExampleInput" placeholder="Enter the amount" value="<?php echo $row['price']; ?>">
         </div>
+        <p>* required field</p>
         <button type="submit" class="btn btn-primary" name="submit">Edit Product</button>
     </form>
 </div>
