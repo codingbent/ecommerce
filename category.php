@@ -228,6 +228,14 @@ function done(){
     console.log(min,max);
     })
 }
+
+$(".form-check-input").click(function(e) {
+    var myArray = [];
+    $(":checkbox:checked").each(function() {
+        myArray.push(this.value);
+    });
+    alert("Checked: " + myArray.join(","));
+});
 </script>
 <style>
 .hidden {
