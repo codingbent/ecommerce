@@ -77,3 +77,10 @@ table .table {
 .four .card.m-1 {
   height: 500px;
 }
+
+@media (min-width: 576px) {
+  .display {
+      flex: 0 0 auto;
+      width: 30%!important;
+  }
+}
