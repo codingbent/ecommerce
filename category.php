@@ -56,7 +56,7 @@ $resultcategory = $con->query($sqlcategory);
                 <article class="card-group-item">
                     <header class="card-header"><h6 class="title">Category</h6></header>
                     <div class="filter-content">
-                        <div class="list-group list-group-flush">
+                        <div class="list-group list-group-flush ms-4">
                             <div class="m-2">
                             <?php
                             if ($resultcategory->num_rows > 0) {
@@ -77,22 +77,23 @@ $resultcategory = $con->query($sqlcategory);
                         <h6 class="title">Price Range</h6>
                     </header>
                     <div class="filter-content">
-                        <div class="card-body">
-                            <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputmin">Min</label>
-                                <input type="range" class="form-control" id="inputmin" name="minPrice" placeholder="₹0" max="999999" min="0" value="0" oninput="updateMinValue(this.value)">
-                                <div id="minValueDisplay">₹0</div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="priceRange">Price Range</label>
+                                            <div id="priceRange" class="slider"></div>
+                                            <div class="mt-3">
+                                                <label for="minValueDisplay">Min: </label>
+                                                <span id="minValueDisplay">₹0</span>
+                                                <input type="hidden" name="minPrice" id="minPrice" value="0">
+                                                <label for="maxValueDisplay" class="ml-3">Max: </label>
+                                                <span id="maxValueDisplay">₹1,000,000</span>
+                                                <input type="hidden" name="maxPrice" id="maxPrice" value="1000000">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group col-md-6 text-right">
-                                <label for="inputmax">Max</label>
-                                <input type="range" class="form-control" id="inputmax" name="maxPrice" placeholder="₹10,00,000" max="1000000" value="1000000" min="0" oninput="updateMaxValue(this.value)">
-                                <div id="maxValueDisplay">₹1,000,000</div>
-                            </div>
-                            <button type="reset" class="btn btn-success" onclick="reset(0)" value="Reset">Reset
-                            </div>
-                        </div>
-                    </div>
                 </article>
             </div>
         </aside>
@@ -127,6 +128,9 @@ $resultcategory = $con->query($sqlcategory);
 ?>
 <script>
 
+
+
+        
 function updateMinValue(value) {
     document.getElementById('minValueDisplay').textContent = '₹' + value;
 }
@@ -182,8 +186,8 @@ $(document).ready(function() {
             selectedCategories.push(this.value);
         });
         
-        var minPrice = $('#inputmin').val();
-        var maxPrice = $('#inputmax').val();
+        var minPrice = $('#minPrice').val(); // Update to reflect your form input
+        var maxPrice = $('#maxPrice').val(); // Update to reflect your form input
         
         $.ajax({
             url: 'filter.php',
@@ -200,6 +204,7 @@ $(document).ready(function() {
         });
     });
 });
+
 
 
 function incrementQuantity(productId) {
@@ -245,6 +250,76 @@ function incrementQuantity(productId) {
             }
         }
     }
+
+
+
+
+    $(document).ready(function() {
+    // Initialize slider with two handles
+    $("#priceRange").slider({
+        range: true,
+        min: 0,
+        max: 1000000,
+        values: [0, 1000000],
+        slide: function(event, ui) {
+            $("#minValueDisplay").text("₹" + ui.values[0]);
+            $("#maxValueDisplay").text("₹" + ui.values[1]);
+            $("#minPrice").val(ui.values[0]);
+            $("#maxPrice").val(ui.values[1]);
+        },
+        change: function(event, ui) {
+            filterProducts(); // Trigger filter when slider values change
+        }
+    });
+
+    // Display initial values
+    $("#minValueDisplay").text("₹" + $("#priceRange").slider("values", 0));
+    $("#maxValueDisplay").text("₹" + $("#priceRange").slider("values", 1));
+
+    // Show more functionality
+    var showMoreLink = $('#show-more-link');
+    var hiddenContent = $('#show-more');
+    showMoreLink.on('click', function(e) {
+        e.preventDefault();
+        hiddenContent.toggleClass('hidden');
+        if (hiddenContent.hasClass('hidden')) {
+            showMoreLink.text('Show more');
+        } else {
+            showMoreLink.text('Show less');
+        }
+    });
+
+    // Function to filter products
+    function filterProducts() {
+        var selectedBrands = [];
+        $("input[name='brand[]']:checked").each(function() {
+            selectedBrands.push(this.value);
+        });
+
+        var selectedCategories = [];
+        $("input[name='category[]']:checked").each(function() {
+            selectedCategories.push(this.value);
+        });
+
+        var minPrice = $("#priceRange").slider("values", 0);
+        var maxPrice = $("#priceRange").slider("values", 1);
+
+        $.ajax({
+            url: 'filter.php',
+            type: 'POST',
+            data: {
+                brands: selectedBrands,
+                categories: selectedCategories,
+                minPrice: minPrice,
+                maxPrice: maxPrice
+            },
+            success: function(response) {
+                $('#product-container').html(response); // Update product container with filtered results
+            }
+        });
+    }
+});
+
 </script>
 <style>
 .hidden {

@@ -1,60 +1,71 @@
 <?php
+// Include database connection
 include 'connection.php';
 
-$brands = isset($_POST['brands']) ? $_POST['brands'] : [];
-$categories = isset($_POST['categories']) ? $_POST['categories'] : [];
-$minPrice = isset($_POST['minPrice']) && $_POST['minPrice'] !== '' ? (int)$_POST['minPrice'] : 0;
-$maxPrice = isset($_POST['maxPrice']) && $_POST['maxPrice'] !== '' ? (int)$_POST['maxPrice'] : 1000000;
+// Initialize variables to store filter conditions
+$whereClause = "";
+$parameters = array();
 
-// Initialize SQL query
-$sql = "SELECT * FROM product WHERE price BETWEEN $minPrice AND $maxPrice";
-
-// Add brand filters if any
-if (!empty($brands)) {
-    if (count($brands) > 1) {
-        $brandsList = implode(",", array_map('intval', $brands));
-        $sql .= " AND brand_id IN ($brandsList)";
-    } else {
-        $brandId = intval($brands[0]);
-        $sql .= " AND brand_id = $brandId";
-    }
+// Process selected brands
+if (isset($_POST['brands']) && !empty($_POST['brands'])) {
+    $brands = $_POST['brands'];
+    $brandPlaceholders = str_repeat('?,', count($brands) - 1) . '?';
+    $whereClause .= " AND brand_id IN ($brandPlaceholders)";
+    $parameters = array_merge($parameters, $brands);
 }
 
-// Add category filters if any
-if (!empty($categories)) {
-    if (count($categories) > 1) {
-        $categoriesList = implode(",", array_map('intval', $categories));
-        $sql .= " AND c_id IN ($categoriesList)";
-    } else {
-        $categoryId = intval($categories[0]);
-        $sql .= " AND c_id = $categoryId";
-    }
+// Process selected categories
+if (isset($_POST['categories']) && !empty($_POST['categories'])) {
+    $categories = $_POST['categories'];
+    $categoryPlaceholders = str_repeat('?,', count($categories) - 1) . '?';
+    $whereClause .= " AND c_id IN ($categoryPlaceholders)";
+    $parameters = array_merge($parameters, $categories);
 }
 
-// Execute the query
-$resultproduct = $con->query($sql);
-
-if (!$resultproduct) {
-    die('Error: ' . $con->error);
+// Process price range
+if (isset($_POST['minPrice']) && isset($_POST['maxPrice'])) {
+    $minPrice = intval($_POST['minPrice']);
+    $maxPrice = intval($_POST['maxPrice']);
+    $whereClause .= " AND price BETWEEN ? AND ?";
+    $parameters[] = $minPrice;
+    $parameters[] = $maxPrice;
 }
 
-// Display the products
-if ($resultproduct->num_rows > 0) {
-    while ($rowproduct = $resultproduct->fetch_assoc()) {
+// Prepare SQL statement for filtered products
+$sql = "SELECT * FROM product WHERE 1 $whereClause";
+$stmt = $con->prepare($sql);
+
+// Bind parameters dynamically
+if (!empty($parameters)) {
+    $types = str_repeat('s', count($parameters)); // Assuming all parameters are strings
+    $stmt->bind_param($types, ...$parameters);
+}
+
+// Execute SQL query
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Build HTML for filtered products
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
         echo '<div class="card d-flex mb-2">';
-        echo '<img src="' . $rowproduct['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 150px;">';
+        echo '<div><img src="' . $row['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 150px;">';
         echo '<div class="card-body">';
-        echo '<h5 class="card-title fs-4 text">' . $rowproduct['title'] . '</h5>';
-        echo '<p class="card-text fs-6 text">' . $rowproduct['label'] . '</p>';
-        echo '<p class="card-text fs-5 text"><b>₹' . $rowproduct['price'] . '</b></p></div>';
-        echo '<div class="m-3"><input type="button" class="btn btn-success" onclick="decrementQuantity(' . $rowproduct["p_id"] . ')" value="-">';
-        echo '<input type="text" id="productQuantity_' . $rowproduct["p_id"] . '" class="w-50 text-center mx-1" value="0">';
-        echo '<input type="button" class="btn btn-success" onclick="incrementQuantity(' . $rowproduct["p_id"] . ')" value="+">';
-        echo '<input type="button" class="btn btn-success w-60 ms-2" onclick="addToCart(' . $rowproduct["p_id"] . ')" value="Add to Cart"></div>';
+        echo '<h5 class="card-title fs-4 text">' . $row['title'] . '</h5>';
+        echo '<p class="card-text fs-6 text">' . $row['label'] . '</p>';
+        echo '<p class="card-text fs-5 text"><b>₹' . $row['price'] . '</b></p></div>';
+        echo '<div class="m-3"><input type="button" class="btn btn-success" onclick="decrementQuantity(' . $row["p_id"] . ')" value="-">';
+        echo '<input type="text" id="productQuantity_' . $row["p_id"] . '" class="w-50 text-center mx-1" value="0">';
+        echo '<input type="button" class="btn btn-success" onclick="incrementQuantity(' . $row["p_id"] . ')" value="+">';
+        echo '<input type="button" class="btn btn-success w-60 ms-2" onclick="addToCart(' . $row["p_id"] . ')" value="Add to Cart"></div>';
         echo '</div>';
         echo '</div>';
     }
 } else {
-    echo '<p>No products found matching the criteria.</p>';
+    echo '<p>No products found.</p>';
 }
+
+// Close prepared statement and database connection
+$stmt->close();
+$con->close();
 ?>
