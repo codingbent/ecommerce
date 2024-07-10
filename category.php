@@ -2,6 +2,13 @@
 include 'connection.php';
 include 'nav.php';
 
+
+$sqlcost = "SELECT MAX(price) as max_price FROM product";
+$resultcost = $con->query($sqlcost);
+$rowcost = $resultcost->fetch_assoc();
+$maxPrice = $rowcost['max_price'];
+
+
 if (isset($_GET['display_id'])){
     $product_id = $_GET['display_id'];
     $sqlproduct = "SELECT * FROM product WHERE  p_id= ?";
@@ -21,6 +28,11 @@ $result = $con->query($sql);
 $sqlcategory = "SELECT * FROM category";
 $resultcategory = $con->query($sqlcategory);
 ?>
+
+<script>
+var maxPrice = <?php echo $maxPrice; ?>;
+</script>
+
 
 <p class="fs-2 text ms-5">Filter</p>
 <form id="filter-form">
@@ -87,8 +99,8 @@ $resultcategory = $con->query($sqlcategory);
                                                 <span id="minValueDisplay">₹0</span>
                                                 <input type="hidden" name="minPrice" id="minPrice" value="0">
                                                 <label for="maxValueDisplay" class="ml-3">Max: </label>
-                                                <span id="maxValueDisplay">₹1,000,000</span>
-                                                <input type="hidden" name="maxPrice" id="maxPrice" value="1000000">
+                                                <span id="maxValueDisplay">₹<?php echo $maxPrice; ?></span>
+                                                <input type="hidden" name="maxPrice" id="maxPrice" value="<?php echo $maxPrice; ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -128,30 +140,6 @@ $resultcategory = $con->query($sqlcategory);
 ?>
 <script>
 
-
-
-        
-function updateMinValue(value) {
-    document.getElementById('minValueDisplay').textContent = '₹' + value;
-}
-
-function updateMaxValue(value) {
-    document.getElementById('maxValueDisplay').textContent = '₹' + value;
-}
-
-function reset(value) {
-    alert('hi');
-    document.getElementById('inputmin').value = value;
-    document.getElementById('inputmax').value = value;
-
-    document.getElementById('minValueDisplay').textContent = '₹' + value;
-    document.getElementById('maxValueDisplay').textContent = '₹' + value;
-
-    // Reload the page
-    location.reload();
-}
-
-
 document.addEventListener("DOMContentLoaded", function() {
     const showMoreLink = document.getElementById("show-more-link");
     const hiddenItems = document.querySelectorAll('.hidden');
@@ -186,8 +174,8 @@ $(document).ready(function() {
             selectedCategories.push(this.value);
         });
         
-        var minPrice = $('#minPrice').val(); // Update to reflect your form input
-        var maxPrice = $('#maxPrice').val(); // Update to reflect your form input
+        var minPrice = $('#minPrice').val(); 
+        var maxPrice = $('#maxPrice').val(); 
         
         $.ajax({
             url: 'filter.php',
@@ -204,7 +192,6 @@ $(document).ready(function() {
         });
     });
 });
-
 
 
 function incrementQuantity(productId) {
@@ -251,16 +238,13 @@ function incrementQuantity(productId) {
         }
     }
 
-
-
-
     $(document).ready(function() {
-    // Initialize slider with two handles
+   
     $("#priceRange").slider({
         range: true,
         min: 0,
-        max: 1000000,
-        values: [0, 1000000],
+        max: maxPrice,
+        values: [0, maxPrice],
         slide: function(event, ui) {
             $("#minValueDisplay").text("₹" + ui.values[0]);
             $("#maxValueDisplay").text("₹" + ui.values[1]);
@@ -268,26 +252,12 @@ function incrementQuantity(productId) {
             $("#maxPrice").val(ui.values[1]);
         },
         change: function(event, ui) {
-            filterProducts(); // Trigger filter when slider values change
+            filterProducts(); 
         }
     });
 
-    // Display initial values
     $("#minValueDisplay").text("₹" + $("#priceRange").slider("values", 0));
     $("#maxValueDisplay").text("₹" + $("#priceRange").slider("values", 1));
-
-    // Show more functionality
-    var showMoreLink = $('#show-more-link');
-    var hiddenContent = $('#show-more');
-    showMoreLink.on('click', function(e) {
-        e.preventDefault();
-        hiddenContent.toggleClass('hidden');
-        if (hiddenContent.hasClass('hidden')) {
-            showMoreLink.text('Show more');
-        } else {
-            showMoreLink.text('Show less');
-        }
-    });
 
     // Function to filter products
     function filterProducts() {
@@ -314,7 +284,7 @@ function incrementQuantity(productId) {
                 maxPrice: maxPrice
             },
             success: function(response) {
-                $('#product-container').html(response); // Update product container with filtered results
+                $('#product-container').html(response);
             }
         });
     }
