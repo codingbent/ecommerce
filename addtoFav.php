@@ -1,16 +1,19 @@
 <?php
+
 session_start();
 include 'connection.php';
 
-if (isset($_POST['productId'])) {
-    $productId = $_POST['productId'];
+if (isset($_POST['proId'])) {
+    $productId = $_POST['proId'];
     $customerId = $_SESSION['user_id'];
     $sqlInsertCart = "INSERT INTO favorite (user_id, product_id) VALUES ($customerId, $productId )";
 
     if ($con->query($sqlInsertCart) === TRUE) {
-        echo "Product added to favorite successfully";
+        echo 1;
+        die();
     } else {
-        echo "Error adding product to favorite: " . $con->error;
+        echo 2;
+        die();
     }
 } else {
     echo "Product ID not received";

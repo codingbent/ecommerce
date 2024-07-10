@@ -47,17 +47,17 @@ $result = $stmt->get_result();
 
 // Build HTML for filtered products
 if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo '<div class="card d-flex mb-2">';
-        echo '<div><img src="' . $row['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 150px;">';
+    while ($rowproduct = $result->fetch_assoc()) {
+        echo '<div class="card d-flex flex-row mb-3">';
+        echo '<div><img src="' . $rowproduct['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 200px;"></div>';
         echo '<div class="card-body">';
-        echo '<h5 class="card-title fs-4 text">' . $row['title'] . '</h5>';
-        echo '<p class="card-text fs-6 text">' . $row['label'] . '</p>';
-        echo '<p class="card-text fs-5 text"><b>₹' . $row['price'] . '</b></p></div>';
-        echo '<div class="m-3"><input type="button" class="btn btn-success" onclick="decrementQuantity(' . $row["p_id"] . ')" value="-">';
-        echo '<input type="text" id="productQuantity_' . $row["p_id"] . '" class="w-50 text-center mx-1" value="0">';
-        echo '<input type="button" class="btn btn-success" onclick="incrementQuantity(' . $row["p_id"] . ')" value="+">';
-        echo '<input type="button" class="btn btn-success w-60 ms-2" onclick="addToCart(' . $row["p_id"] . ')" value="Add to Cart"></div>';
+        echo '<h5 class="card-title fs-4 text">' . $rowproduct['title'] . '</h5>';
+        echo '<p class="card-text fs-6 text">' . $rowproduct['label'] . '</p>';
+        echo '<p class="card-text fs-5 text"><b>₹' . $rowproduct['price'] . '</b></p>';
+        echo '<div class="m-3"><input type="button" class="btn btn-success" onclick="decrementQuantity(' . $rowproduct["p_id"] . ')" value="-">';
+        echo '<input type="text" id="productQuantity_' . $rowproduct["p_id"] . '" class="w-50 text-center mx-1" value="0">';
+        echo '<input type="button" class="btn btn-success" onclick="incrementQuantity(' . $rowproduct["p_id"] . ')" value="+">';
+        echo '<input type="button" class="btn btn-success w-60 ms-2" onclick="addToCart(' . $rowproduct["p_id"] . ')" value="Add to Cart"></div>';
         echo '</div>';
         echo '</div>';
     }

@@ -22,7 +22,7 @@
       </button>
     </div>
    </section>
-  <section class="three my-5">
+  <!-- <section class="three my-5">
     <div class="row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-around rounded-4">      
         <div class="card text-bg-dark rounded-4">
           <img src="fresh veg&fruits.jpg" class="card-img" alt="..." style="height:230px">
@@ -41,7 +41,7 @@
           </div>
         </div>
     </div>
-  </section>
+  </section> -->
   <?php
   include 'product.php';
   include 'footer.php'

@@ -1,10 +1,17 @@
 *{
   margin: 0%;
 }
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 .four .container{
   margin: 3%;
 }
-@media screen and (max-width:450px){
+@media (max-width:450px){
   .col{
     width: 100%!important;
   }
@@ -30,6 +37,14 @@
   .col {
       flex: 0 0 auto;
       width: 25%!important;
+  }
+}
+
+@media (min-width: 992px) {
+  .row-cols-lg-5>* {
+      -ms-flex: 0 0 20%;
+      flex: 0 0 24%!important;
+      max-width: 27%!important;
   }
 }
 .add_product,.edit_product {
@@ -84,3 +99,7 @@ table .table {
       width: 30%!important;
   }
 }
+
+
+
+

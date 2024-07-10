@@ -213,28 +213,25 @@ function incrementQuantity(productId) {
 
     function addToCart(productId) {
         var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
-        
-        if (!isLoggedIn) {
-            alert("Please log in");
-        } else {
-            var quantityInput = document.getElementById('productQuantity_' + productId);
-            var quantity = parseInt(quantityInput.value);
-            if (quantity > 0) {
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'addToCart.php', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                    if (xhr.status == 200) {
-                        alert(quantity + ' ' + productId + ' Product added to cart successfully!');
-                    } else {
-                        alert('Error adding product to cart.');
-                    }
-                };
-                xhr.send('productId=' + productId + '&quantity=' + quantity);
-            } else {
-                alert('Please select a quantity greater than 0.');
-            }
+
+if (!isLoggedIn) {
+    alert("Please log in");
+} else {
+    $.ajax({
+        url:"addtoFav.php",
+        type:"POST",
+        data:{proId:productId},
+        success: function(res){
+           if(res==1){
+            alert("add");
+            return
+           }else{
+            alert("error");
+            return;
+           }
         }
-    }
+    })
+}
+}
 </script>
 </html>
