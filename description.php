@@ -21,13 +21,6 @@ if($result1->num_rows>=0){
 <?php
     include 'nav.php'
 ?>
-
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb ms-5 mt-3">
-    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page"></li>
-  </ol>
-</nav>
 <section class="mt-5">
     <div class="container">
         <div class="row">
@@ -118,7 +111,7 @@ if($result1->num_rows>=0){
                         </tr>
                         <tr>
                             <td>Type</td>
-                            <td>fruits</td>
+                            <td><?php  ?></td>
                         </tr>
                         <tr>
                             <td>Shipping</td>

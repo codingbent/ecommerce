@@ -1,4 +1,9 @@
-<?php include 'nav.php'?>
+<?php 
+include 'nav.php';
+$sqlcategory="SELECT * FROM CATEGORY";
+$resultcategory=$con->query($sqlcategory);
+
+?>
   <section class=" two my-5">
     <div id="carouselExample" class="carousel slide">
       <div class="carousel-inner">
@@ -20,6 +25,18 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
+    </div>
+   </section>
+   <section class="three my-5">
+    <h4 class="ms-5">Shop By Category</h4>
+    <div class="d-flex">;
+    <?php
+    if($resultcategory->num_rows>0){
+      while($rowcategory=$resultcategory->fetch_assoc()){
+        echo '<image class="border rounded-circle ms-5 mt-3" onclick="category(' . $rowcategory['category_id'] . ')"src="' . $rowcategory['image'] . '" style="width:80px;height:80px;">';
+      }
+    }
+    ?>
     </div>
    </section>
   <!-- <section class="three my-5">
@@ -46,5 +63,20 @@
   include 'product.php';
   include 'footer.php'
   ?>
-  </body>
-</html>
+  <script>
+   function category(c_id){
+  $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {c_id: c_id},
+    success: function(response){
+      window.location.href = "category.php";
+    },
+    error: function(xhr, status, error){
+      console.error(error);
+    }
+  });
+  console.log(c_id);
+}
+
+    </script>

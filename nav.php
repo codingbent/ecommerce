@@ -50,9 +50,9 @@ $rowcat=$resultcat->fetch_assoc();
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
-<div class="container px-3 ">                           
+<div class="container">                           
     <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="container-fluid">
+      <div class="container">
                   <a class="navbar-brand fs-3 fw-bold" href="index.php">Shopify</a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -111,8 +111,8 @@ $rowcat=$resultcat->fetch_assoc();
                 </div>
               </nav> 
         </div>
-        <div class="nav navbottom-nav px-5 d-flex pb-1">
-            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="nav navbottom-nav px-5 d-flex bg-primary">
+            <!-- <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 All Departments
               </button>
             <ul class="dropdown-menu">
@@ -121,7 +121,7 @@ $rowcat=$resultcat->fetch_assoc();
               <li><a class="dropdown-item" href="#">Something else here</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
+            </ul> -->
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Home</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Action</a></li>
@@ -130,7 +130,7 @@ $rowcat=$resultcat->fetch_assoc();
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
             </ul>
-            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</button>
+            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Category</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Action</a></li>
               <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -138,6 +138,7 @@ $rowcat=$resultcat->fetch_assoc();
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
             </ul>
+            <!--
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Action</a></li>
@@ -153,7 +154,7 @@ $rowcat=$resultcat->fetch_assoc();
               <li><a class="dropdown-item" href="#">Something else here</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
+            </ul> -->
             <!-- <button class="btn btn-lg" type="button">Docs</button> -->
             <?php if(@$_SESSION['is_admin']==="1" || @$_SESSION['is_admin']==="2"){?>
             <button class="btn btn-lg dropdown-toggle" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Products</button>

@@ -8,14 +8,23 @@
     $rowcost = $resultcost->fetch_assoc();
     $maxPrice = $rowcost['max_price'];
 
-    if (isset($_GET['display_id'])){
+    if (isset($_GET['display_id'])){    //Searched product from nav 
         $product_id = $_GET['display_id'];
         $sqlproduct = "SELECT * FROM product WHERE p_id= ?";
         $stmt = $con->prepare($sqlproduct);
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $resultproduct = $stmt->get_result();
-    } else {
+    }
+    else if (isset($_SESSION['c_id'])) {
+            $c_id = $_SESSION['c_id'];
+            $sqlproduct="SELECT * FROM product WHERE c_id=?";
+            $stmt = $con->prepare($sqlproduct);
+            $stmt->bind_param("i", $c_id);
+            $stmt->execute();
+            $resultproduct = $stmt->get_result();
+    }
+    else {
         $sqlproduct = "SELECT * FROM product";
         $resultproduct = $con->query($sqlproduct);
     }
@@ -23,8 +32,10 @@
     $sql = "SELECT * FROM BRAND";
     $result = $con->query($sql);
 
-    $sqlcategory = "SELECT * FROM category";
-    $resultcategory = $con->query($sqlcategory);
+      
+        $sqlcategory = "SELECT * FROM category";
+        $resultcategory = $con->query($sqlcategory);
+    
     ?>
 
     <script>
@@ -70,7 +81,11 @@
                                 <?php
                                 if ($resultcategory->num_rows > 0) {
                                     while ($rowcategory = $resultcategory->fetch_assoc()) {
-                                        echo '<input class="form-check-input me-2" type="checkbox" name="category[]" value="' . $rowcategory['category_id'] . '" id="' . $rowcategory['category_name'] . '">';
+                                        echo '<input class="form-check-input me-2" type="checkbox" name="category[]" value="' . $rowcategory['category_id'] . '" id="' . $rowcategory['category_name'] . '"';
+                                        if ($c_id == $rowcategory['category_id']) {
+                                            echo ' checked';
+                                        }
+                                        echo '>';                                        
                                         echo '<label for="' . $rowcategory['category_name'] . '">' . $rowcategory['category_name'] . '</label><br>';                            
                                     }
                                 }

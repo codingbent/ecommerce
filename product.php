@@ -29,7 +29,7 @@ $result = $con->query($query);
                     if ($products_result->num_rows > 0) {
                         echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">';
                         while ($product_row = $products_result->fetch_assoc()) {
-                            echo '<div class="col mb-4">';
+                            echo '<div class="col mb-4"><a href="description.php?id=' . $product_row['p_id'] .'">';
                             echo '    <div class="card h-100">';
                             echo '        <img src="' . $product_row["image"] . '" class="card-img-top" style="height: 200px; object-fit: contain;" alt="Product Image">';
                             echo '        <div class="card-body">';
@@ -44,7 +44,7 @@ $result = $con->query($query);
                             echo '            <button class="btn btn-success w-100 mt-2" onclick="addToCart(' . $product_row["p_id"] . ')" type="button">Add to Cart</button>';
                             echo '            <button class="btn border border-success mt-2" onclick="addToFav(' . $product_row["p_id"] . ')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></svg></button>';
                             echo '        </div>';
-                            echo '    </div>';
+                            echo '    </div></a>';
                             echo '</div>';
                         }
                         echo '</div>';
@@ -121,7 +121,7 @@ $result = $con->query($query);
                 success: function(res){
                    if(res==1){
                     location.reload();
-                    alert("add");
+                    alert("Product Added sucessfuly");
                     return
                    }else{
                     alert("error");
@@ -132,9 +132,22 @@ $result = $con->query($query);
         }
     }
 
-    function viewAll(categoryId) {
+    function viewAll(c_id) {
 
-        console.log(categoryId);
+        $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {c_id: c_id},
+    success: function(response){
+      // After the session is set, redirect to the category page
+      window.location.href = "category.php";
+    },
+    error: function(xhr, status, error){
+      // Handle error
+      console.error(error);
     }
+  });
+  console.log(c_id);
+}
    
 </script>
