@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2024 at 02:42 PM
+-- Generation Time: Jul 11, 2024 at 10:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -123,8 +123,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(57, 1, 15, 1),
-(62, 1, 3, 2),
+(57, 1, 15, 2),
+(62, 1, 3, 1),
 (65, 1, 1, 3);
 
 -- --------------------------------------------------------
@@ -135,6 +135,7 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
 
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
+  `image` varchar(250) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -143,12 +144,12 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `product_id`, `category_name`) VALUES
-(1, NULL, 'Smartphones'),
-(2, NULL, 'Laptops'),
-(3, NULL, 'Tablets'),
-(4, NULL, 'Cameras'),
-(5, NULL, 'Televisions');
+INSERT INTO `category` (`category_id`, `image`, `product_id`, `category_name`) VALUES
+(1, 'images/iphone15_1.jpg', NULL, 'Smartphones'),
+(2, 'images/dell laptop.webp', NULL, 'Laptops'),
+(3, 'images/microsoft tablet.jfif', NULL, 'Tablets'),
+(4, 'images/canon camera.jfif', NULL, 'Cameras'),
+(5, 'images/panasonic tv.jpg', NULL, 'Televisions');
 
 -- --------------------------------------------------------
 
@@ -197,6 +198,20 @@ CREATE TABLE `favorite` (
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `favorite`
+--
+
+INSERT INTO `favorite` (`id`, `user_id`, `product_id`) VALUES
+(13, 1, 12),
+(14, 1, 2),
+(15, 1, 7),
+(16, 1, 16),
+(17, 1, 6),
+(18, 1, 1),
+(19, 1, 6),
+(20, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -404,7 +419,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `order_item`
