@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2024 at 01:15 PM
+-- Generation Time: Jul 12, 2024 at 02:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -123,10 +123,9 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(57, 1, 15, 2),
+(57, 1, 15, 1),
 (62, 1, 3, 1),
-(65, 1, 1, 3),
-(66, 1, 1, 1);
+(72, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -209,10 +208,7 @@ INSERT INTO `favorite` (`id`, `user_id`, `product_id`) VALUES
 (14, 1, 2),
 (15, 1, 7),
 (16, 1, 16),
-(17, 1, 6),
-(18, 1, 1),
-(19, 1, 6),
-(20, 1, 8);
+(28, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -293,7 +289,7 @@ INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `im
 (41, 'Nokia Smartphone', 'Reliable smartphone with durable design.', 20000, 'images/Nokia smartphone.jpg', NULL, NULL, 1, 40),
 (42, 'Alienware Laptop', 'Gaming laptop with AlienFX lighting.', 180000, 'images/Alienware Laptop.jpg', NULL, NULL, 2, 7),
 (43, 'Samsung Galaxy Tab', 'Premium tablet for productivity.', 60000, 'images/Samsung Galaxy Tab.jfif', NULL, NULL, 3, 1),
-(44, 'Phase One Camera', 'Medium format camera for professional photography.', 4000000, 'images/Phase One Camera.jpg', NULL, NULL, 4, 43),
+(44, 'Phase One Camera', 'Medium format camera for professional photography.', 400000, 'images/Phase One Camera.jpg', NULL, NULL, 4, 43),
 (45, 'Philips Television', 'Smart TV with Ambilight technology.', 47000, 'images/Philips Television.jpg', NULL, NULL, 5, 44),
 (46, 'BlackBerry Smartphon', 'Secure smartphone with BlackBerry Hub.', 38000, 'images/BlackBerry Smartphon.jfif', NULL, NULL, 1, 45),
 (47, 'MSI Prestige Laptop', 'Stylish laptop for business professionals.', 30000, '', NULL, NULL, 2, NULL),
@@ -402,7 +398,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -420,7 +416,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `order_item`
