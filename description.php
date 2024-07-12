@@ -71,24 +71,24 @@ if($result1->num_rows>=0){
                         <?php
                         echo '<div class="input-group input-spinner">';
                         echo '    <button class="btn btn-success" onclick="decrementQuantity(' . $productDetails['p_id'] . ')">-</button>';
-                        if(@$totalProduct['quantity']!=0){
-                        echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-50 text-center mx-1" value=' . $totalProduct['quantity'] . '>';}
-                        else{
-                            echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-50 text-center mx-1" value=0>';
-                        }
+                        echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-50 text-center mx-1" value=0>';
                         echo '    <button class="btn btn-success" onclick="incrementQuantity(' . $productDetails['p_id'] . ')">+</button>';
                         echo '</div>';
                         ?>
                     </div>
-                    <div class="mt-3 row justify-content-start g-2 align-items-center">
-                        <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid">
-                        <?php echo'<button type="button" onclick="addToCart(' . $productDetails['p_id'] . ')" class="btn btn-success">';
+                    <div class="mt-3 row justify-content-between g-2 align-items-center d-flex">
+                        <!-- <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid"> -->
+                        <?php echo'<div class=""><button type="button" class="btn btn-success w-25 ms-3 me-4">';
+                              echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
+                              echo ' Buy Now';
+                            echo '</button>';
+                            echo'<button type="button" onclick="addToCart(' . $productDetails['p_id'] . ')" class="btn btn-success w-25 ms-4">';
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
                               echo '  Add To Cart';
-                            echo '</button>';
+                            echo '</button></div>';
                             ?>
                         </div>
-                    </div>
+                    <!-- </div> -->
                     <!-- <div class="col-md-4 col-4">
                         <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true" aria-label="Compare">
                             <i class="bi bi-arrow-left-right"></i>

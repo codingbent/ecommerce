@@ -69,7 +69,7 @@ if($row6 > 0){
                         echo '<td>₹' . $total+$shipping .'</td>';
                     echo '</tr>';
                     echo '<tr>';
-                    echo '<td><a href="index.php"><button class="btn btn-success w-100">Continue Shopping</button></a></td>';
+                    echo '<td><a href="index.php"><button class="btn btn-primary w-100">Continue Shopping</button></a></td>';
                     echo '<td><button class="btn btn-success w-100">Check Out</button></td>';
                     echo '</tr>';
                 echo '</tbody>';

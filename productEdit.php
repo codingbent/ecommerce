@@ -90,13 +90,6 @@ if(isset($_POST['submit'])){
 
 ?>
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb ms-5">
-    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-    <li class="breadcrumb-item"><a href="productList.php">Product List</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Edit</li>
-  </ol>
-</nav>
 
 <div class="edit_product">
     <p class="fs-4 text">Edit Product</p>

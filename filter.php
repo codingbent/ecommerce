@@ -54,10 +54,6 @@ if ($result->num_rows > 0) {
         echo '<h5 class="card-title fs-4 text">' . $rowproduct['title'] . '</h5>';
         echo '<p class="card-text fs-6 text">' . $rowproduct['label'] . '</p>';
         echo '<p class="card-text fs-5 text"><b>₹' . $rowproduct['price'] . '</b></p>';
-        echo '<div class="m-3"><input type="button" class="btn btn-success" onclick="decrementQuantity(' . $rowproduct["p_id"] . ')" value="-">';
-        echo '<input type="text" id="productQuantity_' . $rowproduct["p_id"] . '" class="w-50 text-center mx-1" value="0">';
-        echo '<input type="button" class="btn btn-success" onclick="incrementQuantity(' . $rowproduct["p_id"] . ')" value="+">';
-        echo '<input type="button" class="btn btn-success w-60 ms-2" onclick="addToCart(' . $rowproduct["p_id"] . ')" value="Add to Cart"></div>';
         echo '</div>';
         echo '</div>';
     }

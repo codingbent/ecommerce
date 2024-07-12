@@ -53,7 +53,7 @@ $rowcat=$resultcat->fetch_assoc();
 <div class="container">                           
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container">
-                  <a class="navbar-brand fs-3 fw-bold" href="index.php">Shopify</a>
+                  <a class="navbar-brand fs-3 fw-bold" href="index.php"><img src="images/logo.png" style="width:30px;transform:scale(3.2);" alt=""></a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -85,7 +85,7 @@ $rowcat=$resultcat->fetch_assoc();
                           </a>';
                               echo '
                              <div class="btn-group">
-                              <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">'
+                              <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">'
                               .(@$_SESSION['name']) . 
                               '</button>
                               <ul class="dropdown-menu">
@@ -122,33 +122,27 @@ $rowcat=$resultcat->fetch_assoc();
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
             </ul> -->
-            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Home</button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
+            <button class="btn btn-lg dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">Home</button>
+            <ul class="dropdown-menu bg-primary">
+              <li><a class="dropdown-item text-light" href="#">Action</a></li>
+              <li><a class="dropdown-item text-light" href="#">Another action</a></li>
+              <li><a class="dropdown-item text-light" href="#">Something else here</a></li>
             </ul>
-            <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Category</button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
+            <button class="btn btn-lg dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">Category</button>
+            <ul class="dropdown-menu bg-primary">
+              <li><a class="dropdown-item text-light" href="#">Action</a></li>
+              <li><a class="dropdown-item text-light" href="#">Another action</a></li>
+              <li><a class="dropdown-item text-light" href="#">Something else here</a></li>
             </ul>
             <!--
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
+              <li><a class="dropdown-item text-light" href="#">Action</a></li>
+              <li><a class="dropdown-item text-light" href="#">Another action</a></li>
+              <li><a class="dropdown-item text-light" href="#">Something else here</a></li>
             </ul>
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dashboard</button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu bg-primary">
               <li><a class="dropdown-item" href="#">Action</a></li>
               <li><a class="dropdown-item" href="#">Another action</a></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -157,33 +151,32 @@ $rowcat=$resultcat->fetch_assoc();
             </ul> -->
             <!-- <button class="btn btn-lg" type="button">Docs</button> -->
             <?php if(@$_SESSION['is_admin']==="1" || @$_SESSION['is_admin']==="2"){?>
-            <button class="btn btn-lg dropdown-toggle" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Products</button>
-            <ul class="dropdown-menu" id="product">
-              <li><a class="dropdown-item" href="addProduct.php">Add Product</a></li>
-              <li><a class="dropdown-item" href="productList.php">Product list</a></li>
-              <li><a class="dropdown-item" href="category.php">Categories</a></li>
+            <button class="btn btn-lg dropdown-toggle text-light" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Products</button>
+            <ul class="dropdown-menu bg-primary" id="product">
+              <li><a class="dropdown-item text-light" href="addProduct.php">Add Product</a></li>
+              <li><a class="dropdown-item text-light" href="productList.php">Product list</a></li>
+              <li><a class="dropdown-item text-light" href="category.php">Categories</a></li>
             </ul>
             
             <?php }?>
             <?php if(@$_SESSION['is_admin']==="2"){?>
-              <button class="btn btn-lg dropdown-toggle" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Role</button>
-              <ul class="dropdown-menu" id="product">
-                <li><a class="dropdown-item" href="user.php">All User</a></li>
+              <button class="btn btn-lg dropdown-toggle text-light" id="product" type="button" data-bs-toggle="dropdown" aria-expanded="false">Role</button>
+              <ul class="dropdown-menu bg-primary" id="product">
+                <li><a class="dropdown-item text-light" href="user.php">All User</a></li>
               </ul>
              
             <?php }?>
         </div>
     
     </div>
-</body>
 <script>
 function search() {
     var text = document.getElementById("search_text").value;
-    var selectedOption = document.querySelector('#product option[value="' + text + '"]');
-    if (selectedOption) {
-        var id = selectedOption.getAttribute('data-id');
-        location.href = "category.php?display_id=" + id;
-    }
+    console.log(text);
+
+    sessionStorage.setItem("search_text", text);
+    window.location.href = "category.php";
 }
+
+
 </script>
-  </html>

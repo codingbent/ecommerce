@@ -36,14 +36,7 @@ $result = $con->query($query);
                             echo '            <h5 class="card-title">' . $product_row["title"] . '</h5>';
                             echo '            <p class="card-text">' . $product_row["label"] . '</p>';
                             echo '            <p class="mb-2 card-text">₹' . $product_row["price"] . '</p>';
-                            echo '            <div class="d-flex justify-content-center">';
-                            echo '                <button class="btn btn-success" onclick="decrementQuantity(' . $product_row["p_id"] . ')">-</button>';
-                            echo '                <input type="text" id="productQuantity_' . $product_row["p_id"] . '" class="w-25 text-center mx-1" value="0">';
-                            echo '                <button class="btn btn-success" onclick="incrementQuantity(' . $product_row["p_id"] . ')">+</button>';
                             echo '            </div>';
-                            echo '            <button class="btn btn-success w-100 mt-2" onclick="addToCart(' . $product_row["p_id"] . ')" type="button">Add to Cart</button>';
-                            echo '            <button class="btn border border-success mt-2" onclick="addToFav(' . $product_row["p_id"] . ')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></svg></button>';
-                            echo '        </div>';
                             echo '    </div></a>';
                             echo '</div>';
                         }

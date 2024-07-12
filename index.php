@@ -4,36 +4,39 @@ $sqlcategory="SELECT * FROM CATEGORY";
 $resultcategory=$con->query($sqlcategory);
 
 ?>
-  <section class=" two my-5">
-    <div id="carouselExample" class="carousel slide">
+  <section class=" two">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="https://thumbs.dreamstime.com/b/showcase-pickles-canned-vegetables-store-carousel-st-petersburg-russia-october-food-products-109698940.jpg" class="d-block w-100" alt="...">
+          <img src="images/cover1.jpg" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="https://thumbs.dreamstime.com/b/showcase-pickles-canned-vegetables-store-carousel-st-petersburg-russia-october-food-products-109698940.jpg" class="d-block w-100" alt="...">
+          <img src="images/cover2.jpg" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="https://thumbs.dreamstime.com/b/showcase-pickles-canned-vegetables-store-carousel-st-petersburg-russia-october-food-products-109698940.jpg" class="d-block w-100" alt="...">
+          <img src="images/cover3.jpg" class="d-block w-100" alt="...">
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
    </section>
-   <section class="three my-5">
-    <h4 class="ms-5">Shop By Category</h4>
-    <div class="d-flex">;
+   <section class="three container my-5">
+    <h4>Shop By Category</h4>
+    <div class="d-flex">
     <?php
     if($resultcategory->num_rows>0){
       while($rowcategory=$resultcategory->fetch_assoc()){
-        echo '<image class="border rounded-circle ms-5 mt-3" onclick="category(' . $rowcategory['category_id'] . ')"src="' . $rowcategory['image'] . '" style="width:80px;height:80px;">';
+        echo '<div>';
+        echo '<div class="border rounded-circle m-4"> <image onclick="category(' . $rowcategory['category_id'] . ')"src="' . $rowcategory['image'] . '" style="width:80px;height:80px;"></div>';
+        echo '<p class="fs-5 text text-center">' . $rowcategory['category_name'] .'</p>';
+        echo '</div>';
       }
     }
     ?>

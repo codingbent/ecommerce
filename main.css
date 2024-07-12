@@ -100,6 +100,8 @@ table .table {
   }
 }
 
-
+.nav .dropdown-item:focus{
+  color: rgb(255, 21, 0)!important;
+}
 
 
