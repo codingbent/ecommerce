@@ -2,8 +2,8 @@
 include 'connection.php';
 include 'nav.php';
 
-if (isset($_GET['id'])) {
-    $product_id = $_GET['id'];
+if (isset($_SESSION['e_id'])) {
+    $product_id = $_SESSION['e_id'];
     $sql = "SELECT * FROM PRODUCT WHERE p_id = ?";
     $stmt = $con->prepare($sql);
     $stmt->bind_param("i", $product_id);
@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
 }
 
 // Handle form submission
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $titlenew = $_POST['title'];
     $labelnew = $_POST['label'];
     $cost = $_POST['cost'];
@@ -37,7 +37,7 @@ if(isset($_POST['submit'])){
     $brand = $_POST['brand'];
     
     // Check if image1 is uploaded
-    if(isset($_FILES['image1']) && $_FILES['image1']['error'] === UPLOAD_ERR_OK){
+    if (isset($_FILES['image1']) && $_FILES['image1']['error'] === UPLOAD_ERR_OK) {
         $img1 = $_FILES['image1']['tmp_name'];
         $img1_name = $_FILES['image1']['name'];
         $target_file1 = "images/" . basename($img1_name);
@@ -47,7 +47,7 @@ if(isset($_POST['submit'])){
     }
 
     // Check if image2 is uploaded
-    if(isset($_FILES['image2']) && $_FILES['image2']['error'] === UPLOAD_ERR_OK){
+    if (isset($_FILES['image2']) && $_FILES['image2']['error'] === UPLOAD_ERR_OK) {
         $img2 = $_FILES['image2']['tmp_name'];
         $img2_name = $_FILES['image2']['name'];
         $target_file2 = "images/" . basename($img2_name);
@@ -56,7 +56,7 @@ if(isset($_POST['submit'])){
         $target_file2 = $row['image2']; 
     }
 
-    if(isset($_FILES['image3']) && $_FILES['image3']['error'] === UPLOAD_ERR_OK){
+    if (isset($_FILES['image3']) && $_FILES['image3']['error'] === UPLOAD_ERR_OK) {
         $img3 = $_FILES['image3']['tmp_name'];
         $img3_name = $_FILES['image3']['name'];
         $target_file3 = "images/" . basename($img3_name);
@@ -79,17 +79,16 @@ if(isset($_POST['submit'])){
     $stmt = $con->prepare($updatesql);
     $stmt->bind_param("ssdissssi", $titlenew, $labelnew, $cost, $category, $brand, $target_file1, $target_file2, $target_file3, $product_id);
 
-    if($stmt->execute()){
+    if ($stmt->execute()) {
         echo '<script>alert("Product Updated");</script>';
     } else {
-        echo '<script>alert("Error updating product: '. $stmt->error .'")</script>';
+        echo '<script>alert("Error updating product: ' . $stmt->error . '")</script>';
     }
 
     $stmt->close();
 }
 
 ?>
-
 
 <div class="edit_product">
     <p class="fs-4 text">Edit Product</p>
@@ -109,26 +108,26 @@ if(isset($_POST['submit'])){
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Image 2</label>
-            <input class="form-control imageinput" name="image2" type="file" id="formFile"">
-            <img src="<?php echo $row['image2']; ?>" alt="" class="image2" style="max-width: 150px;height: 150px;">
+            <input class="form-control imageinput" name="image2" type="file" id="formFile">
+            <img src="<?php echo $row['image2']; ?>" alt="" class="image2" style="max-width: 150px; height: 150px;">
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Image 3</label>
-            <input class="form-control imageinput" name="image3" type="file" id="formFile"">
-            <img src="<?php echo $row['image3']; ?>" alt="" class="image3" style="max-width: 150px;height: 150px;">
+            <input class="form-control imageinput" name="image3" type="file" id="formFile">
+            <img src="<?php echo $row['image3']; ?>" alt="" class="image3" style="max-width: 150px; height: 150px;">
         </div>
         <div class="mb-3">
             <label for="inlineFormSelectPref" class="form-label">Category <sup>*</sup></label>
             <select required name="category" class="form-select" id="inlineFormSelectPref">
                 <option value="">Choose...</option>
                 <?php 
-                if($result1->num_rows > 0){
-                    while($row1 = $result1->fetch_assoc()){
-                        if($row['c_id'] == $row1['category_id']){
-                            echo '<option selected value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
-                        } else {
-                            echo '<option value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
+                if ($result1->num_rows > 0) {
+                    while ($row1 = $result1->fetch_assoc()) {
+                        echo '<option value="' . $row1['category_id'] . '"';
+                        if ($row['c_id'] == $row1['category_id']) {
+                            echo ' selected';
                         }
+                        echo '>' . $row1['category_name'] . '</option>';
                     }
                 }
                 ?>
@@ -139,13 +138,13 @@ if(isset($_POST['submit'])){
             <select required name="brand" class="form-select" id="inlineFormSelectPref">
                 <option value="">Choose...</option>
                 <?php 
-                if($result2->num_rows > 0){
-                    while($row2 = $result2->fetch_assoc()){
-                        if($row['brand_id'] == $row2['brand_id']){
-                            echo '<option selected value="' . $row2['brand_id'] . '">' . $row2['brand_name'] . '</option>';
-                        } else {
-                            echo '<option value="' . $row2['brand_id'] . '">' . $row2['brand_name'] . '</option>';
+                if ($result2->num_rows > 0) {
+                    while ($row2 = $result2->fetch_assoc()) {
+                        echo '<option value="' . $row2['brand_id'] . '"';
+                        if ($row['brand_id'] == $row2['brand_id']) {
+                            echo ' selected';
                         }
+                        echo '>' . $row2['brand_name'] . '</option>';
                     }
                 }
                 ?>

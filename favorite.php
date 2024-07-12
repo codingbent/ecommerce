@@ -24,7 +24,7 @@ if($result1->num_rows > 0){
               JOIN favorite f ON p.p_id = $product_id;";
     $result = $con->query($query);
     $row = $result->fetch_assoc();
-    echo '<tr onclick="location.href=\'description.php?id=' . $row['p_id'] . '\'">';
+    echo '<tr onclick="show(' . $row['p_id'] . ')">';
     echo '<td scope="row" style="width:5%">'. $a++ .'</td>';
     echo '<td><img src="'. $row["image"] . '"style="width:30%;"></td>';
     echo '<td><h3>' . $row["title"] . '</h3><h5>₹' . $row["price"] . '</h5></td>';
@@ -49,6 +49,21 @@ function removeFav(p_id){
                     }
                 };
                 xhr.send('p_id=' + p_id);
+}
+
+function show(p_id) {
+    $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {p_id: p_id},
+    success: function(response){
+      window.location.href = "description.php";
+    },
+    error: function(xhr, status, error){
+      console.error(error);
+    }
+  });
+  console.log(c_id);
 }
 </script>
 <?php 

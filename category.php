@@ -162,7 +162,7 @@ $resultcategory = $con->query($sqlcategory);
                 <?php 
                 if ($resultproduct->num_rows > 0) {
                     while ($rowproduct = $resultproduct->fetch_assoc()) {
-                        echo '"<div class="card d-flex flex-row mb-3">';
+                        echo '<a onclick="description(' . $rowproduct['p_id'] . ');"><div class="card d-flex flex-row mb-3">';
                         echo '<div><img src="' . $rowproduct['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 200px;"></div>';
                         echo '<div class="card-body">';
                         echo '<h5 class="card-title fs-4 text">' . $rowproduct['title'] . '</h5>';
@@ -264,6 +264,21 @@ $resultcategory = $con->query($sqlcategory);
 
         window.resetForm = resetForm;
     });
+
+    function description(p_id) {
+    $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {p_id: p_id},
+    success: function(response){
+      window.location.href = "description.php";
+    },
+    error: function(xhr, status, error){
+      console.error(error);
+    }
+  });
+  console.log(c_id);
+}
 </script>
 <style>
     .hidden {

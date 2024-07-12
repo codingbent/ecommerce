@@ -122,12 +122,7 @@ $rowcat=$resultcat->fetch_assoc();
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Separated link</a></li>
             </ul> -->
-            <button class="btn btn-lg dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">Home</button>
-            <ul class="dropdown-menu bg-primary">
-              <li><a class="dropdown-item text-light" href="#">Action</a></li>
-              <li><a class="dropdown-item text-light" href="#">Another action</a></li>
-              <li><a class="dropdown-item text-light" href="#">Something else here</a></li>
-            </ul>
+            <a class="btn btn-lg text-light" type="button" href="index.php">Home</a>
             <button class="btn btn-lg dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">Category</button>
             <ul class="dropdown-menu bg-primary">
               <li><a class="dropdown-item text-light" href="#">Action</a></li>

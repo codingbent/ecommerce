@@ -29,7 +29,7 @@ $result = $con->query($query);
                     if ($products_result->num_rows > 0) {
                         echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">';
                         while ($product_row = $products_result->fetch_assoc()) {
-                            echo '<div class="col mb-4"><a href="description.php?id=' . $product_row['p_id'] .'">';
+                            echo '<div class="col mb-4"><a onclick="description(' . $product_row['p_id'] . ');">';
                             echo '    <div class="card h-100">';
                             echo '        <img src="' . $product_row["image"] . '" class="card-img-top" style="height: 200px; object-fit: contain;" alt="Product Image">';
                             echo '        <div class="card-body">';
@@ -59,74 +59,23 @@ $result = $con->query($query);
 </section>
 
 <script>
-    function incrementQuantity(productId) {
-        var quantityInput = document.getElementById('productQuantity_' + productId);
-        var quantity = parseInt(quantityInput.value);
-        quantity++;
-        quantityInput.value = quantity;
+
+function description(p_id) {
+    $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {p_id: p_id},
+    success: function(response){
+      window.location.href = "description.php";
+    },
+    error: function(xhr, status, error){
+      console.error(error);
     }
-
-    function decrementQuantity(productId) {
-        var quantityInput = document.getElementById('productQuantity_' + productId);
-        var quantity = parseInt(quantityInput.value);
-        if (quantity > 0) {
-            quantity--;
-            quantityInput.value = quantity;
-        }
-    }
-
-    function addToCart(productId) {
-        var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
-
-        if (!isLoggedIn) {
-            alert("Please log in");
-        } else {
-            var quantityInput = document.getElementById('productQuantity_' + productId);
-            var quantity = parseInt(quantityInput.value);
-            if (quantity > 0) {
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'addToCart.php', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                    if (xhr.status == 200) {
-                        location.reload();
-                    } else {
-                        alert('Error adding product to cart.');
-                    }
-                };
-                xhr.send('productId=' + productId + '&quantity=' + quantity);
-            } else {
-                alert('Please select a quantity greater than 0.');
-            }
-        }
-    }
-
-    function addToFav(productId) {
-        var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
-
-        if (!isLoggedIn) {
-            alert("Please log in");
-        } else {
-            $.ajax({
-                url:"addtoFav.php",
-                type:"POST",
-                data:{proId:productId},
-                success: function(res){
-                   if(res==1){
-                    location.reload();
-                    alert("Product Added sucessfuly");
-                    return
-                   }else{
-                    alert("error");
-                    return;
-                   }
-                }
-            })
-        }
-    }
+  });
+  console.log(c_id);
+}
 
     function viewAll(c_id) {
-
         $.ajax({
     url: "set_session.php",
     type: "POST",

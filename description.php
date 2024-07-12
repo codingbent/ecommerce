@@ -1,25 +1,68 @@
 <?php
 include 'connection.php';
-$id = $_GET['id'];
-$sql="SELECT * FROM PRODUCT WHERE p_id=$id";
-$result=mysqli_query($con,$sql);
+include 'nav.php';
 
-$sql1="SELECT * from cart where product_id=$id";
-$result1=mysqli_query($con,$sql1);
 
-if($result->num_rows>0){
-    $productDetails=$result->fetch_assoc();
-}
-if($result1->num_rows>=0){
-    $totalProduct=$result1->fetch_assoc();
-}else{
-    $$totalProduct=0;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['p_id'])) {
+        $p_id = $_POST['p_id'];
+        $_SESSION['p_id'] = $p_id; // Set p_id in session
+    } else {
+        die("p_id not received");
+    }
 }
 
+// Check if p_id is in session
+if (isset($_SESSION['p_id'])) {
+    $p_id = $_SESSION['p_id'];
 
-?>
-<?php
-    include 'nav.php'
+    // Fetch product details
+    $sqlproduct = "SELECT * FROM product WHERE p_id=?";
+    $stmt = $con->prepare($sqlproduct);
+    $stmt->bind_param("i", $p_id);
+    $stmt->execute();
+    $resultproduct = $stmt->get_result();
+
+    // Fetch cart details
+    $sqlcart = "SELECT * FROM cart WHERE product_id=?";
+    $stmt = $con->prepare($sqlcart);
+    $stmt->bind_param("i", $p_id);
+    $stmt->execute();
+    $resultcart = $stmt->get_result();
+
+    // Handle errors in SQL queries
+    if (!$resultproduct) {
+        die("Error in product query: " . $con->error);
+    }
+
+    // Fetch product details if available
+    if ($resultproduct->num_rows > 0) {
+        $productDetails = $resultproduct->fetch_assoc();
+    } else {
+        $productDetails = null; // Handle case where product is not found
+    }
+
+    // Fetch cart details if available
+    if ($resultcart->num_rows > 0) {
+        $totalProduct = $resultcart->fetch_assoc();
+    } else {
+        $totalProduct = 0; // Handle case where cart entry is not found
+    }
+
+    // Example of using the fetched data
+    if ($productDetails) {
+        // Display or process $productDetails
+        // Example: echo $productDetails['product_name'];
+    }
+
+    if ($totalProduct) {
+        // Display or process $totalProduct
+        // Example: echo $totalProduct['quantity'];
+    }
+
+} else {
+    echo "p_id not found in session";
+}
 ?>
 <section class="mt-5">
     <div class="container">
@@ -31,12 +74,12 @@ if($result1->num_rows>=0){
                             <img src="<?php echo $productDetails['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div>
                         <?php
-                        if($productDetails['image2']!=NULL){
+                        if($productDetails['image2']!=0){
                             echo ' <div class="carousel-item">';
                             echo '<img src="' . $productDetails['image2'] . '" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
                             echo '</div>';
                         }
-                        if($productDetails['image3']!=NULL){
+                        if($productDetails['image3']!=0){
                             echo ' <div class="carousel-item">';
                             echo '<img src="' . $productDetails['image3'] . '" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
                             echo '</div>';
@@ -70,22 +113,26 @@ if($result1->num_rows>=0){
                     <div>
                         <?php
                         echo '<div class="input-group input-spinner">';
-                        echo '    <button class="btn btn-success" onclick="decrementQuantity(' . $productDetails['p_id'] . ')">-</button>';
-                        echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-50 text-center mx-1" value=0>';
-                        echo '    <button class="btn btn-success" onclick="incrementQuantity(' . $productDetails['p_id'] . ')">+</button>';
+                        echo '    <button class="btn btn-light" onclick="decrementQuantity(' . $productDetails['p_id'] . ')">-</button>';
+                        echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-25 border-0 text-center mx-1 input" value=0>';
+                        echo '    <button class="btn btn-light" onclick="incrementQuantity(' . $productDetails['p_id'] . ')">+</button>';
                         echo '</div>';
                         ?>
                     </div>
                     <div class="mt-3 row justify-content-between g-2 align-items-center d-flex">
                         <!-- <div class="col-xxl-4 col-lg-4 col-md-5 col-5 d-grid"> -->
-                        <?php echo'<div class=""><button type="button" class="btn btn-success w-25 ms-3 me-4">';
+                        <?php echo'<div class=""><button type="button" class="btn btn-success w-25 ms-3 me-3">';
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
                               echo ' Buy Now';
                             echo '</button>';
-                            echo'<button type="button" onclick="addToCart(' . $productDetails['p_id'] . ')" class="btn btn-success w-25 ms-4">';
+                            echo'<button type="button" onclick="addToFav(' . $productDetails['p_id'] . ')" class="btn btn-success w-30 ms-2">';
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
-                              echo '  Add To Cart';
+                              echo '  Add To Favorite';
                             echo '</button></div>';
+                            echo'<button type="button" onclick="addToCart(' . $productDetails['p_id'] . ')" class="btn btn-success w-50 ms-4">';
+                            echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
+                            echo '  Add To Cart';
+                          echo '</button>';
                             ?>
                         </div>
                     <!-- </div> -->
@@ -206,25 +253,52 @@ function incrementQuantity(productId) {
 
     function addToCart(productId) {
         var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
+        var productID = <?php echo $productDetails['p_id']; ?>;
+var quantity = document.getElementById('productQuantity_' + productID).value;
+console.log(quantity);
 
-if (!isLoggedIn) {
-    alert("Please log in");
-} else {
-    $.ajax({
-        url:"addtoFav.php",
-        type:"POST",
-        data:{proId:productId},
-        success: function(res){
-           if(res==1){
-            alert("add");
-            return
-           }else{
-            alert("error");
-            return;
-           }
+
+        if (!isLoggedIn) {
+            alert("Please log in");
+        } else {
+            $.ajax({
+                url:"addtoCart.php",
+                type:"POST",
+                data:{proId:productId, quantity:quantity},
+                success: function(res){
+                if(res==1){
+                    alert("Product added to cart successfully");
+                    return
+                }else{
+                    alert("error");
+                    return;
+                }
+                }
+            })
         }
-    })
 }
+function addToFav(productId){
+    var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
+        var productID = <?php echo $productDetails['p_id']; ?>;
+        if (!isLoggedIn) {
+            alert("Please log in");
+        } else {
+            $.ajax({
+                url:"addtoFav.php",
+                type:"POST",
+                data:{proId:productId},
+                success: function(res){
+                if(res==1){
+                    alert("Product added to Favorite successfully");
+                    return
+                }else{
+                    alert("error");
+                    return;
+                }
+                }
+            })
+        }
 }
+
 </script>
 </html>
