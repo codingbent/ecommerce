@@ -8,9 +8,6 @@ body {
   padding: 0;
 }
 
-.four .container{
-  margin: 3%;
-}
 @media (max-width:450px){
   .col{
     width: 100%!important;

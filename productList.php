@@ -3,7 +3,7 @@ include 'connection.php';
 include 'nav.php';
 ?>
 <div class="mx-5">
-    <div class="title d-flex justify-content-between">
+    <div class="container mt-3 title d-flex justify-content-between">
         <p class="fs-3 text">Product Grid</p>
         <a href="addProduct.php" class="fs-3 text btn btn-success">Add Product</a>
     </div>
