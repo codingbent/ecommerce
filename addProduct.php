@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST['description'];
     $category = $_POST['category'];
     $cost = $_POST['cost'];
+    $brand=$_POST['brand'];
 
     $img1 = $_FILES['img1'];
     $img1Name = $img1['name'];
@@ -53,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $img3name="";
     }
 
-    $stmt = $con->prepare("INSERT INTO product (title, label, image, image2, image3, price, c_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssi", $product, $description, $img1Destination, $img2Destination, $img3Destination, $cost, $category);
+    $stmt = $con->prepare("INSERT INTO product (title, label, image, image2, image3, price, c_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssii", $product, $description, $img1Destination, $img2Destination, $img3Destination, $cost, $category, $brand);
 
     if ($stmt->execute()) {
         echo "<script>alert('New product inserted successfully');</script>";
@@ -69,7 +70,6 @@ $con->close();
 ?>
 
 <?php include 'nav.php'; ?>
-<link rel="stylesheet" href="main.css">
 <div class="add_product">
     <p class="fs-4 text">Create product</p>
     <form class="product_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
@@ -95,12 +95,12 @@ $con->close();
         </div>
         <div class="mb-3">
             <label class="form-label" for="inlineFormSelectPref">Category<sup>*</sup></label>
-            <select name="category" required  class="form-select" id="inlineFormSelectPref">
-                <option selected>Choose...</option>
+            <select name="category" class="form-select" id="inlineFormSelectPref" required>
+                <option disabled selected value="">Choose...</option>
                 <?php 
                 if ($result1->num_rows > 0) {
                     while ($row1 = $result1->fetch_assoc()) {
-                        echo '<option  value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
+                        echo '<option value="' . $row1['category_id'] . '">' . $row1['category_name'] . '</option>';
                     }
                 }
                 ?>
@@ -108,12 +108,12 @@ $con->close();
         </div>
         <div class="mb-3">
             <label class="form-label" for="inlineFormSelectPref">Brand<sup>*</sup></label>
-            <select name="category" required  class="form-select" id="inlineFormSelectPref">
-                <option selected>Choose...</option>
+            <select name="brand"   class="form-select" id="inlineFormSelectPref" required>
+                <option disabled selected valu="">Choose...</option>
                 <?php 
                 if ($result2->num_rows > 0) {
                     while ($row2 = $result2->fetch_assoc()) {
-                        echo '<option  value="' . $row2['barnd_id'] . '">' . $row2['brand_name'] . '</option>';
+                        echo '<option  value="' . $row2['brand_id'] . '">' . $row2['brand_name'] . '</option>';
                     }
                 }
                 ?>

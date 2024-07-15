@@ -100,8 +100,9 @@ table .table {
   }
 }
 
-.nav .dropdown-item:focus{
-  color: rgb(255, 21, 0)!important;
+.nav a:hover{
+  background-color: #007bff!important;
+  color: white;
 }
 
 

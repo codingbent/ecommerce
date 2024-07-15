@@ -11,8 +11,8 @@ $result = $con->query($query);
         height: 500px;
     }
 </style>
-<section class="four">
-    <div class="container text-center">
+<section class="container fluid four">
+    <div class="text-center">
         <div class="row">
             <?php
             if ($result->num_rows > 0) {
@@ -30,7 +30,7 @@ $result = $con->query($query);
                         echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">';
                         while ($product_row = $products_result->fetch_assoc()) {
                             echo '<div class="col mb-4"><a onclick="description(' . $product_row['p_id'] . ');">';
-                            echo '    <div class="card h-100">';
+                            echo '    <div class="card">';
                             echo '        <img src="' . $product_row["image"] . '" class="card-img-top" style="height: 200px; object-fit: contain;" alt="Product Image">';
                             echo '        <div class="card-body">';
                             echo '            <h5 class="card-title">' . $product_row["title"] . '</h5>';

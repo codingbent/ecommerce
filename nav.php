@@ -34,6 +34,10 @@ else if(isset($_SESSION['user_id'])){
 $sqlcat="SELECT * FROM product";
 $resultcat=$con->query($sqlcat);
 $rowcat=$resultcat->fetch_assoc();
+
+$sqlcategory="SELECT * FROM category";
+$resultcategory=$con->query($sqlcategory);
+
 ?>
 
 <!DOCTYPE html>
@@ -125,9 +129,13 @@ $rowcat=$resultcat->fetch_assoc();
             <a class="btn btn-lg text-light" type="button" href="index.php">Home</a>
             <button class="btn btn-lg dropdown-toggle text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">Category</button>
             <ul class="dropdown-menu bg-primary">
-              <li><a class="dropdown-item text-light" href="#">Action</a></li>
-              <li><a class="dropdown-item text-light" href="#">Another action</a></li>
-              <li><a class="dropdown-item text-light" href="#">Something else here</a></li>
+              <?php
+               if($resultcategory->num_rows>0){
+                while($rowcategory=$resultcategory->fetch_assoc()){
+              echo'<li><a class="dropdown-item text-light" onclick="viewAll(' . $rowcategory['category_id'] .')">' . $rowcategory['category_name'] . '</a></li>';
+                }
+              }
+              ?>
             </ul>
             <!--
             <button class="btn btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</button>
@@ -172,6 +180,21 @@ function search() {
     sessionStorage.setItem("search_text", text);
     window.location.href = "category.php";
 }
-
+function viewAll(c_id) {
+        $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {c_id: c_id},
+    success: function(response){
+      // After the session is set, redirect to the category page
+      window.location.href = "category.php";
+    },
+    error: function(xhr, status, error){
+      // Handle error
+      console.error(error);
+    }
+  });
+  console.log(c_id);
+}
 
 </script>

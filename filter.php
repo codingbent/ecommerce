@@ -48,14 +48,14 @@ $result = $stmt->get_result();
 // Build HTML for filtered products
 if ($result->num_rows > 0) {
     while ($rowproduct = $result->fetch_assoc()) {
-        echo '<div class="card d-flex flex-row mb-3">';
+        echo '<a onclick="description(' . $rowproduct['p_id'] . ');"><div class="card d-flex flex-row mb-3">';
         echo '<div><img src="' . $rowproduct['image'] . '" class="card-img-top ms-2 mt-2" alt="..." style="width: 200px;"></div>';
         echo '<div class="card-body">';
         echo '<h5 class="card-title fs-4 text">' . $rowproduct['title'] . '</h5>';
         echo '<p class="card-text fs-6 text">' . $rowproduct['label'] . '</p>';
         echo '<p class="card-text fs-5 text"><b>₹' . $rowproduct['price'] . '</b></p>';
         echo '</div>';
-        echo '</div>';
+        echo '</div></a>';
     }
 } else {
     echo '<p>No products found.</p>';
@@ -65,3 +65,20 @@ if ($result->num_rows > 0) {
 $stmt->close();
 $con->close();
 ?>
+<script>
+    function description(p_id) {
+        console.log(p_id);
+    $.ajax({
+    url: "set_session.php",
+    type: "POST",
+    data: {p_id: p_id},
+    success: function(response){
+      window.location.href = "description.php";
+    },
+    error: function(xhr, status, error){
+      console.error(error);
+    }
+  });
+  console.log(p_id);
+}
+    </script>

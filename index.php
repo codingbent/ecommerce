@@ -34,7 +34,7 @@ $resultcategory=$con->query($sqlcategory);
     if($resultcategory->num_rows>0){
       while($rowcategory=$resultcategory->fetch_assoc()){
         echo '<div>';
-        echo '<div class="border rounded-circle m-4"> <image onclick="category(' . $rowcategory['category_id'] . ')"src="' . $rowcategory['image'] . '" style="width:80px;height:80px;"></div>';
+        echo '<div class="border border-dark rounded-circle m-4 p-3"> <image onclick="category(' . $rowcategory['category_id'] . ')"src="' . $rowcategory['image'] . '" style="width:80px;height:80px;"></div>';
         echo '<p class="fs-5 text text-center">' . $rowcategory['category_name'] .'</p>';
         echo '</div>';
       }

@@ -12,52 +12,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Check if p_id is in session
 if (isset($_SESSION['p_id'])) {
     $p_id = $_SESSION['p_id'];
 
-    // Fetch product details
     $sqlproduct = "SELECT * FROM product WHERE p_id=?";
     $stmt = $con->prepare($sqlproduct);
     $stmt->bind_param("i", $p_id);
     $stmt->execute();
     $resultproduct = $stmt->get_result();
 
-    // Fetch cart details
     $sqlcart = "SELECT * FROM cart WHERE product_id=?";
     $stmt = $con->prepare($sqlcart);
     $stmt->bind_param("i", $p_id);
     $stmt->execute();
     $resultcart = $stmt->get_result();
 
-    // Handle errors in SQL queries
+    $sqldetails="SELECT * FROM product_details where p_id=?";
+    $stmt = $con->prepare($sqldetails);
+    $stmt->bind_param("i", $p_id);
+    $stmt->execute();
+    $resultdetails = $stmt->get_result();
+
+
     if (!$resultproduct) {
         die("Error in product query: " . $con->error);
     }
 
-    // Fetch product details if available
     if ($resultproduct->num_rows > 0) {
-        $productDetails = $resultproduct->fetch_assoc();
+        $rowproduct = $resultproduct->fetch_assoc();
     } else {
-        $productDetails = null; // Handle case where product is not found
+        $rowproduct = null; 
     }
-
-    // Fetch cart details if available
+    $category=$rowproduct['c_id'];
+    $sqlcategory="SELECT * FROM category where category_id=$category";
+    $resultcategory=$con->query($sqlcategory);
+    if($resultcategory->num_rows>0){
+        while($rowcategory=$resultcategory->fetch_assoc()){
+            $categoryType= $rowcategory['category_name'];
+        }
+    }
     if ($resultcart->num_rows > 0) {
         $totalProduct = $resultcart->fetch_assoc();
     } else {
-        $totalProduct = 0; // Handle case where cart entry is not found
-    }
-
-    // Example of using the fetched data
-    if ($productDetails) {
-        // Display or process $productDetails
-        // Example: echo $productDetails['product_name'];
-    }
-
-    if ($totalProduct) {
-        // Display or process $totalProduct
-        // Example: echo $totalProduct['quantity'];
+        $totalProduct = 0; 
     }
 
 } else {
@@ -71,17 +68,17 @@ if (isset($_SESSION['p_id'])) {
                 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="<?php echo $productDetails['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
+                            <img src="<?php echo $rowproduct['image']?>" style="width: 25rem; margin: 10px" class="d-block" alt="...">
                         </div>
                         <?php
-                        if($productDetails['image2']!=0){
+                        if($rowproduct['image2']!=0){
                             echo ' <div class="carousel-item">';
-                            echo '<img src="' . $productDetails['image2'] . '" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
+                            echo '<img src="' . $rowproduct['image2'] . '" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
                             echo '</div>';
                         }
-                        if($productDetails['image3']!=0){
+                        if($rowproduct['image3']!=0){
                             echo ' <div class="carousel-item">';
-                            echo '<img src="' . $productDetails['image3'] . '" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
+                            echo '<img src="' . $rowproduct['image3'] . '" style="width: 25rem; margin: 10px" class="d-block" alt="...">';
                             echo '</div>';
                         }
                         ?>
@@ -98,11 +95,11 @@ if (isset($_SESSION['p_id'])) {
             </div>
             <div class="col-md-5 col-xl-6">
                 <div class="ps-lg-10 mt-6 mt-md-0">
-                    <h1 class="mb-1"><?php echo $productDetails['title'] ?></h1>
+                    <h1 class="mb-1"><?php echo $rowproduct['title'] ?></h1>
                     <div class="fs-4">
-                        <span class="fw-bold text-dark"><?php echo '₹' .$productDetails['price'] . ''?></span>
-                        <!-- <span class="text-decoration-line-through text-muted"><?php echo $productDetails['original_price'] ?></span>
-                        <span><small class="fs-6 ms-2 text-danger"><?php echo $productDetails['discount'] ?></small></span> -->
+                        <span class="text-dark"><?php echo $rowproduct['label'] ?></span>
+                        <!-- <span class="text-decoration-line-through text-muted"><?php echo $rowproduct['original_price'] ?></span>
+                        <span><small class="fs-6 ms-2 text-danger"><?php echo $rowproduct['discount'] ?></small></span> -->
                     </div>
                     <hr class="my-6">
                     <!-- <div class="mb-5">
@@ -113,9 +110,9 @@ if (isset($_SESSION['p_id'])) {
                     <div>
                         <?php
                         echo '<div class="input-group input-spinner">';
-                        echo '    <button class="btn btn-light" onclick="decrementQuantity(' . $productDetails['p_id'] . ')">-</button>';
-                        echo '    <input type="text" id="productQuantity_' . $productDetails['p_id'] . '" class="w-25 border-0 text-center mx-1 input" value=0>';
-                        echo '    <button class="btn btn-light" onclick="incrementQuantity(' . $productDetails['p_id'] . ')">+</button>';
+                        echo '    <button class="btn btn-light" onclick="decrementQuantity(' . $rowproduct['p_id'] . ')">-</button>';
+                        echo '    <input type="text" id="productQuantity_' . $rowproduct['p_id'] . '" class="w-25 border-0 text-center mx-1 input" value=0>';
+                        echo '    <button class="btn btn-light" onclick="incrementQuantity(' . $rowproduct['p_id'] . ')">+</button>';
                         echo '</div>';
                         ?>
                     </div>
@@ -125,11 +122,11 @@ if (isset($_SESSION['p_id'])) {
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
                               echo ' Buy Now';
                             echo '</button>';
-                            echo'<button type="button" onclick="addToFav(' . $productDetails['p_id'] . ')" class="btn btn-success w-30 ms-2">';
+                            echo'<button type="button" onclick="addToFav(' . $rowproduct['p_id'] . ')" class="btn btn-danger w-30 ms-2">';
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
                               echo '  Add To Favorite';
                             echo '</button></div>';
-                            echo'<button type="button" onclick="addToCart(' . $productDetails['p_id'] . ')" class="btn btn-success w-50 ms-4">';
+                            echo'<button type="button" onclick="addToCart(' . $rowproduct['p_id'] . ')" class="btn btn-warning w-50 px-5 ms-4">';
                             echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
                             echo '  Add To Cart';
                           echo '</button>';
@@ -158,7 +155,7 @@ if (isset($_SESSION['p_id'])) {
                         </tr>
                         <tr>
                             <td>Type</td>
-                            <td><?php  ?></td>
+                            <td><?php echo '' . $categoryType . ''?></td>
                         </tr>
                         <tr>
                             <td>Shipping</td>
@@ -190,46 +187,80 @@ if (isset($_SESSION['p_id'])) {
             <div class="col-md-12">
                 <ul class="nav nav-pills nav-lb-tab" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab" aria-controls="product-tab-pane" aria-selected="false" tabindex="-1"> Product Details </button>
+                        <button class="nav-link active" id="product-details-tab" data-bs-toggle="tab" data-bs-target="#product-details-pane" role="tab" aria-controls="product-details-pane" aria-selected="true"> Product Details </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab" aria-controls="product-tab-pane" aria-selected="false" tabindex="-1"> Information </button>
+                        <button class="nav-link" id="information-tab" data-bs-toggle="tab" data-bs-target="#information-pane" role="tab" aria-controls="information-pane" aria-selected="false"> Information </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab" aria-controls="product-tab-pane" aria-selected="false" tabindex="-1"> Reviews </button>
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews-pane" role="tab" aria-controls="reviews-pane" aria-selected="false"> Reviews </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="product-tab" data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button" role="tab" aria-controls="product-tab-pane" aria-selected="false" tabindex="-1"> Seller Info </button>
+                        <button class="nav-link" id="seller-info-tab" data-bs-toggle="tab" data-bs-target="#seller-info-pane" role="tab" aria-controls="seller-info-pane" aria-selected="false"> Seller Info </button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade active show" id="product-tab-pane" role="tabpanel" aria-labelledby="product-tab" tabindex="0">
+                    <div class="tab-pane fade show active" id="product-details-pane" role="tabpanel" aria-labelledby="product-details-tab">
                         <div class="my-8">
                             <div class="mb-5">
-                                <h4 class="mb-1">Nutrient Value & Benefits</h4>
-                                <p class="mb-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa iste quis temporibus laboriosam recusandae iusto inventore qui, cum eius quod, earum nisi modi quisquam doloribus consectetur excepturi incidunt eligendi. Sequi?</p>
+                                <?php
+                                if($resultdetails->num_rows > 0){
+                                    if($rowdetails=$resultdetails->fetch_assoc()){
+                                        echo '<h4 class="mb-1">Features</h4>';
+                                        echo '<p class="mb-0">' . $rowdetails['features'] .'</p>';
+                                        echo '</div>';
+                                        echo '<div class="mb-5">';
+                                        echo '<h5 class="mb-1">Storage Tips</h5>';
+                                        echo '<p class="mb-0">' . $rowdetails['storage_tips'] .'</p>';
+                                        echo '</div>';
+                                        echo '<div class="mb-5">';
+                                        echo '<h5 class="mb-1">Units</h5>';
+                                        echo '<p class="mb-0">' . $rowdetails['unit'] .'</p>';
+                                        echo '</div>';
+                                        echo '<div class="mb-5">';
+                                        echo '<h5 class="mb-1">Seller</h5>';
+                                        echo '<p class="mb-0">' . $rowdetails['seller'] .'</p>';
+                                        echo '</div>';
+                                        echo '<div class="mb-5">';
+                                        echo '<h5 class="mb-1">Disclaimer</h5>';
+                                        echo '<p class="mb-0">' . $rowdetails['disclaimer'] .'</p>';
+                                        echo '</div>';
+                                    }
+                                }
+                                ?>
                             </div>
-                            <div class="mb-5">
-                                <h5 class="mb-1">Storage Tips</h5>
-                                <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt explicabo magni veniam voluptatum doloribus ullam nihil expedita numquam delectus odit.</p>
-                            </div>
-                            <div class="mb-5">
-                                <h5 class="mb-1">Unit</h5>
-                                <p class="mb-0">3 units</p>
-                            </div>
-                            <div class="mb-5">
-                                <h5 class="mb-1">Seller</h5>
-                                <p class="mb-0">DMart Pvt. LTD</p>
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Disclaimer</h5>
-                                <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, provident?</p>
                         </div>
-                    </div>…</div>
+                    </div>
+                    <div class="tab-pane fade" id="information-pane" role="tabpanel" aria-labelledby="information-tab">
+                        <div class="my-8">
+                            <div class="mb-5">
+                                <h4 class="mb-1">Information</h4>
+                                <p class="mb-0">Detailed product information goes here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="reviews-pane" role="tabpanel" aria-labelledby="reviews-tab">
+                        <div class="my-8">
+                            <div class="mb-5">
+                                <h4 class="mb-1">Reviews</h4>
+                                <p class="mb-0">Customer reviews and ratings go here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="seller-info-pane" role="tabpanel" aria-labelledby="seller-info-tab">
+                        <div class="my-8">
+                            <div class="mb-5">
+                                <h4 class="mb-1">Seller Info</h4>
+                                <p class="mb-0">Information about the seller goes here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
 </body>
 <?php
 include 'footer.php';
@@ -253,10 +284,9 @@ function incrementQuantity(productId) {
 
     function addToCart(productId) {
         var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
-        var productID = <?php echo $productDetails['p_id']; ?>;
-var quantity = document.getElementById('productQuantity_' + productID).value;
-console.log(quantity);
-
+        var productID = <?php echo $rowproduct['p_id']; ?>;
+        var quantity = document.getElementById('productQuantity_' + productID).value;
+        console.log(quantity);
 
         if (!isLoggedIn) {
             alert("Please log in");
@@ -279,7 +309,7 @@ console.log(quantity);
 }
 function addToFav(productId){
     var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
-        var productID = <?php echo $productDetails['p_id']; ?>;
+        var productID = <?php echo $rowproduct['p_id']; ?>;
         if (!isLoggedIn) {
             alert("Please log in");
         } else {

@@ -3,11 +3,6 @@
 include 'connection.php';
 include 'nav.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
 $search_text = '';
 $c_id = '';
 
@@ -44,12 +39,11 @@ $resultcost = $con->query($sqlcost);
 $rowcost = $resultcost->fetch_assoc();
 $maxPrice = $rowcost['max_price'];
 
-// Fetch products based on search or category
 if (!empty($search_text)) {
-    $sqlproduct = "SELECT * FROM product WHERE title LIKE ?";
+    $sqlproduct = "SELECT * FROM product WHERE title LIKE ? or label LIKE ?";
     $stmt = $con->prepare($sqlproduct);
-    $like_search_text = $search_text . '%';
-    $stmt->bind_param("s", $like_search_text);
+    $like_search_text ='%' . $search_text . '%';
+    $stmt->bind_param("ss", $like_search_text, $like_search_text);
     $stmt->execute();
     $resultproduct = $stmt->get_result();
 } else if (!empty($c_id)) {
@@ -81,7 +75,7 @@ $resultcategory = $con->query($sqlcategory);
 <form id="filter-form">
     <div class="row">
         <aside class="col-sm-3 ms-5">
-            <div class="card">
+            <div class="card mb-2">
                 <article class="card-group-item">
                     <header class="card-header">
                         <h6 class="title">Brands</h6>
@@ -107,7 +101,7 @@ $resultcategory = $con->query($sqlcategory);
                     ?>
                 </article>
             </div>
-            <div class="card">
+            <div class="card mb-2">
                 <article class="card-group-item">
                     <header class="card-header"><h6 class="title">Category</h6></header>
                     <div class="filter-content">
@@ -118,7 +112,7 @@ $resultcategory = $con->query($sqlcategory);
                                 while ($rowcategory = $resultcategory->fetch_assoc()) {
                                     echo '<input class="form-check-input me-2" type="checkbox" name="category[]" value="' . $rowcategory['category_id'] . '" id="' . $rowcategory['category_name'] . '"';
                                     if ($c_id == $rowcategory['category_id']) {
-                                        echo ' checked';
+                                        echo 'checked';
                                     }
                                     echo '>';                                        
                                     echo '<label for="' . $rowcategory['category_name'] . '">' . $rowcategory['category_name'] . '</label><br>';                            
@@ -169,7 +163,7 @@ $resultcategory = $con->query($sqlcategory);
                         echo '<p class="card-text fs-6 text">' . $rowproduct['label'] . '</p>';
                         echo '<p class="card-text fs-5 text"><b>₹' . $rowproduct['price'] . '</b></p>';
                         echo '</div>';
-                        echo '</div>';
+                        echo '</div></a>';
                     }
                 }
                 ?>
@@ -260,12 +254,13 @@ $resultcategory = $con->query($sqlcategory);
             $("#filter-form")[0].reset();
             $("#priceRange").slider("values", [0, maxPrice]);
             filterProducts();
+            // window.location.reload();
         }
-
-        window.resetForm = resetForm;
+        window.resetForm=resetForm;
     });
 
     function description(p_id) {
+        console.log(p_id);
     $.ajax({
     url: "set_session.php",
     type: "POST",

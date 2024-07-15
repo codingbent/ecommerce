@@ -119,7 +119,7 @@ if (isset($_POST['submit'])) {
         <div class="mb-3">
             <label for="inlineFormSelectPref" class="form-label">Category <sup>*</sup></label>
             <select required name="category" class="form-select" id="inlineFormSelectPref">
-                <option value="">Choose...</option>
+                <option>Choose...</option>
                 <?php 
                 if ($result1->num_rows > 0) {
                     while ($row1 = $result1->fetch_assoc()) {
@@ -136,7 +136,7 @@ if (isset($_POST['submit'])) {
         <div class="mb-3">
             <label for="inlineFormSelectPref" class="form-label">Brand <sup>*</sup></label>
             <select required name="brand" class="form-select" id="inlineFormSelectPref">
-                <option value="">Choose...</option>
+                <option>Choose...</option>
                 <?php 
                 if ($result2->num_rows > 0) {
                     while ($row2 = $result2->fetch_assoc()) {
