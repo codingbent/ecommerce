@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2024 at 02:23 PM
+-- Generation Time: Jul 15, 2024 at 01:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -136,7 +136,6 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `image` varchar(250) NOT NULL,
-  `product_id` int(11) DEFAULT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -144,12 +143,12 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `image`, `product_id`, `category_name`) VALUES
-(1, 'images/iphone15_1.jpg', NULL, 'Smartphones'),
-(2, 'images/dell laptop.webp', NULL, 'Laptops'),
-(3, 'images/microsoft tablet.jfif', NULL, 'Tablets'),
-(4, 'images/canon camera.jfif', NULL, 'Cameras'),
-(5, 'images/panasonic tv.jpg', NULL, 'Televisions');
+INSERT INTO `category` (`category_id`, `image`, `category_name`) VALUES
+(1, 'images/iphone15_1.jpg', 'Smartphones'),
+(2, 'images/dell laptop.webp', 'Laptops'),
+(3, 'images/microsoft tablet.jfif', 'Tablets'),
+(4, 'images/canon camera.jfif', 'Cameras'),
+(5, 'images/panasonic tv.jpg', 'Televisions');
 
 -- --------------------------------------------------------
 
@@ -232,7 +231,7 @@ CREATE TABLE `order_item` (
 CREATE TABLE `product` (
   `p_id` int(11) NOT NULL,
   `title` varchar(20) NOT NULL,
-  `label` varchar(200) DEFAULT NULL,
+  `label` varchar(200) NOT NULL,
   `price` int(5) NOT NULL,
   `image` varchar(250) NOT NULL,
   `image2` varchar(250) DEFAULT NULL,
@@ -292,10 +291,82 @@ INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `im
 (44, 'Phase One Camera', 'Medium format camera for professional photography.', 400000, 'images/Phase One Camera.jpg', NULL, NULL, 4, 43),
 (45, 'Philips Television', 'Smart TV with Ambilight technology.', 47000, 'images/Philips Television.jpg', NULL, NULL, 5, 44),
 (46, 'BlackBerry Smartphon', 'Secure smartphone with BlackBerry Hub.', 38000, 'images/BlackBerry Smartphon.jfif', NULL, NULL, 1, 45),
-(47, 'MSI Prestige Laptop', 'Stylish laptop for business professionals.', 30000, '', NULL, NULL, 2, NULL),
+(47, 'MSI Prestige Laptop', 'Stylish laptop for business professionals.', 130000, '', NULL, NULL, 2, 22),
 (48, 'Apple iPad', 'Iconic tablet with Retina display.', 72000, 'images/ipad.jpg', NULL, NULL, 3, 2),
-(49, 'Ricoh Camera', 'Compact camera for street photography.', 40000, '', NULL, NULL, 4, NULL),
-(50, 'Sharp Aquos Televisi', 'Aquos TV with Quattron Pro technology.', 15000, '', NULL, NULL, 5, NULL);
+(49, 'Ricoh Camera', 'Compact camera for street photography.', 40000, '', NULL, NULL, 4, 48),
+(50, 'Sharp Aquos Televisi', 'Aquos TV with Quattron Pro technology.', 45000, '', NULL, NULL, 5, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_details`
+--
+
+CREATE TABLE `product_details` (
+  `id` int(11) NOT NULL,
+  `p_id` int(11) DEFAULT NULL,
+  `features` text DEFAULT NULL,
+  `storage_tips` text DEFAULT NULL,
+  `unit` varchar(50) DEFAULT NULL,
+  `seller` varchar(100) DEFAULT NULL,
+  `disclaimer` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_details`
+--
+
+INSERT INTO `product_details` (`id`, `p_id`, `features`, `storage_tips`, `unit`, `seller`, `disclaimer`) VALUES
+(1, 1, 'Advanced smartphone with latest features.', 'Keep away from extreme temperatures.', '1 unit', 'DMart Pvt. LTD', 'Please read the user manual before using the product.'),
+(2, 2, 'High-performance laptop for productivity.', 'Store in a cool, dry place.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(3, 3, 'Versatile tablet for work and play.', 'Keep away from direct sunlight.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(4, 4, 'Professional camera for photography enthusiasts.', 'Store in a camera bag when not in use.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(5, 5, 'Smart television with immersive experience.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(6, 6, 'Feature-rich smartphone with AI capabilities.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(7, 7, 'Reliable laptop for business and personal use.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(8, 8, 'Affordable tablet for everyday tasks.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(9, 9, 'Compact camera with high-resolution sensor.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(10, 10, 'Ultra HD television with cinematic sound.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(11, 11, 'Flagship smartphone with cutting-edge technology.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(12, 12, 'Sleek laptop with fast processing power.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(13, 13, 'E-reader tablet for avid readers.', 'Store in a cool, dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(14, 14, 'Mirrorless camera for creative photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(15, 15, 'LED TV with vivid colors and smart features.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(16, 16, 'Pixel smartphone with AI-driven camera features.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(17, 17, 'Budget-friendly laptop with good performance.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(18, 18, 'Gaming tablet for mobile gamers.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(19, 19, 'Weather-sealed camera for outdoor photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(20, 20, 'Affordable smart TV with Roku integration.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(21, 21, 'Durable smartphone with long battery life.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(22, 22, 'Gaming laptop with powerful graphics.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(23, 23, 'Budget tablet with high-resolution display.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(24, 24, 'Premium camera with exceptional lens quality.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(25, 25, 'Smart TV with built-in streaming apps.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(26, 26, 'Flagship killer smartphone with OxygenOS.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(27, 27, 'Ultra-thin laptop for gaming enthusiasts.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(28, 28, 'Graphic tablet for digital artists.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(29, 29, 'DSLR camera for professional photographers.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(30, 30, 'Affordable 4K TV with HDR support.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(31, 31, 'Premium smartphone with 5G connectivity.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(32, 32, 'High-performance gaming laptop.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(33, 33, 'Versatile tablet with flexible design.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(34, 34, 'Mirrorless camera with fast autofocus.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(35, 35, 'QLED TV with Quantum Dot technology.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(36, 36, 'Elegant smartphone with BoomSound audio.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(37, 37, 'Powerful gaming laptop for hardcore gamers.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(38, 38, 'Affordable tablet with Alexa integration.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(39, 39, 'Action camera for capturing adventurous moments.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(40, 40, 'OLED TV with deep blacks and vibrant colors.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(41, 41, 'Reliable smartphone with durable design.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(42, 42, 'Gaming laptop with AlienFX lighting.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(43, 43, 'Premium tablet for productivity.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(44, 44, 'Medium format camera for professional photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(45, 45, 'Smart TV with Ambilight technology.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(46, 46, 'Secure smartphone with BlackBerry Hub.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(47, 47, 'Stylish laptop for business professionals.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(48, 48, 'Iconic tablet with Retina display.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(49, 49, 'Compact camera for street photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(50, 50, 'Aquos TV with Quattron Pro technology.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.');
 
 -- --------------------------------------------------------
 
@@ -338,8 +409,7 @@ ALTER TABLE `cart`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`category_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD PRIMARY KEY (`category_id`);
 
 --
 -- Indexes for table `customer`
@@ -368,8 +438,15 @@ ALTER TABLE `order_item`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`p_id`),
-  ADD KEY `fk_category` (`c_id`),
-  ADD KEY `fk_brand_id` (`brand_id`);
+  ADD KEY `brand_id` (`brand_id`),
+  ADD KEY `c_id` (`c_id`);
+
+--
+-- Indexes for table `product_details`
+--
+ALTER TABLE `product_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `p_id` (`p_id`);
 
 --
 -- Indexes for table `sales_order`
@@ -428,7 +505,13 @@ ALTER TABLE `order_item`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT for table `product_details`
+--
+ALTER TABLE `product_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `sales_order`
@@ -454,12 +537,6 @@ ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
 
 --
--- Constraints for table `category`
---
-ALTER TABLE `category`
-  ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
-
---
 -- Constraints for table `favorite`
 --
 ALTER TABLE `favorite`
@@ -477,8 +554,14 @@ ALTER TABLE `order_item`
 -- Constraints for table `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `fk_brand_id` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`),
-  ADD CONSTRAINT `fk_category` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
+  ADD CONSTRAINT `brand_id` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`),
+  ADD CONSTRAINT `c_id` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
+
+--
+-- Constraints for table `product_details`
+--
+ALTER TABLE `product_details`
+  ADD CONSTRAINT `product_details_ibfk_1` FOREIGN KEY (`p_id`) REFERENCES `product` (`p_id`);
 
 --
 -- Constraints for table `sales_order`
