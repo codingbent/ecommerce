@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2024 at 01:43 PM
+-- Generation Time: Jul 16, 2024 at 01:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,6 +38,29 @@ CREATE TABLE `address` (
   `country` varchar(20) NOT NULL,
   `pincode` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alternate_category`
+--
+
+CREATE TABLE `alternate_category` (
+  `alt_id` int(11) NOT NULL,
+  `c_id` int(11) DEFAULT NULL,
+  `alternate_names` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `alternate_category`
+--
+
+INSERT INTO `alternate_category` (`alt_id`, `c_id`, `alternate_names`) VALUES
+(1, 1, 'Mobile Phones & Accessories/Cell Phones/Smartphones/iPhones'),
+(2, 2, 'Personal Computers/Laptops/Notebooks'),
+(3, 3, 'Portable Computers/Tablets/iPads'),
+(4, 4, 'Photography Equipment/Cameras/Digital Cameras'),
+(5, 5, 'Home Entertainment Systems/Televisions/TVs');
 
 -- --------------------------------------------------------
 
@@ -149,6 +172,75 @@ INSERT INTO `category` (`category_id`, `image`, `category_name`) VALUES
 (3, 'images/microsoft tablet.jfif', 'Tablets'),
 (4, 'images/canon camera.jfif', 'Cameras'),
 (5, 'images/panasonic tv.jpg', 'Televisions');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_brand`
+--
+
+CREATE TABLE `category_brand` (
+  `id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL,
+  `c_id` int(11) DEFAULT NULL,
+  `brand_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category_brand`
+--
+
+INSERT INTO `category_brand` (`id`, `p_id`, `c_id`, `brand_id`) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 3),
+(4, 4, 4, 4),
+(5, 5, 5, 5),
+(6, 6, 1, 6),
+(7, 7, 2, 7),
+(8, 8, 3, 8),
+(9, 9, 4, 9),
+(10, 10, 5, 10),
+(11, 11, 1, 11),
+(12, 12, 2, 12),
+(13, 13, 3, 13),
+(14, 14, 4, 14),
+(15, 15, 5, 15),
+(16, 16, 1, 16),
+(17, 17, 2, 17),
+(18, 18, 3, 18),
+(19, 19, 4, 19),
+(20, 20, 5, 20),
+(21, 21, 1, 21),
+(22, 22, 2, 22),
+(23, 23, 3, 23),
+(24, 24, 4, 24),
+(25, 25, 5, 25),
+(26, 26, 1, 26),
+(27, 27, 2, 27),
+(28, 28, 3, 28),
+(29, 29, 4, 29),
+(30, 30, 5, 30),
+(31, 31, 1, 5),
+(32, 32, 2, 22),
+(33, 33, 3, 8),
+(34, 34, 4, 5),
+(35, 35, 5, 1),
+(36, 36, 1, 35),
+(37, 37, 2, 17),
+(38, 38, 3, 13),
+(39, 39, 4, 38),
+(40, 40, 5, 6),
+(41, 41, 1, 40),
+(42, 42, 2, 7),
+(43, 43, 3, 1),
+(44, 44, 4, 43),
+(45, 45, 5, 44),
+(46, 46, 1, 45),
+(47, 47, 2, 22),
+(48, 48, 3, 2),
+(49, 49, 4, 48),
+(50, 50, 5, 15);
 
 -- --------------------------------------------------------
 
@@ -392,6 +484,13 @@ ALTER TABLE `address`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `alternate_category`
+--
+ALTER TABLE `alternate_category`
+  ADD PRIMARY KEY (`alt_id`),
+  ADD KEY `c_id` (`c_id`);
+
+--
 -- Indexes for table `brand`
 --
 ALTER TABLE `brand`
@@ -410,6 +509,15 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `category_brand`
+--
+ALTER TABLE `category_brand`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `p_id` (`p_id`),
+  ADD KEY `c_id` (`c_id`),
+  ADD KEY `brand_id` (`brand_id`);
 
 --
 -- Indexes for table `customer`
@@ -438,8 +546,8 @@ ALTER TABLE `order_item`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`p_id`),
-  ADD KEY `brand_id` (`brand_id`),
-  ADD KEY `c_id` (`c_id`);
+  ADD KEY `fk_product_category` (`c_id`),
+  ADD KEY `fk_product_brand` (`brand_id`);
 
 --
 -- Indexes for table `product_details`
@@ -466,6 +574,12 @@ ALTER TABLE `address`
   MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `alternate_category`
+--
+ALTER TABLE `alternate_category`
+  MODIFY `alt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `brand`
 --
 ALTER TABLE `brand`
@@ -482,6 +596,12 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `category_brand`
+--
+ALTER TABLE `category_brand`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -530,11 +650,25 @@ ALTER TABLE `address`
   ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`);
 
 --
+-- Constraints for table `alternate_category`
+--
+ALTER TABLE `alternate_category`
+  ADD CONSTRAINT `alternate_category_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
+
+--
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`),
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
+
+--
+-- Constraints for table `category_brand`
+--
+ALTER TABLE `category_brand`
+  ADD CONSTRAINT `category_brand_ibfk_1` FOREIGN KEY (`p_id`) REFERENCES `product` (`p_id`),
+  ADD CONSTRAINT `category_brand_ibfk_2` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`),
+  ADD CONSTRAINT `category_brand_ibfk_3` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`);
 
 --
 -- Constraints for table `favorite`
