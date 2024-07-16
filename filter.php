@@ -37,7 +37,7 @@ $stmt = $con->prepare($sql);
 
 // Bind parameters dynamically
 if (!empty($parameters)) {
-    $types = str_repeat('s', count($parameters)); // Assuming all parameters are strings
+    $types = str_repeat('s', count($parameters)); 
     $stmt->bind_param($types, ...$parameters);
 }
 
@@ -81,4 +81,4 @@ $con->close();
   });
   console.log(p_id);
 }
-    </script>
+</script>
