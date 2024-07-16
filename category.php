@@ -40,12 +40,19 @@ $rowcost = $resultcost->fetch_assoc();
 $maxPrice = $rowcost['max_price'];
 
 if (!empty($search_text)) {
-    $sqlproduct = "SELECT * FROM product WHERE title LIKE ? or label LIKE ?";
-    $stmt = $con->prepare($sqlproduct);
-    $like_search_text ='%' . $search_text . '%';
-    $stmt->bind_param("ss", $like_search_text, $like_search_text);
-    $stmt->execute();
-    $resultproduct = $stmt->get_result();
+        $sqlproduct = "SELECT p.*
+                        FROM product p
+                        LEFT JOIN category c ON p.c_id = c.category_id
+                        LEFT JOIN alternate_category ac ON c.category_id = ac.c_id
+                        WHERE p.title LIKE ? OR p.label LIKE ? OR c.category_name LIKE ? OR ac.alternate_names LIKE ?
+                        ";
+                        $like_search_text = '%' . $search_text . '%';
+    
+                        $stmt = $con->prepare($sqlproduct);
+                        $stmt->bind_param("ssss", $like_search_text, $like_search_text, $like_search_text, $like_search_text);
+                        $stmt->execute();
+                        $resultproduct = $stmt->get_result();
+    
 } else if (!empty($c_id)) {
     $sqlproduct = "SELECT * FROM product WHERE c_id=?";
     $stmt = $con->prepare($sqlproduct);
