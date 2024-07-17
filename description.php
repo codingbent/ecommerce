@@ -266,7 +266,15 @@ if (isset($_SESSION['p_id'])) {
 include 'footer.php';
 ?>
 <script>
+    var q =document.getElementsByClassName('input').value;
+    if(!isNaN(q))
+    document.getElementByClassName('input').value=0;
+    console.log(q);
 function incrementQuantity(productId) {
+    var q =document.getElementById('productQuantity_' + productId).value;
+    console.log(q);
+    if(q==''||q===undefined){
+        document.getElementById('productQuantity_' + productId).value=0;}
         var quantityInput = document.getElementById('productQuantity_' + productId);
         var quantity = parseInt(quantityInput.value);
         quantity++;
