@@ -64,15 +64,15 @@ $resultcategory=$con->query($sqlcategory);
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <form class="d-flex mx-auto "  onsubmit="return false;">
                     <input class="form-control text" id="search_text" type="search" placeholder="Search" aria-label="Search" list="product">
-                        <datalist id="product">
+                        <!-- <datalist id="product">
                         <?php
             if ($resultcat->num_rows > 0) {
                 while ($rowcat = $resultcat->fetch_assoc()) {
                     echo '<option value="' . $rowcat['title'] . '" data-id="' . $rowcat['p_id'] . '"></option>';
                 }
             }
-            ?>
-          </datalist>
+            ?> 
+          </datalist> -->
           <button class="btn btn-outline-success" onclick="search()">Search</button>
         </form>
                     <div class="icons">
@@ -94,7 +94,7 @@ $resultcategory=$con->query($sqlcategory);
                               '</button>
                               <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" onclick="dashboard(' . @$_SESSION['user_id'] .')">My Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" onclick="details(' . @$_SESSION['user_id'] .')">User Details</a></li>
                                 <li><a class="dropdown-item" href="logout.php" onclick="session_destroy();">Log Out</a></li>
                               </ul>
                             </div>';
@@ -203,6 +203,17 @@ function dashboard(c_id){
     data:{c_id: c_id},
     success:function(){
       window.location.href="userDashboard.php"
+    }
+  });
+  console.log(c_id);
+}
+function details(c_id){
+  $.ajax({
+    url:"userdetail.php",
+    type:"POST",
+    data:{c_id: c_id},
+    success:function(){
+      window.location.href="userdetail.php"
     }
   });
   console.log(c_id);

@@ -6,6 +6,9 @@ include 'connection.php';
 if (isset($_POST['proId'])&&($_POST['quantity'])) {
     $productId = $_POST['proId'];
     $quantity=$_POST['quantity'];
+    if($quantity==0){
+        $quantity=1;
+    }
     $customerId = $_SESSION['user_id'];
     $sqlInsertCart = "INSERT INTO cart (user_id, product_id,quantity) VALUES ($customerId, $productId ,$quantity)";
 

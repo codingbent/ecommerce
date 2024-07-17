@@ -67,7 +67,7 @@ if ($resultcart->num_rows > 0) {
     echo '</tr>';
     echo '<tr>';
     echo '<td><a href="index.php"><button class="btn btn-primary w-100">Continue Shopping</button></a></td>';
-    echo '<td><button class="btn btn-success w-100">Check Out</button></td>';
+    echo '<td><a href="checkout.php"><button class="btn btn-success w-100">Check Out</button></a></td>';
     echo '</tr>';
     echo '</tbody>';
     echo '</table>';

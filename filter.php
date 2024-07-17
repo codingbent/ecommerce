@@ -14,7 +14,6 @@ if (isset($_POST['brands']) && !empty($_POST['brands'])) {
     $parameters = array_merge($parameters, $brands);
 }
 
-// Process selected categories
 if (isset($_POST['categories']) && !empty($_POST['categories'])) {
     $categories = $_POST['categories'];
     $categoryPlaceholders = str_repeat('?,', count($categories) - 1) . '?';
