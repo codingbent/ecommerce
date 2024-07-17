@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2024 at 02:23 PM
+-- Generation Time: Jul 17, 2024 at 01:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,15 +29,46 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address` (
   `address_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `house_no` int(5) NOT NULL,
-  `line1` varchar(40) NOT NULL,
-  `line2` varchar(30) DEFAULT NULL,
+  `house_name` varchar(40) NOT NULL,
+  `line1` varchar(50) NOT NULL,
+  `line2` varchar(50) DEFAULT NULL,
   `city` varchar(20) NOT NULL,
   `state` varchar(20) NOT NULL,
   `country` varchar(20) NOT NULL,
   `pincode` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`address_id`, `user_id`, `house_no`, `house_name`, `line1`, `line2`, `city`, `state`, `country`, `pincode`) VALUES
+(24, 1, 94, 'Ram Sindhu', 'Nehru park colony', 'near soodh dharam kanta prem nagar ', 'Bareilly', 'Uttar Pradesh', 'India', 243122);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alternate_category`
+--
+
+CREATE TABLE `alternate_category` (
+  `alt_id` int(11) NOT NULL,
+  `c_id` int(11) DEFAULT NULL,
+  `alternate_names` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `alternate_category`
+--
+
+INSERT INTO `alternate_category` (`alt_id`, `c_id`, `alternate_names`) VALUES
+(1, 1, 'Mobile Phones & Accessories/Cell Phones/Smartphones/iPhones'),
+(2, 2, 'Personal Computers/Laptops/Notebooks'),
+(3, 3, 'Portable Computers/Tablets/iPads'),
+(4, 4, 'Photography Equipment/Cameras/Digital Cameras'),
+(5, 5, 'Home Entertainment Systems/Televisions/TVs');
 
 -- --------------------------------------------------------
 
@@ -85,25 +116,13 @@ INSERT INTO `brand` (`brand_id`, `brand_name`) VALUES
 (28, 'Wacom'),
 (29, 'Pentax'),
 (30, 'Hisense'),
-(31, 'Sony Xperia'),
-(32, 'Lenovo Yoga'),
-(33, 'Sony Alpha'),
-(34, 'Samsung QLED'),
 (35, 'HTC'),
-(36, 'Acer Predator'),
-(37, 'Amazon Fire'),
 (38, 'GoPro'),
-(39, 'LG OLED'),
 (40, 'Nokia'),
-(41, 'Alienware'),
-(42, 'Samsung Galaxy'),
 (43, 'Phase One'),
 (44, 'Philips'),
 (45, 'BlackBerry'),
-(46, 'MSI Prestige'),
-(47, 'Apple iPad'),
-(48, 'Ricoh'),
-(49, 'Sharp Aquos');
+(48, 'Ricoh');
 
 -- --------------------------------------------------------
 
@@ -118,15 +137,6 @@ CREATE TABLE `cart` (
   `quantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(57, 1, 15, 1),
-(62, 1, 3, 1),
-(72, 1, 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -136,7 +146,6 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `image` varchar(250) NOT NULL,
-  `product_id` int(11) DEFAULT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -144,12 +153,81 @@ CREATE TABLE `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `image`, `product_id`, `category_name`) VALUES
-(1, 'images/iphone15_1.jpg', NULL, 'Smartphones'),
-(2, 'images/dell laptop.webp', NULL, 'Laptops'),
-(3, 'images/microsoft tablet.jfif', NULL, 'Tablets'),
-(4, 'images/canon camera.jfif', NULL, 'Cameras'),
-(5, 'images/panasonic tv.jpg', NULL, 'Televisions');
+INSERT INTO `category` (`category_id`, `image`, `category_name`) VALUES
+(1, 'images/iphone15_1.jpg', 'Smartphones'),
+(2, 'images/dell laptop.webp', 'Laptops'),
+(3, 'images/microsoft tablet.jfif', 'Tablets'),
+(4, 'images/canon camera.jfif', 'Cameras'),
+(5, 'images/panasonic tv.jpg', 'Televisions');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_brand`
+--
+
+CREATE TABLE `category_brand` (
+  `id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL,
+  `c_id` int(11) DEFAULT NULL,
+  `brand_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category_brand`
+--
+
+INSERT INTO `category_brand` (`id`, `p_id`, `c_id`, `brand_id`) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 3),
+(4, 4, 4, 4),
+(5, 5, 5, 5),
+(6, 6, 1, 6),
+(7, 7, 2, 7),
+(8, 8, 3, 8),
+(9, 9, 4, 9),
+(10, 10, 5, 10),
+(11, 11, 1, 11),
+(12, 12, 2, 12),
+(13, 13, 3, 13),
+(14, 14, 4, 14),
+(15, 15, 5, 15),
+(16, 16, 1, 16),
+(17, 17, 2, 17),
+(18, 18, 3, 18),
+(19, 19, 4, 19),
+(20, 20, 5, 20),
+(21, 21, 1, 21),
+(22, 22, 2, 22),
+(23, 23, 3, 23),
+(24, 24, 4, 24),
+(25, 25, 5, 25),
+(26, 26, 1, 26),
+(27, 27, 2, 27),
+(28, 28, 3, 28),
+(29, 29, 4, 29),
+(30, 30, 5, 30),
+(31, 31, 1, 5),
+(32, 32, 2, 22),
+(33, 33, 3, 8),
+(34, 34, 4, 5),
+(35, 35, 5, 1),
+(36, 36, 1, 35),
+(37, 37, 2, 17),
+(38, 38, 3, 13),
+(39, 39, 4, 38),
+(40, 40, 5, 6),
+(41, 41, 1, 40),
+(42, 42, 2, 7),
+(43, 43, 3, 1),
+(44, 44, 4, 43),
+(45, 45, 5, 44),
+(46, 46, 1, 45),
+(47, 47, 2, 22),
+(48, 48, 3, 2),
+(49, 49, 4, 48),
+(50, 50, 5, 15);
 
 -- --------------------------------------------------------
 
@@ -213,15 +291,24 @@ INSERT INTO `favorite` (`id`, `user_id`, `product_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_item`
+-- Table structure for table `orders`
 --
 
-CREATE TABLE `order_item` (
-  `order_item_id` int(11) NOT NULL,
+CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `order_date` datetime NOT NULL,
+  `status` varchar(50) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `status`, `product_id`, `quantity`) VALUES
+(7, 1, '2024-07-17 13:19:46', 'Pending', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -232,7 +319,7 @@ CREATE TABLE `order_item` (
 CREATE TABLE `product` (
   `p_id` int(11) NOT NULL,
   `title` varchar(20) NOT NULL,
-  `label` varchar(200) DEFAULT NULL,
+  `label` varchar(200) NOT NULL,
   `price` int(5) NOT NULL,
   `image` varchar(250) NOT NULL,
   `image2` varchar(250) DEFAULT NULL,
@@ -292,10 +379,82 @@ INSERT INTO `product` (`p_id`, `title`, `label`, `price`, `image`, `image2`, `im
 (44, 'Phase One Camera', 'Medium format camera for professional photography.', 400000, 'images/Phase One Camera.jpg', NULL, NULL, 4, 43),
 (45, 'Philips Television', 'Smart TV with Ambilight technology.', 47000, 'images/Philips Television.jpg', NULL, NULL, 5, 44),
 (46, 'BlackBerry Smartphon', 'Secure smartphone with BlackBerry Hub.', 38000, 'images/BlackBerry Smartphon.jfif', NULL, NULL, 1, 45),
-(47, 'MSI Prestige Laptop', 'Stylish laptop for business professionals.', 30000, '', NULL, NULL, 2, NULL),
+(47, 'MSI Prestige Laptop', 'Stylish laptop for business professionals.', 130000, '', NULL, NULL, 2, 22),
 (48, 'Apple iPad', 'Iconic tablet with Retina display.', 72000, 'images/ipad.jpg', NULL, NULL, 3, 2),
-(49, 'Ricoh Camera', 'Compact camera for street photography.', 40000, '', NULL, NULL, 4, NULL),
-(50, 'Sharp Aquos Televisi', 'Aquos TV with Quattron Pro technology.', 15000, '', NULL, NULL, 5, NULL);
+(49, 'Ricoh Camera', 'Compact camera for street photography.', 40000, '', NULL, NULL, 4, 48),
+(50, 'Sharp Aquos Televisi', 'Aquos TV with Quattron Pro technology.', 45000, '', NULL, NULL, 5, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_details`
+--
+
+CREATE TABLE `product_details` (
+  `id` int(11) NOT NULL,
+  `p_id` int(11) DEFAULT NULL,
+  `features` text DEFAULT NULL,
+  `storage_tips` text DEFAULT NULL,
+  `unit` varchar(50) DEFAULT NULL,
+  `seller` varchar(100) DEFAULT NULL,
+  `disclaimer` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_details`
+--
+
+INSERT INTO `product_details` (`id`, `p_id`, `features`, `storage_tips`, `unit`, `seller`, `disclaimer`) VALUES
+(1, 1, 'Advanced smartphone with latest features.', 'Keep away from extreme temperatures.', '1 unit', 'DMart Pvt. LTD', 'Please read the user manual before using the product.'),
+(2, 2, 'High-performance laptop for productivity.', 'Store in a cool, dry place.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(3, 3, 'Versatile tablet for work and play.', 'Keep away from direct sunlight.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(4, 4, 'Professional camera for photography enthusiasts.', 'Store in a camera bag when not in use.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(5, 5, 'Smart television with immersive experience.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(6, 6, 'Feature-rich smartphone with AI capabilities.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(7, 7, 'Reliable laptop for business and personal use.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(8, 8, 'Affordable tablet for everyday tasks.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(9, 9, 'Compact camera with high-resolution sensor.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(10, 10, 'Ultra HD television with cinematic sound.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(11, 11, 'Flagship smartphone with cutting-edge technology.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(12, 12, 'Sleek laptop with fast processing power.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(13, 13, 'E-reader tablet for avid readers.', 'Store in a cool, dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(14, 14, 'Mirrorless camera for creative photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(15, 15, 'LED TV with vivid colors and smart features.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(16, 16, 'Pixel smartphone with AI-driven camera features.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(17, 17, 'Budget-friendly laptop with good performance.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(18, 18, 'Gaming tablet for mobile gamers.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(19, 19, 'Weather-sealed camera for outdoor photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(20, 20, 'Affordable smart TV with Roku integration.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(21, 21, 'Durable smartphone with long battery life.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(22, 22, 'Gaming laptop with powerful graphics.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(23, 23, 'Budget tablet with high-resolution display.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(24, 24, 'Premium camera with exceptional lens quality.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(25, 25, 'Smart TV with built-in streaming apps.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(26, 26, 'Flagship killer smartphone with OxygenOS.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(27, 27, 'Ultra-thin laptop for gaming enthusiasts.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(28, 28, 'Graphic tablet for digital artists.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(29, 29, 'DSLR camera for professional photographers.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(30, 30, 'Affordable 4K TV with HDR support.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(31, 31, 'Premium smartphone with 5G connectivity.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(32, 32, 'High-performance gaming laptop.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(33, 33, 'Versatile tablet with flexible design.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(34, 34, 'Mirrorless camera with fast autofocus.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(35, 35, 'QLED TV with Quantum Dot technology.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(36, 36, 'Elegant smartphone with BoomSound audio.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(37, 37, 'Powerful gaming laptop for hardcore gamers.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(38, 38, 'Affordable tablet with Alexa integration.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(39, 39, 'Action camera for capturing adventurous moments.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(40, 40, 'OLED TV with deep blacks and vibrant colors.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(41, 41, 'Reliable smartphone with durable design.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(42, 42, 'Gaming laptop with AlienFX lighting.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(43, 43, 'Premium tablet for productivity.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(44, 44, 'Medium format camera for professional photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(45, 45, 'Smart TV with Ambilight technology.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.'),
+(46, 46, 'Secure smartphone with BlackBerry Hub.', 'Store in a protective case.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user manual for proper usage.'),
+(47, 47, 'Stylish laptop for business professionals.', 'Keep away from liquids.', '1 unit', 'DMart Pvt. LTD', 'Check warranty terms before purchase.'),
+(48, 48, 'Iconic tablet with Retina display.', 'Store in a dry place.', '1 unit', 'DMart Pvt. LTD', 'Handle with care.'),
+(49, 49, 'Compact camera for street photography.', 'Store in a camera bag.', '1 unit', 'DMart Pvt. LTD', 'Refer to the user guide for detailed instructions.'),
+(50, 50, 'Aquos TV with Quattron Pro technology.', 'Avoid placing near magnetic devices.', '1 unit', 'DMart Pvt. LTD', 'Read installation guidelines.');
 
 -- --------------------------------------------------------
 
@@ -321,6 +480,13 @@ ALTER TABLE `address`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `alternate_category`
+--
+ALTER TABLE `alternate_category`
+  ADD PRIMARY KEY (`alt_id`),
+  ADD KEY `c_id` (`c_id`);
+
+--
 -- Indexes for table `brand`
 --
 ALTER TABLE `brand`
@@ -338,8 +504,16 @@ ALTER TABLE `cart`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`category_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `category_brand`
+--
+ALTER TABLE `category_brand`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `p_id` (`p_id`),
+  ADD KEY `c_id` (`c_id`),
+  ADD KEY `brand_id` (`brand_id`);
 
 --
 -- Indexes for table `customer`
@@ -356,20 +530,25 @@ ALTER TABLE `favorite`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `order_item`
+-- Indexes for table `orders`
 --
-ALTER TABLE `order_item`
-  ADD PRIMARY KEY (`order_item_id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `product_id` (`product_id`);
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`);
 
 --
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`p_id`),
-  ADD KEY `fk_category` (`c_id`),
-  ADD KEY `fk_brand_id` (`brand_id`);
+  ADD KEY `fk_product_category` (`c_id`),
+  ADD KEY `fk_product_brand` (`brand_id`);
+
+--
+-- Indexes for table `product_details`
+--
+ALTER TABLE `product_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `p_id` (`p_id`);
 
 --
 -- Indexes for table `sales_order`
@@ -386,7 +565,13 @@ ALTER TABLE `sales_order`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `alternate_category`
+--
+ALTER TABLE `alternate_category`
+  MODIFY `alt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `brand`
@@ -398,13 +583,19 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `category_brand`
+--
+ALTER TABLE `category_brand`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -419,16 +610,22 @@ ALTER TABLE `favorite`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `order_item`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `order_item`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT for table `product_details`
+--
+ALTER TABLE `product_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `sales_order`
@@ -447,6 +644,12 @@ ALTER TABLE `address`
   ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`);
 
 --
+-- Constraints for table `alternate_category`
+--
+ALTER TABLE `alternate_category`
+  ADD CONSTRAINT `alternate_category_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
+
+--
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
@@ -454,10 +657,12 @@ ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
 
 --
--- Constraints for table `category`
+-- Constraints for table `category_brand`
 --
-ALTER TABLE `category`
-  ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
+ALTER TABLE `category_brand`
+  ADD CONSTRAINT `category_brand_ibfk_1` FOREIGN KEY (`p_id`) REFERENCES `product` (`p_id`),
+  ADD CONSTRAINT `category_brand_ibfk_2` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`),
+  ADD CONSTRAINT `category_brand_ibfk_3` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`);
 
 --
 -- Constraints for table `favorite`
@@ -467,18 +672,17 @@ ALTER TABLE `favorite`
   ADD CONSTRAINT `favorite_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
 
 --
--- Constraints for table `order_item`
---
-ALTER TABLE `order_item`
-  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `sales_order` (`order_id`),
-  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
-
---
 -- Constraints for table `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `fk_brand_id` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`),
-  ADD CONSTRAINT `fk_category` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
+  ADD CONSTRAINT `brand_id` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`),
+  ADD CONSTRAINT `c_id` FOREIGN KEY (`c_id`) REFERENCES `category` (`category_id`);
+
+--
+-- Constraints for table `product_details`
+--
+ALTER TABLE `product_details`
+  ADD CONSTRAINT `product_details_ibfk_1` FOREIGN KEY (`p_id`) REFERENCES `product` (`p_id`);
 
 --
 -- Constraints for table `sales_order`
