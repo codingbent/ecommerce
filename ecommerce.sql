@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2024 at 01:07 PM
+-- Generation Time: Jul 17, 2024 at 01:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,15 +29,23 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address` (
   `address_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `house_no` int(5) NOT NULL,
-  `line1` varchar(40) NOT NULL,
-  `line2` varchar(30) DEFAULT NULL,
+  `house_name` varchar(40) NOT NULL,
+  `line1` varchar(50) NOT NULL,
+  `line2` varchar(50) DEFAULT NULL,
   `city` varchar(20) NOT NULL,
   `state` varchar(20) NOT NULL,
   `country` varchar(20) NOT NULL,
   `pincode` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`address_id`, `user_id`, `house_no`, `house_name`, `line1`, `line2`, `city`, `state`, `country`, `pincode`) VALUES
+(24, 1, 94, 'Ram Sindhu', 'Nehru park colony', 'near soodh dharam kanta prem nagar ', 'Bareilly', 'Uttar Pradesh', 'India', 243122);
 
 -- --------------------------------------------------------
 
@@ -108,25 +116,13 @@ INSERT INTO `brand` (`brand_id`, `brand_name`) VALUES
 (28, 'Wacom'),
 (29, 'Pentax'),
 (30, 'Hisense'),
-(31, 'Sony Xperia'),
-(32, 'Lenovo Yoga'),
-(33, 'Sony Alpha'),
-(34, 'Samsung QLED'),
 (35, 'HTC'),
-(36, 'Acer Predator'),
-(37, 'Amazon Fire'),
 (38, 'GoPro'),
-(39, 'LG OLED'),
 (40, 'Nokia'),
-(41, 'Alienware'),
-(42, 'Samsung Galaxy'),
 (43, 'Phase One'),
 (44, 'Philips'),
 (45, 'BlackBerry'),
-(46, 'MSI Prestige'),
-(47, 'Apple iPad'),
-(48, 'Ricoh'),
-(49, 'Sharp Aquos');
+(48, 'Ricoh');
 
 -- --------------------------------------------------------
 
@@ -140,15 +136,6 @@ CREATE TABLE `cart` (
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `quantity`) VALUES
-(57, 1, 15, 1),
-(62, 1, 3, 1),
-(72, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -304,15 +291,24 @@ INSERT INTO `favorite` (`id`, `user_id`, `product_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_item`
+-- Table structure for table `orders`
 --
 
-CREATE TABLE `order_item` (
-  `order_item_id` int(11) NOT NULL,
+CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `order_date` datetime NOT NULL,
+  `status` varchar(50) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `status`, `product_id`, `quantity`) VALUES
+(7, 1, '2024-07-17 13:19:46', 'Pending', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -534,12 +530,10 @@ ALTER TABLE `favorite`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `order_item`
+-- Indexes for table `orders`
 --
-ALTER TABLE `order_item`
-  ADD PRIMARY KEY (`order_item_id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `product_id` (`product_id`);
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`);
 
 --
 -- Indexes for table `product`
@@ -571,7 +565,7 @@ ALTER TABLE `sales_order`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `alternate_category`
@@ -589,7 +583,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -601,7 +595,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `category_brand`
 --
 ALTER TABLE `category_brand`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -616,10 +610,10 @@ ALTER TABLE `favorite`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `order_item`
+-- AUTO_INCREMENT for table `orders`
 --
-ALTER TABLE `order_item`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -676,13 +670,6 @@ ALTER TABLE `category_brand`
 ALTER TABLE `favorite`
   ADD CONSTRAINT `favorite_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `customer` (`user_id`),
   ADD CONSTRAINT `favorite_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
-
---
--- Constraints for table `order_item`
---
-ALTER TABLE `order_item`
-  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `sales_order` (`order_id`),
-  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`p_id`);
 
 --
 -- Constraints for table `product`
