@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2024 at 01:38 PM
+-- Generation Time: Jul 18, 2024 at 01:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,7 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`address_id`, `user_id`, `house_no`, `house_name`, `line1`, `line2`, `city`, `state`, `country`, `pincode`) VALUES
-(24, 1, 94, 'Ram Sindhu', 'Nehru park colony', 'near soodh dharam kanta prem nagar ', 'Bareilly', 'Uttar Pradesh', 'India', 243122);
+(24, 1, 94, 'Ram Sindhu', 'Nehru park colony', 'Near soodh dharam kanta prem nagar ', 'Bareilly', 'Uttar Pradesh', 'India', 243122);
 
 -- --------------------------------------------------------
 
@@ -308,7 +308,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `status`, `product_id`, `quantity`) VALUES
-(7, 1, '2024-07-17 13:19:46', 'Pending', 11, 1);
+(7, 1, '2024-07-17 13:19:46', 'Pending', 11, 1),
+(8, 1, '2024-07-18 08:00:06', 'Pending', 1, 1),
+(9, 1, '2024-07-18 08:02:22', 'Pending', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -565,7 +567,7 @@ ALTER TABLE `sales_order`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `alternate_category`
@@ -583,7 +585,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -613,7 +615,7 @@ ALTER TABLE `favorite`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `product`
