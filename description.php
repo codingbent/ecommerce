@@ -305,7 +305,7 @@ function incrementQuantity(productId) {
                 data:{proId:productId, quantity:quantity},
                 success: function(res){
                 if(res==1){
-                    alert("Product added to cart successfully");
+                    // alert("Product added to cart successfully");
                     return
                 }else{
                     alert("error");

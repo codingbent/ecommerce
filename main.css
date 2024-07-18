@@ -101,7 +101,8 @@ table .table {
   background-color: #007bff!important;
   color: white;
 }
-
-.three{
-  overflow-x: scroll;
+@media screen and (max-width: 992px) {
+  .three .d-flex{
+    overflow-x: scroll;
+  }
 }

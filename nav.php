@@ -94,7 +94,6 @@ $resultcategory=$con->query($sqlcategory);
                               '</button>
                               <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" onclick="dashboard(' . @$_SESSION['user_id'] .')">My Profile</a></li>
-                                <li><a class="dropdown-item" onclick="details(' . @$_SESSION['user_id'] .')">User Details</a></li>
                                 <li><a class="dropdown-item" href="logout.php" onclick="session_destroy();">Log Out</a></li>
                               </ul>
                             </div>';
@@ -207,15 +206,5 @@ function dashboard(c_id){
   });
   console.log(c_id);
 }
-function details(c_id){
-  $.ajax({
-    url:"userdetail.php",
-    type:"POST",
-    data:{c_id: c_id},
-    success:function(){
-      window.location.href="userdetail.php"
-    }
-  });
-  console.log(c_id);
-}
+
 </script>
