@@ -13,10 +13,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['p_id'])) {
+        $_SESSION['p_id'] = $_POST['p_id']; // Set p_id in session
+        echo "Session set";
+    } }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['e_id'])) {
-        $_SESSION['e_id'] = $_POST['e_id']; // Set p_id in session
+        $_SESSION['e_id'] = $_POST['e_id']; 
         echo "Session set";
     } }
 
