@@ -279,7 +279,7 @@ if ($result->num_rows > 0) {
 </div>
 
 <?php
-// include 'footer.php';
+include 'footer.php';
 ?>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
