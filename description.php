@@ -6,12 +6,12 @@ include 'nav.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['p_id'])) {
         $p_id = $_POST['p_id'];
-        $_SESSION['p_id'] = $p_id; // Set p_id in session
+        $_SESSION['p_id'] = $p_id; 
     } else {
         die("p_id not received");
     }
 }
-
+$isfavorite=false;
 if (isset($_SESSION['p_id'])) {
     $p_id = $_SESSION['p_id'];
 
@@ -56,7 +56,6 @@ if (isset($_SESSION['p_id'])) {
     } else {
         $totalProduct = 0; 
     }
-
 } else {
     echo "p_id not found in session";
 }
@@ -124,7 +123,7 @@ if (isset($_SESSION['p_id'])) {
                             echo '</button>';
                             echo'<button type="button" onclick="addToFav(' . $rowproduct['p_id'] . ')" class="btn btn-danger w-30 ms-2">';
                               echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
-                              echo '  Add To Favorite';
+                              echo '  <span id="fav">Add To Favorite</span>';
                             echo '</button></div>';
                             echo'<button type="button" onclick="addToCart(' . $rowproduct['p_id'] . ')" class="btn btn-warning w-50 px-5 ms-4">';
                             echo'  <i class="feather-icon icon-shopping-bag me-2"></i>';
@@ -306,7 +305,8 @@ function incrementQuantity(productId) {
                 success: function(res){
                 if(res==1){
                     // alert("Product added to cart successfully");
-                    return
+                    window.location.reload();
+                    return;
                 }else{
                     alert("error");
                     return;
@@ -315,28 +315,35 @@ function incrementQuantity(productId) {
             })
         }
 }
-function addToFav(productId){
+function addToFav(productId) {
+    document.getElementById('fav').innerText="Add to favorite";
     var isLoggedIn = <?php echo isset($_SESSION['email']) ? 'true' : 'false'; ?>;
-        var productID = <?php echo $rowproduct['p_id']; ?>;
-        if (!isLoggedIn) {
-            alert("Please log in");
-        } else {
-            $.ajax({
-                url:"addtoFav.php",
-                type:"POST",
-                data:{proId:productId},
-                success: function(res){
-                if(res==1){
-                    alert("Product added to Favorite successfully");
-                    return
-                }else{
-                    alert("error");
-                    return;
+    if (!isLoggedIn) {
+        alert("Please log in");
+    } else {
+        $.ajax({
+            url: "addtoFav.php",
+            type: "POST",
+            data: { proId: productId },
+            success: function(res) {
+                if (res == 1) {
+                    alert("Product removed from favorite successfully");
+                    document.getElementById('fav').innerText="Add to favorite";
+                    // window.location.reload();÷
+                } else if (res == 3) {
+                    alert("Product added to favorite successfully");
+                    document.getElementById('fav').innerText="Remove";
+                    window.location.reload();
+                } else {
+                    alert("Error occurred");
                 }
-                }
-            })
-        }
+            },
+            error: function() {
+                alert("Error occurred");
+            }
+        });
+    }
 }
 
+
 </script>
-</html>

@@ -30,21 +30,17 @@ if (isset($_POST['minPrice']) && isset($_POST['maxPrice'])) {
     $parameters[] = $maxPrice;
 }
 
-// Prepare SQL statement for filtered products
 $sql = "SELECT * FROM product WHERE 1 $whereClause";
 $stmt = $con->prepare($sql);
 
-// Bind parameters dynamically
 if (!empty($parameters)) {
     $types = str_repeat('s', count($parameters)); 
     $stmt->bind_param($types, ...$parameters);
 }
 
-// Execute SQL query
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Build HTML for filtered products
 if ($result->num_rows > 0) {
     while ($rowproduct = $result->fetch_assoc()) {
         echo '<a onclick="description(' . $rowproduct['p_id'] . ');"><div class="card d-flex flex-row mb-3">';

@@ -20,7 +20,7 @@ $result = $con->query($query);
                     echo '<div class="col-md-12 mb-3">';
                     echo '<div class="d-flex justify-content-between my-2">';
                     echo '<h4>' . $row['category_name'] . '</h4>'; // Display category name
-                    echo '<button class="btn btn-primary" onclick="viewAll(' . $row['c_id'] . ')">View All</button>';
+                    echo '<button class="btn btn-primary" onclick="viewAll(' . $row['category_id'] . ')">View All</button>';
                     echo '</div>';
 
                     $products_query = "SELECT * FROM product WHERE c_id = " . $row['c_id'] . " LIMIT 4";
@@ -72,24 +72,23 @@ function description(p_id) {
       console.error(error);
     }
   });
-  console.log(c_id);
 }
 
-    function viewAll(c_id) {
-        $.ajax({
-    url: "set_session.php",
-    type: "POST",
-    data: {c_id: c_id},
-    success: function(response){
-      // After the session is set, redirect to the category page
-      window.location.href = "category.php";
-    },
-    error: function(xhr, status, error){
-      // Handle error
-      console.error(error);
-    }
-  });
-  console.log(c_id);
+function viewAll(c_id) {
+    $.ajax({
+        url: "set_session.php",
+        type: "POST",
+        data: {c_id: c_id},
+        success: function(response) {
+            // After the session is set, redirect to the category page
+            window.location.href = "category.php";
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error(error);
+        }
+    });
 }
+
    
 </script>
